@@ -128,12 +128,14 @@ public class Node {
      * Calculates the Nodes Value from its parent Nodes
      */
     public void calc() {
-        double sum = 0;
-        for ( Node node: parents ) {
-            node.calc();
-            sum += node.getValue( this.index );
+        if ( parents.length > 0 ) {
+            double sum = 0;
+            for (Node node : parents) {
+                node.calc();
+                sum += node.getValue(this.index);
+            }
+            setValue(sigmoid(sum / parents.length));
         }
-        setValue( sigmoid( sum / parents.length ) );
     }
 
 }
