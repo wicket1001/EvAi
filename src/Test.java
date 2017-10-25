@@ -8,6 +8,8 @@ public class Test {
         System.out.println(i.name());
 
         World w = new World("maps/map1.txt");
+        CardinalDirection c = CardinalDirection.North;
+        System.out.println(c.toCoordinate());
 
     }
 }
