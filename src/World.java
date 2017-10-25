@@ -36,11 +36,11 @@ class World {
         }
     }
 
-    public int getWidth() {
+    int getWidth() {
         return width;
     }
 
-    public int getHeight() {
+    int getHeight() {
         return height;
     }
 
@@ -52,6 +52,18 @@ class World {
      */
     Field getField(Coordinate coordinate) {
         return fields[coordinate.getX()][coordinate.getY()];
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder s = new StringBuilder("{\n");
+        for (Field[] row: fields) {
+            for (Field field: row) {
+                s.append(field.getResource().name().substring(0, 1));
+            }
+            s.append("\n");
+        }
+        return s + "}";
     }
 
     /**

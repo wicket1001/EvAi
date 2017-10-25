@@ -1,3 +1,4 @@
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -32,7 +33,7 @@ public class Entity {
      * @param pos The Position of the Entity in the World
      * @param nodeNums The Number of Nodes per Layer
      */
-    public Entity( Coordinate pos, int[] nodeNums ) {
+    Entity(Coordinate pos, int[] nodeNums) {
         this.pos = pos;
         alive = true;
         inventory = new HashMap<>();
@@ -65,7 +66,7 @@ public class Entity {
      * Getter for Position
      * @return The Position of the Entity
      */
-    public Coordinate getPos() {
+    Coordinate getPos() {
         return pos;
     }
 
@@ -75,6 +76,16 @@ public class Entity {
      */
     public void setPos( Coordinate pos ) {
         this.pos = pos;
+    }
+
+    @Override
+    public String toString() {
+        return "Entity{" +
+                "pos=" + pos +
+                ", inventory=" + inventory +
+                ", alive=" + alive +
+                ", nodes=" + Arrays.toString(nodes) +
+                '}';
     }
 
     /**
@@ -97,7 +108,7 @@ public class Entity {
      * Is the Entity dead?
      * @return is dead
      */
-    public boolean isDead() {
+    boolean isDead() {
         return !alive;
     }
 
@@ -106,7 +117,7 @@ public class Entity {
      * @param item The Item Stack to be modified
      * @param amount The amount the Stack should be changed
      */
-    public void addToInventory( Item item, int amount ) {
+    void addToInventory(Item item, int amount) {
         inventory.put( item, inventory.get(item) + amount );
         if ( getItemCount(Item.water) <= 0 || getItemCount(Item.food) <= 0 ) {
             alive = false;
@@ -118,7 +129,7 @@ public class Entity {
      * @param item The amount of this item
      * @return The amount
      */
-    public int getItemCount( Item item ) {
+    int getItemCount(Item item) {
         return inventory.get( item );
     }
 
@@ -135,7 +146,7 @@ public class Entity {
      * @param fields neighbour Fields
      * @return Ouput Node Values
      */
-    public double[] step( double[] fields ) {
+    double[] step(double[] fields) {
         nodes[0][0].setValue( (double) inventory.get(Item.food) / 100 );
         nodes[0][1].setValue( (double) inventory.get(Item.water) / 100 );
         nodes[0][2].setValue( (double) inventory.get(Item.wood) / 100 );

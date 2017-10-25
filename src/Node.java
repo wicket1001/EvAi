@@ -1,3 +1,5 @@
+import java.util.Arrays;
+
 /**
  * Represents a Node and its connections to the child Nodes
  */
@@ -35,7 +37,7 @@ public class Node {
      * @param parents A List of Parents of the Node
      * @param numNextLayerNodes The Number of Nodes in the Next Layer
      */
-    public Node( int layer, int index, Node[] parents, int numNextLayerNodes ) {
+    Node(int layer, int index, Node[] parents, int numNextLayerNodes) {
         connections = new double[numNextLayerNodes];
         value = 0;
         this.parents = parents;
@@ -61,7 +63,7 @@ public class Node {
      * @param value Value to be calculated
      * @return Calculated Sigmoid
      */
-    public static double sigmoid( double value ) {
+    private static double sigmoid(double value) {
         return 1 / ( 1 + Math.exp(-value) );
     }
 
@@ -79,7 +81,7 @@ public class Node {
      * @param index The index of the Connection/Node
      * @return Multiplier of the Connection
      */
-    public double getConnection( int index ) {
+    private double getConnection(int index) {
         return connections[index];
     }
 
@@ -87,7 +89,7 @@ public class Node {
      * Setter for the Nodes Value
      * @param value The Value, the Node is set to
      */
-    public void setValue( double value ) {
+    void setValue(double value) {
         this.value = value;
     }
 
@@ -95,7 +97,7 @@ public class Node {
      * Getter for the Nodes Value
      * @return The Nodes Value
      */
-    public double getValue() {
+    double getValue() {
         return value;
     }
 
@@ -104,7 +106,7 @@ public class Node {
      * @param connectionIndex The Index of the Connection/Node
      * @return The multiplied Value of the Node
      */
-    public double getValue( int connectionIndex ) {
+    private double getValue(int connectionIndex) {
         return value * getConnection( connectionIndex );
     }
 
@@ -124,10 +126,21 @@ public class Node {
         return index;
     }
 
+    @Override
+    public String toString() {
+        return "Node{" +
+                "connections=" + Arrays.toString(connections) +
+                ", value=" + value +
+                ", parents=" + Arrays.toString(parents) +
+                ", layer=" + layer +
+                ", index=" + index +
+                '}';
+    }
+
     /**
      * Calculates the Nodes Value from its parent Nodes
      */
-    public void calc() {
+    void calc() {
         // TODO Don't calculate Node Value every Time in same Step!
         if ( parents.length > 0 ) {
             double sum = 0;

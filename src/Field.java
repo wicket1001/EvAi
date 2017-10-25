@@ -26,8 +26,17 @@ class Field {
     }
 
 
-    public Resource getResource() {
+    Resource getResource() {
         return resource;
+    }
+
+    @Override
+    public String toString() {
+        return "Field{" +
+                "resource=" + resource +
+                ", value=" + value +
+                ", idle=" + idle +
+                '}';
     }
 
     /**
@@ -50,10 +59,14 @@ class Field {
      */
     Map<Resource, Integer> harvest(boolean tool) {
         switch (resource) {
-            case food: value = tool ? 3 : 1;
-            case water: value = tool ? 3 : 1;
-            case wood: value = tool ? 3 : 1;
-            case stone: value = tool ? 3 : 1;
+            case food:
+                value = tool ? 3 : 1;
+            case water:
+                value = tool ? 3 : 1;
+            case wood:
+                value = tool ? 3 : 1;
+            case stone:
+                value = tool ? 3 : 1;
         }
         HashMap<Resource, Integer> harvested = new HashMap<>();
         harvested.put(resource, value);

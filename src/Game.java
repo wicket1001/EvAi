@@ -1,4 +1,5 @@
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -21,6 +22,11 @@ public class Game {
         }
 
         run();
+    }
+
+    @Override
+    public String toString() {
+        return "Game";
     }
 
     private static void run() {
