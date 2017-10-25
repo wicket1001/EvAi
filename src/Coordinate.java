@@ -54,6 +54,24 @@ public class Coordinate {
     }
 
     /**
+     * Adds vec to the Coordinate
+     * @param vec The Vector to be added
+     */
+    public void add( Coordinate vec ) {
+        x += vec.getX();
+        y += vec.getY();
+    }
+
+    /**
+     * Subtracts vec from the Coordinate
+     * @param vec The Vector to be subtracted
+     */
+    public void sub( Coordinate vec ) {
+        x -= vec.getX();
+        y -= vec.getY();
+    }
+
+    /**
      * Returns the Coordinate as String
      * @return String of the Coordinate
      */
