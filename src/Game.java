@@ -1,5 +1,4 @@
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -20,7 +19,6 @@ public class Game {
                     ),
                     new int[]{Item.values().length + 9, 8, 2});
         }
-
         run();
     }
 
@@ -44,7 +42,18 @@ public class Game {
     private static void interpret(Entity e) {
         double[] neighbors = new double[9];
         for (int i = 0; i < 9; i++) {
-            neighbors[i] = world.getField(new Coordinate(i % 3, (int)(i / 3))).getResource().fromResourceToDouble();
+            Coordinate c = new Coordinate(e.getPos().getX() + i % 3 - 1, e.getPos().getY() + i / 3 - 1);
+            if (world.isInBoarders(c)) {
+                neighbors[i] = world.getField(c).getResource().fromResourceToDouble();
+            } else {
+                neighbors[i] = Resource.none.fromResourceToDouble();
+            }
+            /*
+            neighbors[i] = world.getField(
+                    new Coordinate(e.getPos().getX() + i % 3 - 1,
+                            e.getPos().getY() + i / 3 - 1)
+                        ).getResource().fromResourceToDouble();
+                        */
         }
         double[] values = e.step(neighbors);
         Action action = Action.fromDoubleToDirection(values[0]);
@@ -68,6 +77,7 @@ public class Game {
                 }
             }
         }
+        world.regenerate();
         decay(e);
     }
 
@@ -97,9 +107,9 @@ public class Game {
     }
 
     private static boolean everybodyDead() {
-        boolean everybodyDead = false;
+        boolean everybodyDead = true;
         for (Entity e: entities) {
-            everybodyDead |= e.isDead();
+            everybodyDead &= e.isAlive();
         }
         return everybodyDead;
     }
