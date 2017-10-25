@@ -50,7 +50,7 @@ class World {
      * @param coordinate The coordinates, where to get the field from.
      * @return The field at the coordinates.
      */
-    private Field getField(Coordinate coordinate) {
+    Field getField(Coordinate coordinate) {
         return fields[coordinate.getX()][coordinate.getY()];
     }
 

@@ -4,10 +4,11 @@ import java.util.Map;
 /**
  * One field of the World.
  */
-public class Field {
+class Field {
     /**
      * The resource of the field.
      */
+
     private Resource resource;
     private int value;
     /**
@@ -22,6 +23,11 @@ public class Field {
      */
     Field(Resource resource) {
         this.resource = resource;
+    }
+
+
+    public Resource getResource() {
+        return resource;
     }
 
     /**

@@ -33,9 +33,12 @@ public class Game {
         }
     }
 
-    private static void interpret(Entity e) { // TODO
-        // double[] values = e.step();
-        double[] values = new double[]{0.1, -0.6};
+    private static void interpret(Entity e) {
+        double[] neighbors = new double[9];
+        for (int i = 0; i < 9; i++) {
+            neighbors[i] = world.getField(new Coordinate(i % 3, (int)(i / 3))).getResource().fromResourceToDouble();
+        }
+        double[] values = e.step(neighbors);
         Action action = Action.fromDoubleToDirection(values[0]);
         switch (action) {
             case harvest: {

@@ -10,4 +10,8 @@ public enum Resource {
             default: throw new IllegalArgumentException("Illegal Field type: " + c);
         }
     }
+
+    double fromResourceToDouble() {
+        return  2.0 / values().length * this.ordinal();
+    }
 }
