@@ -1,5 +1,3 @@
-import java.util.List;
-
 /**
  * Represents a Node and its connections to the child Nodes
  */
@@ -18,7 +16,7 @@ public class Node {
     /**
      * The List of the Parent Nodes
      */
-    private List<Node> parents;
+    private Node[] parents;
 
     /**
      * The Layer, the Node is on
@@ -37,7 +35,7 @@ public class Node {
      * @param parents A List of Parents of the Node
      * @param numNextLayerNodes The Number of Nodes in the Next Layer
      */
-    public Node( int layer, int index, List<Node> parents, int numNextLayerNodes ) {
+    public Node( int layer, int index, Node[] parents, int numNextLayerNodes ) {
         connections = new double[numNextLayerNodes];
         value = 0;
         this.parents = parents;
@@ -53,7 +51,7 @@ public class Node {
      * @param nextLayerNodes The Number of Nodes in the Next Layer
      * @param value The initial Value of the Node
      */
-    public Node( int layer, int index, List<Node> parents, int nextLayerNodes, double value ) {
+    public Node( int layer, int index, Node[] parents, int nextLayerNodes, double value ) {
         this( layer, index, parents, nextLayerNodes );
         setValue( value );
     }
@@ -135,7 +133,7 @@ public class Node {
             node.calc();
             sum += node.getValue( this.index );
         }
-        setValue( sigmoid( sum / parents.size() ) );
+        setValue( sigmoid( sum / parents.length ) );
     }
 
 }
