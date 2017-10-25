@@ -48,7 +48,7 @@ public class Entity {
             for ( int i = 0; i < num; i++ ) {
                 int nextNum = 0;
                 if ( layer != nodeNums.length-1 ) {
-                    nextNum = nodeNums[num+1];
+                    nextNum = nodeNums[layer+1];
                 }
                 Node[] parents;
                 if ( layer > 0 ) {
@@ -108,6 +108,9 @@ public class Entity {
      */
     public void addToInventory( Item item, int amount ) {
         inventory.put( item, inventory.get(item) + amount );
+        if ( getItemCount(Item.water) <= 0 || getItemCount(Item.food) <= 0 ) {
+            alive = false;
+        }
     }
 
     /**

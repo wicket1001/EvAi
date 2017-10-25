@@ -11,14 +11,16 @@ public class Game {
 
         world = new World("maps/map1.txt");
         entities = new Entity[numberOfEntities];
-        for (Entity e: entities) {
-            e = new Entity(
+        for (int i = 0; i < entities.length; i++) {
+            entities[i] = new Entity(
                     new Coordinate(
-                            (int)(Math.random() * world.getWidth()),
-                            (int)(Math.random() * world.getHeight())
+                            (int) (Math.random() * world.getWidth()),
+                            (int) (Math.random() * world.getHeight())
                     ),
                     new int[]{Item.values().length + 9, 8, 2});
         }
+
+        run();
     }
 
     private static void run() {
@@ -60,6 +62,12 @@ public class Game {
                 }
             }
         }
+        decay(e);
+    }
+
+    private static void decay(Entity e) {
+        e.addToInventory(Item.food, -1);
+        e.addToInventory(Item.water, -2);
     }
 
     private static void harvest(Entity e) {
@@ -85,7 +93,7 @@ public class Game {
     private static boolean everybodyDead() {
         boolean everybodyDead = false;
         for (Entity e: entities) {
-            everybodyDead |= e.isAlive();
+            everybodyDead |= e.isDead();
         }
         return everybodyDead;
     }
