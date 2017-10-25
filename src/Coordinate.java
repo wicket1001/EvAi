@@ -53,4 +53,12 @@ public class Coordinate {
         return Math.sqrt( dx*dx + dy*dy );
     }
 
+    /**
+     * Returns the Coordinate as String
+     * @return String of the Coordinate
+     */
+    public String toString() {
+        return "("+x+"|"+y+")";
+    }
+
 }
