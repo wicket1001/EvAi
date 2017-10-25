@@ -128,6 +128,7 @@ public class Node {
      * Calculates the Nodes Value from its parent Nodes
      */
     public void calc() {
+        // TODO Don't calculate Node Value every Time in same Step!
         if ( parents.length > 0 ) {
             double sum = 0;
             for (Node node : parents) {

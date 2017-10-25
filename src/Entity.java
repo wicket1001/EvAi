@@ -16,8 +16,8 @@ public class Entity {
         for ( Item item: Item.values() ) {
             inventory.put( item, 0 );
         }
-        inventory.put( Item.food, 25 );
-        inventory.put( Item.water, 25 );
+        addToInventory( Item.food, 25 );
+        addToInventory( Item.water, 25 );
         nodes = new Node[nodeNums.length][];
         for ( int layer = 0; layer < nodeNums.length; layer++ ) {
             int num = nodeNums[layer];
@@ -50,8 +50,15 @@ public class Entity {
         inventory.put( item, inventory.get(item) + amount );
     }
 
-    public double[] step() {
-        // TODO Set Input Nodes
+    public double[] step( double[] fields ) {
+        nodes[0][0].setValue( (double) inventory.get(Item.food) / 100 );
+        nodes[0][1].setValue( (double) inventory.get(Item.water) / 100 );
+        nodes[0][2].setValue( (double) inventory.get(Item.wood) / 100 );
+        nodes[0][3].setValue( (double) inventory.get(Item.tool) / 100 );
+        for ( int i = 0; i < 9; i++ ) {
+            nodes[0][4+i].setValue( fields[i] );
+        }
+
         for ( Node node: nodes[nodes.length-1] ) {
             node.calc();
         }
