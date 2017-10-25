@@ -2,7 +2,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * One field of the Map.
+ * One field of the World.
  */
 public class Field {
     /**
