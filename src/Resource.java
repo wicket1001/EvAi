@@ -1,5 +1,5 @@
 public enum Resource {
-    food, water, wood, stone;
+    food, water, wood, stone, none;
 
     static Resource toResource(char c) {
         switch (c) {

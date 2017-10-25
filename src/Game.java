@@ -1,4 +1,6 @@
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Game {
     private static World world;
@@ -10,12 +12,15 @@ public class Game {
         world = new World("maps/map1.txt");
         entities = new Entity[numberOfEntities];
         for (Entity e: entities) {
-            e = new Entity(new Coordinate((int)(Math.random() * world.getWidth()), (int)(Math.random() * world.getHeight())));
+            e = new Entity(
+                    new Coordinate(
+                            (int)(Math.random() * world.getWidth()),
+                            (int)(Math.random() * world.getHeight())
+                    ),
+                    new int[]{Item.values().length + 9, 8, 2});
         }
-
-        System.out.println(fromDoubleToDirection(-0.1));
     }
-/*
+
     private static void run() {
         while (!everybodyDead()) {
             step();
@@ -29,21 +34,51 @@ public class Game {
     }
 
     private static void interpret(Entity e) { // TODO
-        double[] action = e.step();
-
-    }
-*/
-    private static Enum fromDoubleToDirection(Enum e, double d) {
-        Enum[] values = Enum.values();
-        double step = 2.0 / values.length;
-        for (int i = 0; i < values.length; i++) {
-            if (d < -1 + i * step) {
-                return values[i];
+        // double[] values = e.step();
+        double[] values = new double[]{0.1, -0.6};
+        Action action = Action.fromDoubleToDirection(values[0]);
+        switch (action) {
+            case harvest: {
+                harvest(e);
+            }
+            case craft: {
+                if (e.getItemCount(Item.wood) >= 2 && e.getItemCount(Item.stone) >= 1) {
+                    e.addToInventory(Item.tool, 1);
+                    e.addToInventory(Item.wood, -2);
+                    e.addToInventory(Item.stone, -1);
+                }
+            }
+            case move: {
+                Coordinate modifier = CardinalDirection.fromDoubleToDirection(values[1]).toCoordinate();
+                Coordinate entityCoordinate = e.getPos();
+                modifier.add(entityCoordinate);
+                if (world.isInBoarders(modifier)) {
+                    entityCoordinate.add(modifier);
+                }
             }
         }
-        return values[values.length - 1];
     }
-/*
+
+    private static void harvest(Entity e) {
+        boolean tool = e.getItemCount(Item.tool) > 0;
+        if (tool) {
+            e.addToInventory(Item.tool, -1);
+        }
+        Map<Resource, Integer> resourcesGathered = world.harvestField(e.getPos(), tool);
+        HashMap<Item, Integer> itemsCreated = getItemsFromResources(resourcesGathered);
+        for (Item item: itemsCreated.keySet()) {
+            e.addToInventory(item, itemsCreated.get(item));
+        }
+    }
+
+    private static HashMap<Item, Integer> getItemsFromResources(Map<Resource, Integer> resourcesGathered) {
+        HashMap<Item, Integer> itemsCreated = new HashMap<>();
+        for (Resource resource: resourcesGathered.keySet()) {
+            itemsCreated.put(Item.fromResourceToItem(resource), resourcesGathered.get(resource));
+        }
+        return itemsCreated;
+    }
+
     private static boolean everybodyDead() {
         boolean everybodyDead = false;
         for (Entity e: entities) {
@@ -51,5 +86,4 @@ public class Game {
         }
         return everybodyDead;
     }
-    */
 }

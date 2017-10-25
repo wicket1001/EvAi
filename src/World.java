@@ -79,4 +79,9 @@ class World {
         }
         return regenerated;
     }
+
+    boolean isInBoarders(Coordinate coordinate) {
+        return (coordinate.getX() >= 0 && coordinate.getX() < width) &&
+                (coordinate.getY() >= 0 && coordinate.getY() < height);
+    }
 }
