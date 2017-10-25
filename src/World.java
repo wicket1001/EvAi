@@ -12,6 +12,8 @@ class World {
      * The different fields of the world.
      */
     private Field[][] fields;
+    private int width;
+    private int height;
 
     /**
      * Creates a World from the contents of a file.
@@ -21,17 +23,25 @@ class World {
      */
     World(String filename) throws IOException {
         List<String> fileContent = fileContent = Files.readAllLines(Paths.get(filename));
-        int max = 0;
         for (String line: fileContent) {
-            max = Math.max(line.length(), max);
+            width = Math.max(line.length(), width);
         }
-        fields = new Field[fileContent.size()][max];
+        height = fileContent.size();
+        fields = new Field[height][width];
         for (int i = 0; i < fileContent.size(); i++) {
             char[] charArray = fileContent.get(i).toCharArray();
             for (int j = 0; j < charArray.length; j++) {
                 fields[i][j] = new Field(Resource.toResource(charArray[j]));
             }
         }
+    }
+
+    public int getWidth() {
+        return width;
+    }
+
+    public int getHeight() {
+        return height;
     }
 
     /**
