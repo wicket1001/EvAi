@@ -120,6 +120,14 @@ public class Entity {
     }
 
     /**
+     * Returns the Inventory of the Entity
+     * @return Inventory
+     */
+    public Map<Item, Integer> getInventory() {
+        return inventory;
+    }
+
+    /**
      * Performs an AI Step and returns the Output-node-Values
      * @param fields neighbour Fields
      * @return Ouput Node Values
