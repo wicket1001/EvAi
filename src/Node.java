@@ -137,6 +137,22 @@ public class Node {
         return "[("+getLayer()+"|"+getIndex()+"): "+getValue()+"]";
     }
 
+    public Node[] getParents() {
+        return parents;
+    }
+
+    public Node getParent( int index ) {
+        return parents[index];
+    }
+
+    public double getMultiplier( int index ) {
+        return connections[index];
+    }
+
+    public double[] getConnections() {
+        return connections;
+    }
+
     /**
      * Calculates the Nodes Value from its parent Nodes
      */

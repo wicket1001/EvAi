@@ -14,7 +14,7 @@ public class Main extends PApplet {
     }
 
     public void settings() {
-        size(800, 600,FX2D);
+        size( 800, 600, FX2D );
     }
 
     public void setup() {
@@ -32,7 +32,7 @@ public class Main extends PApplet {
         clear();
         background( 192, 192, 192 );
         drawWorld();
-        drawNetwork();
+        drawNetwork( game.getEntities()[0].getNetwork() );
     }
 
     public void keyPressed() {
@@ -44,7 +44,7 @@ public class Main extends PApplet {
     private void drawWorld() {
         World world = game.getWorld();
         float ppfh = height / (world.getHeight()+1);
-        float ppfw = width*0.75f / (world.getWidth()+1);
+        float ppfw = width*0.6666f / (world.getWidth()+1);
         if ( ppfh > ppfw ) {
             pixelPerField = ppfw;
             offX = pixelPerField/2;
@@ -52,7 +52,7 @@ public class Main extends PApplet {
         } else {
             pixelPerField = ppfh;
             offY = pixelPerField/2;
-            offX = ( width*0.75f - pixelPerField * world.getWidth() ) / 2;
+            offX = ( width*0.6666f - pixelPerField * world.getWidth() ) / 2;
         }
         for ( int y = 0; y < world.getHeight(); y++ ) {
             for ( int x = 0; x < world.getWidth(); x++ ) {
@@ -80,8 +80,88 @@ public class Main extends PApplet {
         }
     }
 
-    private void drawNetwork() {
+    private float[] getColor( double n ) {
+        float g = (float) (n+1)/2;
+        float red, green, blue;
+        if ( g > 0.5 ) {
+            red = 255;
+            green = (1-(g-0.5f)*2)*255;
+            blue = 0;
+        } else {
+            red = ((g)*2)*255;
+            green = 255;
+            blue = 0;
+        }
+        return new float[] { red, green, blue };
+    }
 
+    private void drawNetwork( Node[][] nodes ) {
+        float[][][] pos = new float[nodes.length][][];
+        float w = width * 0.3333f / nodes.length;
+        float r = 50;
+        int max = 1;
+        for ( Node[] n: nodes ) {
+            if ( n.length > max ) {
+                max = n.length;
+            }
+        }
+        int mouseLayer = 0;
+        int mouseIndex = 0;
+        boolean mouse = false;
+        float h = height / max;
+        for ( int layernum = 0; layernum < nodes.length; layernum++ ) {
+            Node[] layer = nodes[layernum];
+            pos[layernum] = new float[layer.length][];
+            float off = ( height - layer.length * h ) / 2;
+            for ( int index = 0; index < layer.length; index++ ) {
+                float x = width*0.6666f + (layernum+0.5f)*w;
+                float y = (index+0.5f)*h+off;
+                pos[layernum][index] = new float[] { x, y };
+                if ( mouseX >= x - r/2 && mouseX <= x + r/2 && mouseY >= y - r/2 && mouseY <= y + r/2 ) {
+                    mouse = true;
+                    mouseLayer = layernum;
+                    mouseIndex = index;
+                }
+            }
+        }
+        if ( mouse ) {
+            Node node = nodes[mouseLayer][mouseIndex];
+            float bx = pos[mouseLayer][mouseIndex][0];
+            float by = pos[mouseLayer][mouseIndex][1];
+            if ( mouseLayer > 0 ) {
+                for (int i = 0; i < node.getParents().length; i++) {
+                    Node parent = node.getParent(i);
+                    float x = pos[mouseLayer-1][i][0];
+                    float y = pos[mouseLayer-1][i][1];
+                    strokeWeight( (float) ( Math.abs( parent.getMultiplier( mouseIndex ) ) / 2 )*r );
+                    float[] col = getColor( parent.getValue(mouseIndex)/2 );
+                    stroke(col[0],col[1],col[2]);
+                    line( x, y , bx, by );
+                }
+            }
+            if ( mouseLayer < nodes.length-1 ) {
+                for ( int i = 0; i < node.getConnections().length; i++ ) {
+                    float x = pos[mouseLayer+1][i][0];
+                    float y = pos[mouseLayer+1][i][1];
+                    strokeWeight( (float) ( Math.abs( node.getMultiplier( i ) ) / 2 )*r );
+                    float[] col = getColor( node.getValue(i)/2 );
+                    stroke(col[0],col[1],col[2]);
+                    line( x, y , bx, by );
+                }
+            }
+            stroke(0,0,0);
+            strokeWeight(1);
+        }
+        for ( int layernum = 0; layernum < nodes.length; layernum++ ) {
+            Node[] layer = nodes[layernum];
+            float off = ( height - layer.length * h ) / 2;
+            for ( int index = 0; index < layer.length; index++ ) {
+                Node node = layer[index];
+                float[] col = getColor(node.getValue());
+                fill( col[0], col[1], col[2] );
+                ellipse( pos[layernum][index][0], pos[layernum][index][1], r, r );
+            }
+        }
     }
 
 }

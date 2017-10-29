@@ -161,6 +161,10 @@ public class Entity {
         return values;
     }
 
+    public Node[][] getNetwork() {
+        return nodes;
+    }
+
     // TODO mutate()
 
 }
