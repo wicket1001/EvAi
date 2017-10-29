@@ -84,12 +84,12 @@ public class Main extends PApplet {
         float g = (float) (n+1)/2;
         float red, green, blue;
         if ( g > 0.5 ) {
-            red = 255;
-            green = (1-(g-0.5f)*2)*255;
+            green = 255;
+            red = (1-(g-0.5f)*2)*255;
             blue = 0;
         } else {
-            red = ((g)*2)*255;
-            green = 255;
+            green = ((g)*2)*255;
+            red = 255;
             blue = 0;
         }
         return new float[] { red, green, blue };
