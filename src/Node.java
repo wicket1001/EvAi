@@ -67,7 +67,7 @@ public class Node {
      * @return Calculated Sigmoid
      */
     public static double sigmoid(double value) {
-        return 1 / ( 1 + Math.exp(-value) );
+        return 2 / ( 1 + Math.exp(-value) ) - 1;
     }
 
     /**
