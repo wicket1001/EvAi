@@ -91,7 +91,7 @@ public class Entity {
      * @param vec Relative Movement
      */
     public void move( Coordinate vec ) {
-        this.pos.add( vec );
+        this.pos = this.pos.add( vec );
     }
 
     /**
