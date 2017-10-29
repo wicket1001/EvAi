@@ -6,16 +6,16 @@ public class ProcessingTest extends PApplet {
         PApplet.main("ProcessingTest");
     }
 
-    public void settings(){
+    public void settings() {
+        size(800,600);
+    }
+
+    public void setup() {
 
     }
 
-    public void setup(){
-
-    }
-
-    public void draw(){
-
+    public void draw() {
+        rect(0,0,10,10);
     }
 
 

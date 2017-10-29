@@ -126,15 +126,12 @@ public class Node {
         return index;
     }
 
-    @Override
+    /**
+     * Returns the Node as a String
+     * @return String representation
+     */
     public String toString() {
-        return "Node{" +
-                "connections=" + Arrays.toString(connections) +
-                ", value=" + value +
-                ", parents=" + Arrays.toString(parents) +
-                ", layer=" + layer +
-                ", index=" + index +
-                '}';
+        return "[("+getLayer()+"|"+getIndex()+"): "+getValue()+"]";
     }
 
     /**

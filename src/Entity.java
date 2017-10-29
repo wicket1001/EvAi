@@ -78,14 +78,12 @@ public class Entity {
         this.pos = pos;
     }
 
-    @Override
+    /**
+     * Returns the Entity as a String
+     * @return String representation
+     */
     public String toString() {
-        return "Entity{" +
-                "pos=" + pos +
-                ", inventory=" + inventory +
-                ", alive=" + alive +
-                ", nodes=" + Arrays.toString(nodes) +
-                '}';
+        return "{"+getPos()+": "+getInventory()+"}";
     }
 
     /**
