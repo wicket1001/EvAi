@@ -37,7 +37,7 @@ public class Node {
      * @param parents A List of Parents of the Node
      * @param numNextLayerNodes The Number of Nodes in the Next Layer
      */
-    Node(int layer, int index, Node[] parents, int numNextLayerNodes) {
+    public Node(int layer, int index, Node[] parents, int numNextLayerNodes) {
         connections = new double[numNextLayerNodes];
         value = 0;
         this.parents = parents;
@@ -63,7 +63,7 @@ public class Node {
      * @param value Value to be calculated
      * @return Calculated Sigmoid
      */
-    private static double sigmoid(double value) {
+    public static double sigmoid(double value) {
         return 1 / ( 1 + Math.exp(-value) );
     }
 
@@ -81,7 +81,7 @@ public class Node {
      * @param index The index of the Connection/Node
      * @return Multiplier of the Connection
      */
-    private double getConnection(int index) {
+    public double getConnection(int index) {
         return connections[index];
     }
 
@@ -89,7 +89,7 @@ public class Node {
      * Setter for the Nodes Value
      * @param value The Value, the Node is set to
      */
-    void setValue(double value) {
+    public void setValue(double value) {
         this.value = value;
     }
 
@@ -97,7 +97,7 @@ public class Node {
      * Getter for the Nodes Value
      * @return The Nodes Value
      */
-    double getValue() {
+    public double getValue() {
         return value;
     }
 
@@ -106,7 +106,7 @@ public class Node {
      * @param connectionIndex The Index of the Connection/Node
      * @return The multiplied Value of the Node
      */
-    private double getValue(int connectionIndex) {
+    public double getValue(int connectionIndex) {
         return value * getConnection( connectionIndex );
     }
 

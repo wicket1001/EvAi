@@ -33,7 +33,7 @@ public class Entity {
      * @param pos The Position of the Entity in the World
      * @param nodeNums The Number of Nodes per Layer
      */
-    Entity(Coordinate pos, int[] nodeNums) {
+    public Entity(Coordinate pos, int[] nodeNums) {
         this.pos = pos;
         alive = true;
         inventory = new HashMap<>();
@@ -66,7 +66,7 @@ public class Entity {
      * Getter for Position
      * @return The Position of the Entity
      */
-    Coordinate getPos() {
+    public Coordinate getPos() {
         return pos;
     }
 
@@ -108,7 +108,7 @@ public class Entity {
      * Is the Entity dead?
      * @return is dead
      */
-    boolean isDead() {
+    public boolean isDead() {
         return !alive;
     }
 
@@ -117,7 +117,7 @@ public class Entity {
      * @param item The Item Stack to be modified
      * @param amount The amount the Stack should be changed
      */
-    void addToInventory(Item item, int amount) {
+    public void addToInventory(Item item, int amount) {
         inventory.put( item, inventory.get(item) + amount );
         if ( getItemCount(Item.water) <= 0 || getItemCount(Item.food) <= 0 ) {
             alive = false;
@@ -129,7 +129,7 @@ public class Entity {
      * @param item The amount of this item
      * @return The amount
      */
-    int getItemCount(Item item) {
+    public int getItemCount(Item item) {
         return inventory.get( item );
     }
 
@@ -146,7 +146,7 @@ public class Entity {
      * @param fields neighbour Fields
      * @return Ouput Node Values
      */
-    double[] step(double[] fields) {
+    public double[] step(double[] fields) {
         nodes[0][0].setValue( (double) inventory.get(Item.food) / 100 );
         nodes[0][1].setValue( (double) inventory.get(Item.water) / 100 );
         nodes[0][2].setValue( (double) inventory.get(Item.wood) / 100 );
