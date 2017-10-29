@@ -51,7 +51,7 @@ class World {
      * @return The field at the coordinates.
      */
     Field getField(Coordinate coordinate) {
-        return fields[coordinate.getX()][coordinate.getY()];
+        return fields[coordinate.getY()][coordinate.getX()];
     }
 
     @Override
