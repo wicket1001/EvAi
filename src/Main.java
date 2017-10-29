@@ -14,7 +14,7 @@ public class Main extends PApplet {
     }
 
     public void settings() {
-        size(800, 600);
+        size(800, 600,FX2D);
     }
 
     public void setup() {
@@ -23,13 +23,14 @@ public class Main extends PApplet {
         try {
             game = new Game();
         } catch (IOException e) {
-
+            System.out.println(e.getMessage());
+            exit();
         }
     }
 
     public void draw() {
         clear();
-        background( 0, 0, 0 );
+        background( 192, 192, 192 );
         drawWorld();
         drawNetwork();
     }
@@ -47,11 +48,11 @@ public class Main extends PApplet {
         if ( ppfh > ppfw ) {
             pixelPerField = ppfw;
             offX = pixelPerField/2;
-            offY = pixelPerField/2 + ( height - pixelPerField * world.getHeight() ) / 2;
+            offY = ( height - pixelPerField * world.getHeight() ) / 2;
         } else {
             pixelPerField = ppfh;
             offY = pixelPerField/2;
-            offX = pixelPerField/2 + ( width*0.75f - pixelPerField * world.getWidth() ) / 2;
+            offX = ( width*0.75f - pixelPerField * world.getWidth() ) / 2;
         }
         for ( int y = 0; y < world.getHeight(); y++ ) {
             for ( int x = 0; x < world.getWidth(); x++ ) {
@@ -70,6 +71,12 @@ public class Main extends PApplet {
                 }
                 rect( offX + x*pixelPerField, offY + y*pixelPerField, pixelPerField, pixelPerField );
             }
+        }
+        Entity[] entities = game.getEntities();
+        for ( Entity entity: entities ) {
+            fill( 255, 0, 0 );
+            Coordinate pos = entity.getPos();
+            ellipse( (pos.getX()+0.5f)*pixelPerField + offX, (pos.getY()+0.5f)*pixelPerField+offY, pixelPerField/2, pixelPerField/2 );
         }
     }
 
