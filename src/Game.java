@@ -10,13 +10,13 @@ public class Game {
     /**
      * The world of the Game.
      */
-    private static World world;
+    private World world;
     /**
      * Every entity that is playing the Game.
      */
-    private static Entity[] entities;
+    private Entity[] entities;
 
-    public static void main(String[] args) throws IOException {
+    public Game() throws IOException {
         int numberOfEntities = 2;
 
         world = new World("maps/map1.txt");
@@ -29,7 +29,6 @@ public class Game {
                     ),
                     new int[]{Item.values().length + 9, 8, 2});
         }
-        run();
     }
 
     @Override
@@ -37,7 +36,7 @@ public class Game {
         return "Game";
     }
 
-    private static void run() {
+    void run() {
         int timeSurvived = 0;
         while (!everybodyDead()) {
             for (Entity e: entities) {
@@ -49,13 +48,13 @@ public class Game {
         System.out.println(timeSurvived);
     }
 
-    private static void step() {
+    private void step() {
         for (Entity e: entities) {
             interpret(e);
         }
     }
 
-    private static void interpret(Entity e) {
+    private void interpret(Entity e) {
         double[] neighbors = new double[9];
         for (int i = 0; i < 9; i++) {
             Coordinate c = new Coordinate(e.getPos().getX() + i % 3 - 1, e.getPos().getY() + i / 3 - 1);
@@ -101,12 +100,12 @@ public class Game {
         decay(e);
     }
 
-    private static void decay(Entity e) {
+    private void decay(Entity e) {
         e.addToInventory(Item.food, -1);
         e.addToInventory(Item.water, -2);
     }
 
-    private static void harvest(Entity e) {
+    private void harvest(Entity e) {
         boolean tool = e.getItemCount(Item.tool) > 0;
         if (tool) {
             e.addToInventory(Item.tool, -1);
@@ -118,7 +117,7 @@ public class Game {
         }
     }
 
-    private static HashMap<Item, Integer> getItemsFromResources(Map<Resource, Integer> resourcesGathered) {
+    private HashMap<Item, Integer> getItemsFromResources(Map<Resource, Integer> resourcesGathered) {
         HashMap<Item, Integer> itemsCreated = new HashMap<>();
         for (Resource resource: resourcesGathered.keySet()) {
             itemsCreated.put(Item.fromResourceToItem(resource), resourcesGathered.get(resource));
@@ -126,7 +125,7 @@ public class Game {
         return itemsCreated;
     }
 
-    private static boolean everybodyDead() {
+    private boolean everybodyDead() {
         boolean everybodyDead = true;
         for (Entity e: entities) {
             everybodyDead &= !e.isAlive();
