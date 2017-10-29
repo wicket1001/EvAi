@@ -54,16 +54,16 @@ public class Main extends PApplet {
             for ( int x = 0; x < world.getWidth(); x++ ) {
                 Field field = world.getField( new Coordinate( x, y ) );
                 Resource res = field.getResource();
-                if ( res == Resource.stone ) {
-                    color( 128, 128, 128 );
-                } else if ( res == Resource.wood ) {
-                    color( 0x80, 0x40, 0 );
-                } else if ( res == Resource.food ) {
-                    color( 255, 0, 0 );
-                } else if ( res == Resource.water ) {
-                    color( 0, 64, 192 );
+                if ( res.equals( Resource.stone ) ) {
+                    fill( 128, 128, 128 );
+                } else if ( res.equals( Resource.wood ) ) {
+                    fill( 0, 128, 0 );
+                } else if ( res.equals( Resource.food ) ) {
+                    fill( 192, 192, 0 );
+                } else if ( res.equals( Resource.water ) ) {
+                    fill( 0, 64, 192 );
                 } else {
-                    color( 255, 255, 255 );
+                    fill( 255, 255, 255 );
                 }
                 rect( offX + x*pixelPerField, offY + y*pixelPerField, pixelPerField, pixelPerField );
             }
