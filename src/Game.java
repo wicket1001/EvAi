@@ -28,10 +28,15 @@ public class Game {
     }
 
     private static void run() {
+        int timeSurvived = 0;
         while (!everybodyDead()) {
-            System.out.println(entities[0].toString());
+            for (Entity e: entities) {
+                System.out.println(e);
+            }
             step();
+            timeSurvived ++;
         }
+        System.out.println(timeSurvived);
     }
 
     private static void step() {
@@ -60,9 +65,11 @@ public class Game {
         Action action = Action.fromDoubleToDirection(values[0]);
         switch (action) {
             case harvest: {
+                System.out.println("Harvesting");
                 harvest(e);
             }
             case craft: {
+                System.out.println("Crafting");
                 if (e.getItemCount(Item.wood) >= 2 && e.getItemCount(Item.stone) >= 1) {
                     e.addToInventory(Item.tool, 1);
                     e.addToInventory(Item.wood, -2);
@@ -74,7 +81,10 @@ public class Game {
                 Coordinate entityCoordinate = e.getPos();
                 modifier.add(entityCoordinate);
                 if (world.isInBoarders(modifier)) {
+                    System.out.println("Moving");
                     entityCoordinate.add(modifier);
+                } else {
+                    System.out.println("Unable to move");
                 }
             }
         }
