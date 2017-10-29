@@ -1,9 +1,19 @@
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * The Game class which manages everything.
+ */
 public class Game {
+    /**
+     * The world of the Game.
+     */
     private static World world;
+    /**
+     * Every entity that is playing the Game.
+     */
     private static Entity[] entities;
 
     public static void main(String[] args) throws IOException {
@@ -62,6 +72,7 @@ public class Game {
                         */
         }
         double[] values = e.step(neighbors);
+        System.out.println(Arrays.toString(values));
         Action action = Action.fromDoubleToDirection(values[0]);
         switch (action) {
             case harvest: {
@@ -78,11 +89,9 @@ public class Game {
             }
             case move: {
                 Coordinate modifier = CardinalDirection.fromDoubleToDirection(values[1]).toCoordinate();
-                Coordinate entityCoordinate = e.getPos();
-                modifier.add(entityCoordinate);
-                if (world.isInBoarders(modifier)) {
+                if (world.isInBoarders(e.getPos().add(modifier))) {
                     System.out.println("Moving");
-                    entityCoordinate.add(modifier);
+                    e.setPos(e.getPos().add(modifier));
                 } else {
                     System.out.println("Unable to move");
                 }
