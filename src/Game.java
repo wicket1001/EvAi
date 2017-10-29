@@ -29,6 +29,7 @@ public class Game {
 
     private static void run() {
         while (!everybodyDead()) {
+            System.out.println(entities[0].toString());
             step();
         }
     }
@@ -109,7 +110,7 @@ public class Game {
     private static boolean everybodyDead() {
         boolean everybodyDead = true;
         for (Entity e: entities) {
-            everybodyDead &= e.isAlive();
+            everybodyDead &= !e.isAlive();
         }
         return everybodyDead;
     }
