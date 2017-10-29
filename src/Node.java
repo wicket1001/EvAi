@@ -38,11 +38,14 @@ public class Node {
      * @param numNextLayerNodes The Number of Nodes in the Next Layer
      */
     public Node(int layer, int index, Node[] parents, int numNextLayerNodes) {
-        connections = new double[numNextLayerNodes];
-        value = 0;
+        this.connections = new double[numNextLayerNodes];
+        this.value = 0;
         this.parents = parents;
         this.layer = layer;
         this.index = index;
+        for ( int i = 0; i < this.connections.length; i++ ) {
+            this.connections[i] = ( Math.random() * 2 ) - 1;
+        }
     }
 
     /**
