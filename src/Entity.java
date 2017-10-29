@@ -145,14 +145,12 @@ public class Entity {
      * @return Ouput Node Values
      */
     public double[] step(double[] fields) {
-        nodes[0][0].setValue( (double) inventory.get(Item.food) / 100 );
-        nodes[0][1].setValue( (double) inventory.get(Item.water) / 100 );
-        nodes[0][2].setValue( (double) inventory.get(Item.wood) / 100 );
-        nodes[0][3].setValue( (double) inventory.get(Item.tool) / 100 );
         for ( int i = 0; i < 9; i++ ) {
-            nodes[0][4+i].setValue( fields[i] );
+            nodes[0][i].setValue( fields[i] );
         }
-
+        for ( Item i: Item.values() ) {
+            nodes[0][9+i.ordinal()].setValue( (double) inventory.get(i) / 100 );
+        }
         for ( Node node: nodes[nodes.length-1] ) {
             node.calc();
         }
