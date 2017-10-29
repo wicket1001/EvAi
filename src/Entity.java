@@ -35,13 +35,13 @@ public class Entity {
      */
     public Entity(Coordinate pos, int[] nodeNums) {
         this.pos = pos;
-        alive = true;
         inventory = new HashMap<>();
         for ( Item item: Item.values() ) {
             inventory.put( item, 0 );
         }
         addToInventory( Item.food, 25 );
         addToInventory( Item.water, 25 );
+        alive = true;
         nodes = new Node[nodeNums.length][];
         for ( int layer = 0; layer < nodeNums.length; layer++ ) {
             int num = nodeNums[layer];
