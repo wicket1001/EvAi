@@ -1,17 +1,34 @@
 import java.io.IOException;
+import processing.core.PApplet;
 
-public class Main {
+public class Main extends PApplet {
+
+    Game game;
 
     public static void main(String[] args) {
-        testGame();
+        PApplet.main("Main");
     }
 
-    private static void testGame() {
+    public void settings() {
+        size( 800, 600 );
+    }
+
+    public void setup() {
         try {
-            Game game = new Game();
-            game.run();
+            game = new Game();
         } catch (IOException e) {
-            e.printStackTrace();
+
         }
     }
+
+    public void draw() {
+
+    }
+
+    public void keyPressed() {
+        if ( keyCode == ENTER ) {
+            game.step();
+        }
+    }
+
 }
