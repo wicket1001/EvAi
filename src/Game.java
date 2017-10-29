@@ -16,6 +16,8 @@ public class Game {
      */
     private Entity[] entities;
 
+    private int timeSurvived = 0;
+
     public Game() throws IOException {
         int numberOfEntities = 2;
 
@@ -31,26 +33,27 @@ public class Game {
         }
     }
 
+    public World getWorld() {
+        return world;
+    }
+
+    public Entity[] getEntities() {
+        return entities;
+    }
+
     @Override
     public String toString() {
         return "Game";
     }
 
-    void run() {
-        int timeSurvived = 0;
-        while (!everybodyDead()) {
-            for (Entity e: entities) {
-                System.out.println(e);
+    void step() {
+        if (!everybodyDead()) {
+            for (Entity e : entities) {
+                interpret(e);
             }
-            step();
             timeSurvived ++;
-        }
-        System.out.println(timeSurvived);
-    }
-
-    private void step() {
-        for (Entity e: entities) {
-            interpret(e);
+        } else {
+            System.out.println("Everybody dead, they survived: " + timeSurvived);
         }
     }
 
