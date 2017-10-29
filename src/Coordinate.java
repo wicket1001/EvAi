@@ -11,7 +11,7 @@ public class Coordinate {
      * @param x The x value
      * @param y The y value
      */
-    Coordinate(int x, int y) {
+    public Coordinate(int x, int y) {
         this.x = x;
         this.y = y;
     }
@@ -20,7 +20,7 @@ public class Coordinate {
      * Getter for the x value
      * @return X value
      */
-    int getX() {
+    public int getX() {
         return this.x;
     }
 
@@ -28,7 +28,7 @@ public class Coordinate {
      * Getter for the y value
      * @return Y value
      */
-    int getY() {
+    public int getY() {
         return this.y;
     }
 
@@ -47,7 +47,7 @@ public class Coordinate {
      * @param y The Y value
      * @return distance this - (x|y)
      */
-    private double distanceTo(int x, int y) {
+    public double distanceTo(int x, int y) {
         int dx = this.getX() - x;
         int dy = this.getY() - y;
         return Math.sqrt( dx*dx + dy*dy );
@@ -57,7 +57,7 @@ public class Coordinate {
      * Adds vec to the Coordinate
      * @param vec The Vector to be added
      */
-    void add(Coordinate vec) {
+    public void add(Coordinate vec) {
         x += vec.getX();
         y += vec.getY();
     }
