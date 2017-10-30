@@ -29,7 +29,7 @@ public class Game {
                             (int) (Math.random() * world.getWidth()),
                             (int) (Math.random() * world.getHeight())
                     ),
-                    new int[]{Item.values().length + 9, 8, 2});
+                    new int[]{Item.values().length + 9, 10, 8, 2});
         }
     }
 

@@ -8,6 +8,8 @@ public class Main extends PApplet {
     private float pixelPerField = 20;
     private float offX = 0;
     private float offY = 0;
+    private float minWidth = 400;
+    private float minHeight = 300;
 
     public static void main(String[] args) {
         PApplet.main("Main");
@@ -19,6 +21,7 @@ public class Main extends PApplet {
 
     public void setup() {
         surface.setResizable(true);
+        surface.setTitle( "EvAI - Evolution AI" );
         frameRate(50);
         try {
             game = new Game();
@@ -38,6 +41,8 @@ public class Main extends PApplet {
     public void keyPressed() {
         if ( keyCode == ENTER ) {
             game.step();
+        } else if ( keyCode == ' ' ) {
+            System.out.println("SPACE");
         }
     }
 
@@ -98,7 +103,6 @@ public class Main extends PApplet {
     private void drawNetwork( Node[][] nodes ) {
         float[][][] pos = new float[nodes.length][][];
         float w = width * 0.3333f / nodes.length;
-        float r = 50;
         int max = 1;
         for ( Node[] n: nodes ) {
             if ( n.length > max ) {
@@ -109,6 +113,7 @@ public class Main extends PApplet {
         int mouseIndex = 0;
         boolean mouse = false;
         float h = height / max;
+        float r = h*0.75f;
         for ( int layernum = 0; layernum < nodes.length; layernum++ ) {
             Node[] layer = nodes[layernum];
             pos[layernum] = new float[layer.length][];
@@ -136,7 +141,7 @@ public class Main extends PApplet {
                     strokeWeight( (float) ( Math.abs( parent.getMultiplier( mouseIndex ) ) / 2 )*r );
                     float[] col = getColor( parent.getValue(mouseIndex)/2 );
                     stroke(col[0],col[1],col[2]);
-                    line( x, y , bx, by );
+                    line( x+r/4, y, bx, by );
                 }
             }
             if ( mouseLayer < nodes.length-1 ) {
@@ -146,7 +151,7 @@ public class Main extends PApplet {
                     strokeWeight( (float) ( Math.abs( node.getMultiplier( i ) ) / 2 )*r );
                     float[] col = getColor( node.getValue(i)/2 );
                     stroke(col[0],col[1],col[2]);
-                    line( x, y , bx, by );
+                    line( x-r/4, y , bx, by );
                 }
             }
             stroke(0,0,0);
