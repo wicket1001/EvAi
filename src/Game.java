@@ -30,7 +30,7 @@ public class Game {
                             (int) (Math.random() * world.getWidth()),
                             (int) (Math.random() * world.getHeight())
                     ),
-                    new int[]{Item.values().length + 9, 2});
+                    new int[]{Item.values().length + 9, 8, 2});
         }
     }
 
@@ -76,8 +76,8 @@ public class Game {
                 if ( i >= newEntities.length ) {
                     break;
                 }
-                newEntities[i++] = ent.mutate(0.000625);
-                newEntities[i++] = ent.mutate(0.000625);
+                newEntities[i++] = ent.mutate(0.125);
+                newEntities[i++] = ent.mutate(0.125);
                 newEntities[i-1].setPos( new Coordinate( (int) (Math.random()*world.getWidth()), (int) (Math.random()*world.getHeight()) ) );
                 newEntities[i-2].setPos( new Coordinate( (int) (Math.random()*world.getWidth()), (int) (Math.random()*world.getHeight()) ) );
             }

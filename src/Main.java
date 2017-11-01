@@ -53,6 +53,10 @@ public class Main extends PApplet {
             game.generation();
         } else if ( keyCode == ' ' ) {
             game.step();
+        } else if ( keyCode == '1' ) {
+            for ( int i = 0; i < 1000; i++ ) {
+                game.generation();
+            }
         }
     }
 
