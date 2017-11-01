@@ -16,10 +16,11 @@ public class Game {
      */
     private Entity[] entities;
 
-    private int timeSurvived = 0;
+    private int stepNum = 0;
+    private int generationNum = 0;
 
     public Game() throws IOException {
-        int numberOfEntities = 16;
+        int numberOfEntities = 8;
 
         world = new World("maps/map1.txt");
         entities = new Entity[numberOfEntities];
@@ -29,7 +30,7 @@ public class Game {
                             (int) (Math.random() * world.getWidth()),
                             (int) (Math.random() * world.getHeight())
                     ),
-                    new int[]{Item.values().length + 9, 10, 8, 2});
+                    new int[]{Item.values().length + 9, 2});
         }
     }
 
@@ -51,7 +52,7 @@ public class Game {
             for (Entity e : entities) {
                 interpret(e);
             }
-            timeSurvived ++;
+            stepNum++;
         } else {
             //System.out.println("Everybody dead, they survived: " + timeSurvived);
             generation();
@@ -59,10 +60,10 @@ public class Game {
     }
 
     public void generation() {
-        System.out.println("Next Gen");
         while ( !everybodyDead() ) {
             step();
         }
+        System.out.println("Generation #"+generationNum+" finished ("+stepNum+" Steps)");
         double average = 0;
         for ( Entity ent: entities ) {
             average += ent.getStepsAlive();
@@ -75,10 +76,14 @@ public class Game {
                 if ( i >= newEntities.length ) {
                     break;
                 }
-                newEntities[i++] = ent.mutate(0.0625);
-                newEntities[i++] = ent.mutate(0.0625);
+                newEntities[i++] = ent.mutate(0.000625);
+                newEntities[i++] = ent.mutate(0.000625);
+                newEntities[i-1].setPos( new Coordinate( (int) (Math.random()*world.getWidth()), (int) (Math.random()*world.getHeight()) ) );
+                newEntities[i-2].setPos( new Coordinate( (int) (Math.random()*world.getWidth()), (int) (Math.random()*world.getHeight()) ) );
             }
         }
+        stepNum = 0;
+        generationNum++;
         entities = newEntities;
     }
 
@@ -103,11 +108,11 @@ public class Game {
         Action action = Action.fromDoubleToDirection(values[0]);
         switch (action) {
             case harvest: {
-                //System.out.println("Harvesting");
+                System.out.println("Harvesting");
                 harvest(e);
             }
             case craft: {
-                //System.out.println("Crafting");
+                System.out.println("Crafting");
                 if (e.getItemCount(Item.wood) >= 2 && e.getItemCount(Item.stone) >= 1) {
                     e.addToInventory(Item.tool, 1);
                     e.addToInventory(Item.wood, -2);

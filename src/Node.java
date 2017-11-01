@@ -77,7 +77,13 @@ public class Node {
      * @param value The Value to be set
      */
     public void setConnection( int index, double value ) {
-        connections[index] =  value;
+        if ( value > 2 ) {
+            connections[index] = 2;
+        } else if ( value < -2 ) {
+            connections[index] = -2;
+        } else {
+            connections[index] = value;
+        }
     }
 
     /**

@@ -11,6 +11,16 @@ public class Main extends PApplet {
     private float minWidth = 400;
     private float minHeight = 300;
 
+    private float[][] entityColors = new float[][] {
+            { 255, 0, 0 },
+            { 0, 128, 0 },
+            { 0, 0, 192 },
+            { 255, 255, 0 },
+            { 128, 255, 0 },
+            { 0, 255, 255 },
+            { 255, 0, 255 },
+    };
+
     public static void main(String[] args) {
         PApplet.main("Main");
     }
@@ -78,10 +88,13 @@ public class Main extends PApplet {
             }
         }
         Entity[] entities = game.getEntities();
+        int i = 0;
+        int len = entityColors.length;
         for ( Entity entity: entities ) {
-            fill( 255, 0, 0 );
+            fill( entityColors[i%len][0], entityColors[i%len][1], entityColors[i%len][2] );
             Coordinate pos = entity.getPos();
             ellipse( (pos.getX()+0.5f)*pixelPerField + offX, (pos.getY()+0.5f)*pixelPerField+offY, pixelPerField/2, pixelPerField/2 );
+            i++;
         }
     }
 
