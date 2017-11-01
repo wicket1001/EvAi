@@ -19,7 +19,7 @@ public class Game {
     private int timeSurvived = 0;
 
     public Game() throws IOException {
-        int numberOfEntities = 2;
+        int numberOfEntities = 16;
 
         world = new World("maps/map1.txt");
         entities = new Entity[numberOfEntities];
@@ -46,15 +46,40 @@ public class Game {
         return "Game";
     }
 
-    void step() {
+    public void step() {
         if (!everybodyDead()) {
             for (Entity e : entities) {
                 interpret(e);
             }
             timeSurvived ++;
         } else {
-            System.out.println("Everybody dead, they survived: " + timeSurvived);
+            //System.out.println("Everybody dead, they survived: " + timeSurvived);
+            generation();
         }
+    }
+
+    public void generation() {
+        System.out.println("Next Gen");
+        while ( !everybodyDead() ) {
+            step();
+        }
+        double average = 0;
+        for ( Entity ent: entities ) {
+            average += ent.getStepsAlive();
+        }
+        average /= entities.length;
+        int i = 0;
+        Entity[] newEntities = new Entity[entities.length];
+        for ( Entity ent: entities ) {
+            if ( ent.getStepsAlive() >= average ) {
+                if ( i >= newEntities.length ) {
+                    break;
+                }
+                newEntities[i++] = ent.mutate(0.0625);
+                newEntities[i++] = ent.mutate(0.0625);
+            }
+        }
+        entities = newEntities;
     }
 
     private void interpret(Entity e) {
@@ -74,15 +99,15 @@ public class Game {
                         */
         }
         double[] values = e.step(neighbors);
-        System.out.println(Arrays.toString(values));
+        //System.out.println(Arrays.toString(values));
         Action action = Action.fromDoubleToDirection(values[0]);
         switch (action) {
             case harvest: {
-                System.out.println("Harvesting");
+                //System.out.println("Harvesting");
                 harvest(e);
             }
             case craft: {
-                System.out.println("Crafting");
+                //System.out.println("Crafting");
                 if (e.getItemCount(Item.wood) >= 2 && e.getItemCount(Item.stone) >= 1) {
                     e.addToInventory(Item.tool, 1);
                     e.addToInventory(Item.wood, -2);
@@ -92,10 +117,10 @@ public class Game {
             case move: {
                 Coordinate modifier = CardinalDirection.fromDoubleToDirection(values[1]).toCoordinate();
                 if (world.isInBoarders(e.getPos().add(modifier))) {
-                    System.out.println("Moving");
+                    //System.out.println("Moving");
                     e.setPos(e.getPos().add(modifier));
                 } else {
-                    System.out.println("Unable to move");
+                    //System.out.println("Unable to move");
                 }
             }
         }
@@ -135,4 +160,5 @@ public class Game {
         }
         return everybodyDead;
     }
+
 }

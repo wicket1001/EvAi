@@ -1,5 +1,3 @@
-import java.util.Arrays;
-
 /**
  * Represents a Node and its connections to the child Nodes
  */
@@ -29,6 +27,9 @@ public class Node {
      * The index of the Node in the Layer
      */
     private int index;
+
+    private boolean updated = false;
+
 
     /**
      * Constructor for a Node
@@ -153,15 +154,25 @@ public class Node {
         return connections;
     }
 
+    public boolean isUpdated() {
+        return updated;
+    }
+
+    public void resetCalc() {
+        updated = false;
+    }
+
     /**
      * Calculates the Nodes Value from its parent Nodes
      */
     void calc() {
-        // TODO Don't calculate Node Value every Time in same Step!
+        updated = true;
         if ( parents.length > 0 ) {
             double sum = 0;
             for (Node node : parents) {
-                node.calc();
+                if ( !node.isUpdated() ) {
+                    node.calc();
+                }
                 sum += node.getValue(this.index);
             }
             setValue(sigmoid(sum / parents.length));

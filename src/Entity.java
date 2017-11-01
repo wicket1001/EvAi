@@ -27,6 +27,8 @@ public class Entity {
      */
     private Node[][] nodes;
 
+    private int stepsAlive = 0;
+
 
     /**
      * Constructor for a Entity
@@ -58,6 +60,38 @@ public class Entity {
                     parents = new Node[0];
                 }
                 nodes[layer][i] = new Node( num, i, parents, nextNum );
+            }
+        }
+    }
+
+    public Entity( Entity pattern ) {
+        this.pos = pattern.pos;
+        inventory = new HashMap<>();
+        for ( Item item: Item.values() ) {
+            inventory.put( item, 0 );
+        }
+        addToInventory( Item.food, 25 );
+        addToInventory( Item.water, 25 );
+        alive = true;
+        nodes = new Node[pattern.nodes.length][];
+        for ( int layer = 0; layer < pattern.nodes.length; layer++ ) {
+            int num = pattern.nodes[layer].length;
+            nodes[layer] = new Node[num];
+            for ( int i = 0; i < num; i++ ) {
+                int nextNum = 0;
+                if ( layer != pattern.nodes.length-1 ) {
+                    nextNum = pattern.nodes[layer+1].length;
+                }
+                Node[] parents;
+                if ( layer > 0 ) {
+                    parents = ( nodes[layer-1] );
+                } else {
+                    parents = new Node[0];
+                }
+                nodes[layer][i] = new Node( num, i, parents, nextNum );
+                for ( int j = 0; j < pattern.nodes[layer][i].getConnections().length; j++ ) {
+                    nodes[layer][i].setConnection( j, pattern.nodes[layer][i].getConnection(j) );
+                }
             }
         }
     }
@@ -110,6 +144,10 @@ public class Entity {
         return !alive;
     }
 
+    public int getStepsAlive() {
+        return stepsAlive;
+    }
+
     /**
      * Adds amount to a certain item in the Inventory
      * @param item The Item Stack to be modified
@@ -158,6 +196,14 @@ public class Entity {
         for ( int i = 0; i < values.length; i++ ) {
             values[i] = nodes[nodes.length-1][i].getValue();
         }
+        for ( Node[] layer: nodes ) {
+            for ( Node node: layer ) {
+                node.resetCalc();
+            }
+        }
+        if ( isAlive() ) {
+            stepsAlive++;
+        }
         return values;
     }
 
@@ -165,6 +211,16 @@ public class Entity {
         return nodes;
     }
 
-    // TODO mutate()
+    public Entity mutate( double multiplier ) {
+        Entity ent = new Entity( this );
+        for ( Node[] layer: ent.nodes ) {
+            for ( Node node: layer ) {
+                for ( int i = 0; i < node.getConnections().length; i++ ) {
+                    node.setConnection( i, node.getConnection(i) + (Math.random()*2-1)*multiplier );
+                }
+            }
+        }
+        return ent;
+    }
 
 }

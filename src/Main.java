@@ -40,9 +40,9 @@ public class Main extends PApplet {
 
     public void keyPressed() {
         if ( keyCode == ENTER ) {
-            game.step();
+            game.generation();
         } else if ( keyCode == ' ' ) {
-            System.out.println("SPACE");
+            game.step();
         }
     }
 
