@@ -1,5 +1,5 @@
 public enum Action {
-    harvest, craft, idle, move;
+    idle, move, harvest, craft;
 
     static Action fromDoubleToDirection(double d) {
         double step = 2.0 / values().length;
