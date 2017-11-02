@@ -9,10 +9,14 @@ public class Settings {
     static int doubleToIndex(double value, int size) {
         double step = Settings.range / size;
         for (int i = 0; i < size; i++) {
-            if (value < -1 + i * step) {
+            if (value < (i + 1) * step + minNode) {
                 return i;
             }
         }
-        throw new IllegalArgumentException("Impossible Index");
+        throw new IllegalArgumentException("Impossible Index: " + value + " in size: " + size);
+    }
+
+    static double indexToDouble(int index, int size) {
+        return range / size * index + minNode;
     }
 }
