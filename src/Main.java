@@ -11,6 +11,7 @@ public class Main extends PApplet {
     private float offY = 0;
     private float minWidth = 400;
     private float minHeight = 300;
+    private int selectedEntity = 0;
 
     PImage sheep;
 
@@ -49,11 +50,8 @@ public class Main extends PApplet {
         clear();
         background( 192, 192, 192 );
         drawWorld();
-        drawNetwork( game.getEntities()[0].getNetwork() );
+        drawNetwork( game.getEntities()[selectedEntity].getNetwork() );
         drawDebug();
-        if ( width < 800 ) {
-            surface.setSize( 800, height );
-        }
     }
 
     public void keyPressed() {
@@ -202,6 +200,9 @@ public class Main extends PApplet {
                 float[] col = getColor(node.getValue());
                 fill( col[0], col[1], col[2] );
                 ellipse( pos[layernum][index][0], pos[layernum][index][1], r, r );
+                fill( 255,0,0);
+                textSize(r/3);
+                text( String.format("%+03d",(int) (node.getValue()*100)), pos[layernum][index][0]-r/3, pos[layernum][index][1]+r/5 );
             }
         }
     }
