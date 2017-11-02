@@ -1,16 +1,7 @@
 public enum Action {
-    idle, move, harvest, craft;
+    harvest, craft, move, idle;
 
-    static Action fromDoubleToDirection(double d) {
-        /*
-        double step = Settings.range / values().length;
-        for (int i = 0; i < values().length; i++) {
-            if (d < -1 + i * step) {
-                return values()[i];
-            }
-        }
-        return values()[values().length - 1];
-        */
+    static Action fromDoubleToAction(double d) {
         return values()[Settings.doubleToIndex(d, values().length)];
     }
 }

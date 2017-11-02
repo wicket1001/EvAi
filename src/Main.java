@@ -60,13 +60,13 @@ public class Main extends PApplet {
         double sum = 0.0;
         int steps = 1;
         if ( keyCode == ' ' ) {
-            game.step();
+            game.doStep();
         } else if ( keyCode == ENTER ) {
-            sum += game.generation();
+            sum += game.propagateGeneration();
         } else if ( keyCode == '1' ) {
             steps = 1000;
             for ( int i = 0; i < steps; i++ ) {
-                sum += game.generation();
+                sum += game.propagateGeneration();
             }
         }
         System.out.println("The average time survived: " + sum / steps);

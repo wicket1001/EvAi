@@ -45,23 +45,28 @@ public class Game {
         return "Game";
     }
 
-    public void step() {
+    public int propagateGeneration() {
+        int maxSteps = -1;
+        while ( maxSteps == -1 ) {
+            maxSteps = doStep();
+        }
+        return maxSteps;
+    }
+
+    public int doStep() {
         if (!everybodyDead()) {
-            for (Entity e : entities) {
-                interpret(e);
+            for (Entity e: entities) {
+                propagate(e);
             }
             stepNum++;
             world.regenerate();
+            return -1; // Still alive
         } else {
-            //System.out.println("Everybody dead, they survived: " + timeSurvived);
-            generation();
+            return createNewGeneration();
         }
     }
 
-    public int generation() {
-        while ( !everybodyDead() ) {
-            step();
-        }
+    private int createNewGeneration() {
         System.out.println("Generation #"+generationNum+" finished ("+stepNum+" Steps)");
         double average = 0;
         for ( Entity ent: entities ) {
@@ -86,40 +91,23 @@ public class Game {
         return temp;
     }
 
-    private void interpret(Entity e) {
-        double[] neighbors = world.getView(e.getPos());
-        double[] values = e.step(neighbors);
-        //System.out.println(Arrays.toString(values));
-        Action action = Action.fromDoubleToDirection(values[0]);
-        switch (action) {
-            case harvest: {
-               // System.out.println("Harvesting");
-                harvest(e);
-            }
-            case craft: {
-                //System.out.println("Crafting");
-                if (e.getItemCount(Item.wood) >= 2 && e.getItemCount(Item.stone) >= 1) {
-                    e.addToInventory(Item.tool, 1);
-                    e.addToInventory(Item.wood, -2);
-                    e.addToInventory(Item.stone, -1);
-                }
-            }
-            case move: {
-                Coordinate modifier = CardinalDirection.fromDoubleToDirection(values[1]).toCoordinate();
-                if (world.isInBoarders(e.getPos().add(modifier))) {
-                    //System.out.println("Moving");
-                    e.setPos(e.getPos().add(modifier));
-                } else {
-                    //System.out.println("Unable to move");
-                }
-            }
+    private boolean everybodyDead() {
+        boolean everybodyDead = true;
+        for (Entity e: entities) {
+            everybodyDead = everybodyDead && !e.isAlive();
         }
-        decay(e);
+        return everybodyDead;
     }
 
-    private void decay(Entity e) {
-        e.addToInventory(Item.food, -1);
-        e.addToInventory(Item.water, -2);
+    private void propagate(Entity e) {
+        double[] propagated = e.step(world.getView(e.getPos()));
+        switch (Action.fromDoubleToAction(propagated[0])) {
+            case harvest: harvest(e); break;
+            case craft: craft(e); break;
+            case move: move(e, propagated[1]); break;
+            case idle: idle(e); break;
+        }
+        decay(e);
     }
 
     private void harvest(Entity e) {
@@ -142,12 +130,31 @@ public class Game {
         return itemsCreated;
     }
 
-    private boolean everybodyDead() {
-        boolean everybodyDead = true;
-        for (Entity e: entities) {
-            everybodyDead = everybodyDead && !e.isAlive();
+    private void craft(Entity e) {
+        if (e.getItemCount(Item.wood) >= 2 && e.getItemCount(Item.stone) >= 1) {
+            e.addToInventory(Item.tool, 1);
+            e.addToInventory(Item.wood, -2);
+            e.addToInventory(Item.stone, -1);
+        } else {
+            idle(e);
         }
-        return everybodyDead;
     }
 
+    private void move(Entity e, double direction) {
+        Coordinate modifier = CardinalDirection.fromDoubleToDirection(direction).toCoordinate();
+        if (world.isInBoarders(e.getPos().add(modifier))) {
+            e.setPos(e.getPos().add(modifier));
+        } else {
+            idle(e);
+        }
+    }
+
+    private void idle(Entity e) {
+        // TODO idle
+    }
+
+    private void decay(Entity e) {
+        e.addToInventory(Item.food, -1);
+        e.addToInventory(Item.water, -2);
+    }
 }
