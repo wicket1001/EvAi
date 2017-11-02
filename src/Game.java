@@ -53,6 +53,7 @@ public class Game {
                 interpret(e);
             }
             stepNum++;
+            world.regenerate();
         } else {
             //System.out.println("Everybody dead, they survived: " + timeSurvived);
             generation();
@@ -96,12 +97,12 @@ public class Game {
             } else {
                 neighbors[i] = Resource.none.fromResourceToDouble();
             }
-            /*
-            neighbors[i] = world.getField(
-                    new Coordinate(e.getPos().getX() + i % 3 - 1,
-                            e.getPos().getY() + i / 3 - 1)
-                        ).getResource().fromResourceToDouble();
-                        */
+        /*
+        neighbors[i] = world.getField(
+                new Coordinate(e.getPos().getX() + i % 3 - 1,
+                        e.getPos().getY() + i / 3 - 1)
+                    ).getResource().fromResourceToDouble();
+                    */
         }
         double[] values = e.step(neighbors);
         //System.out.println(Arrays.toString(values));
@@ -129,7 +130,6 @@ public class Game {
                 }
             }
         }
-        world.regenerate();
         decay(e);
     }
 
@@ -161,7 +161,7 @@ public class Game {
     private boolean everybodyDead() {
         boolean everybodyDead = true;
         for (Entity e: entities) {
-            everybodyDead &= !e.isAlive();
+            everybodyDead = everybodyDead && !e.isAlive();
         }
         return everybodyDead;
     }
