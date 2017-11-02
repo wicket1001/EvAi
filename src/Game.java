@@ -82,7 +82,11 @@ public class Game {
         }
         for ( int i = 0; i < newEntities.length; i++ ) {
             newEntities[i] = better.get( (int) (Math.random()*better.size()) ).mutate(3,0.125);
-            newEntities[i].setPos( new Coordinate( (int) (Math.random()*world.getWidth()), (int) (Math.random()*world.getHeight()) ) );
+            Coordinate co = null;
+            while ( co == null || entitiesOnField( co ) != 0 ) {
+                co = new Coordinate((int) (Math.random() * world.getWidth()), (int) (Math.random() * world.getHeight()));
+            }
+            newEntities[i].setPos( co );
         }
         int temp = stepNum;
         stepNum = 0;
@@ -143,7 +147,7 @@ public class Game {
     private void move(Entity e, double direction) {
         Coordinate modifier = CardinalDirection.fromDoubleToDirection(direction).toCoordinate();
         Coordinate newPosition = e.getPos().add(modifier);
-        if (world.isInBorders(newPosition) && entitiesOnField(e.getPos()) == 1) {
+        if (world.isInBorders(newPosition) && entitiesOnField(newPosition) == 0) {
             e.setPos(e.getPos().add(modifier));
         } else {
             idle(e);

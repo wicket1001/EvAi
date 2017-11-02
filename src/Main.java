@@ -23,6 +23,7 @@ public class Main extends PApplet {
             { 128, 255, 0 },
             { 0, 255, 255 },
             { 255, 0, 255 },
+            { 0, 128, 255 },
     };
 
     public static void main(String[] args) {

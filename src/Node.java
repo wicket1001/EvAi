@@ -181,7 +181,7 @@ public class Node {
                 }
                 sum += node.getValue(this.index);
             }
-            setValue( sigmoid( sum /*/ parents.length*/) );
+            setValue( sigmoid( sum /* / parents.length */ ) );
         }
     }
 
