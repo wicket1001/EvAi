@@ -11,7 +11,8 @@ public class Main extends PApplet {
     private float offY = 0;
     private float minWidth = 400;
     private float minHeight = 300;
-    private int selectedEntity = 0;
+    private int hoveredEntity = 0;
+    private int selectedEntity = 1;
 
     PImage sheep;
 
@@ -51,7 +52,7 @@ public class Main extends PApplet {
         clear();
         background( 192, 192, 192 );
         drawWorld();
-        drawNetwork( game.getEntities()[selectedEntity].getNetwork() );
+        drawNetwork( game.getEntities()[(hoveredEntity == 0)? selectedEntity-1 : hoveredEntity-1].getNetwork() );
         drawDebug();
     }
 
@@ -84,6 +85,7 @@ public class Main extends PApplet {
             offY = pixelPerField/2;
             offX = ( (width-400)*0.6666f - pixelPerField * world.getWidth() ) / 2 + 400;
         }
+        hoveredEntity = 0;
         for ( int y = 0; y < world.getHeight(); y++ ) {
             for ( int x = 0; x < world.getWidth(); x++ ) {
                 Field field = world.getField( new Coordinate( x, y ) );
@@ -99,7 +101,15 @@ public class Main extends PApplet {
                 } else {
                     fill( 255, 255, 255 );
                 }
-                rect( offX + x*pixelPerField, offY + y*pixelPerField, pixelPerField, pixelPerField );
+                float px = offX + x*pixelPerField;
+                float py = offY + y*pixelPerField;
+                for ( int i = 0; i < game.getEntities().length; i++ ) {
+                    Entity ent = game.getEntities()[i];
+                    if ( ent.getPos().getX() == x && ent.getPos().getY() == y && mouseX >= px && mouseX <= px + pixelPerField && mouseY >= py && mouseY <= py + pixelPerField) {
+                        hoveredEntity = i+1;
+                    }
+                }
+                rect( px, py, pixelPerField, pixelPerField );
             }
         }
         Entity[] entities = game.getEntities();
@@ -150,6 +160,12 @@ public class Main extends PApplet {
         boolean mouse = false;
         float h = height / max;
         float r = h*0.75f;
+        float[] c = entityColors[ ((hoveredEntity == 0)? selectedEntity-1 : hoveredEntity-1) % entityColors.length ];
+        c = new float[] { 128 + c[0]/2, 128 + c[1]/2, 128 + c[2]/2 };
+        fill( c[0], c[1], c[2] );
+        stroke( c[0], c[1], c[2] );
+        rect( 400 + (width-400) * 0.6666f, 0, w*nodes.length, height );
+        stroke( 0,0,0 );
         for ( int layernum = 0; layernum < nodes.length; layernum++ ) {
             Node[] layer = nodes[layernum];
             pos[layernum] = new float[layer.length][];

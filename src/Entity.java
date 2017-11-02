@@ -41,8 +41,8 @@ public class Entity {
         for ( Item item: Item.values() ) {
             inventory.put( item, 0 );
         }
-        addToInventory( Item.food, 25 );
-        addToInventory( Item.water, 25 );
+        addToInventory( Item.food, 90 );
+        addToInventory( Item.water, 90 );
         alive = true;
         nodes = new Node[nodeNums.length][];
         for ( int layer = 0; layer < nodeNums.length; layer++ ) {
@@ -70,8 +70,8 @@ public class Entity {
         for ( Item item: Item.values() ) {
             inventory.put( item, 0 );
         }
-        addToInventory( Item.food, 25 );
-        addToInventory( Item.water, 25 );
+        addToInventory( Item.food, 90 );
+        addToInventory( Item.water, 90 );
         alive = true;
         nodes = new Node[pattern.nodes.length][];
         for ( int layer = 0; layer < pattern.nodes.length; layer++ ) {
@@ -155,6 +155,9 @@ public class Entity {
      */
     public void addToInventory(Item item, int amount) {
         inventory.put( item, inventory.get(item) + amount );
+        if ( getItemCount( item ) > 100 ) {
+            inventory.put( item, 100 );
+        }
         if ( getItemCount(Item.water) <= 0 || getItemCount(Item.food) <= 0 ) {
             alive = false;
         }

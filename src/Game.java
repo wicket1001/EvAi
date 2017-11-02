@@ -20,7 +20,7 @@ public class Game {
     public Game() throws IOException {
         int numberOfEntities = Settings.numEntities;
 
-        world = new World("maps/map1.txt");
+        world = new World("maps/map2.txt");
         entities = new Entity[numberOfEntities];
         for (int i = 0; i < entities.length; i++) {
             entities[i] = new Entity(
