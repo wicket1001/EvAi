@@ -12,6 +12,6 @@ public enum Resource {
     }
 
     double fromResourceToDouble() {
-        return  2.0 / values().length * this.ordinal();
+        return  2.0 / values().length * this.ordinal() - 1;
     }
 }
