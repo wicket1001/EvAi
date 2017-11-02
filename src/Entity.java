@@ -220,15 +220,6 @@ public class Entity {
             int conn = (int) (Math.random() * node.getConnections().length);
             node.setConnection( conn, node.getConnection( conn ) + (Math.random()*2-1)*multiplier );
         }
-        /*
-        for ( Node[] layer: ent.nodes ) {
-            for ( Node node: layer ) {
-                for ( int i = 0; i < node.getConnections().length; i++ ) {
-                    node.setConnection( i, node.getConnection(i) + (Math.random()*2-1)*multiplier );
-                }
-            }
-        }
-        */
         return ent;
     }
 

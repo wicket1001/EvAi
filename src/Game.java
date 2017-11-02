@@ -1,7 +1,5 @@
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * The Game class which manages everything.
@@ -70,18 +68,16 @@ public class Game {
             average += ent.getStepsAlive();
         }
         average /= entities.length;
-        int i = 0;
         Entity[] newEntities = new Entity[entities.length];
+        List<Entity> better = new ArrayList<Entity>();
         for ( Entity ent: entities ) {
             if ( ent.getStepsAlive() >= average ) {
-                if ( i >= newEntities.length ) {
-                    break;
-                }
-                newEntities[i++] = ent.mutate(3,0.125);
-                newEntities[i++] = ent.mutate(3,0.125);
-                newEntities[i-1].setPos( new Coordinate( (int) (Math.random()*world.getWidth()), (int) (Math.random()*world.getHeight()) ) );
-                newEntities[i-2].setPos( new Coordinate( (int) (Math.random()*world.getWidth()), (int) (Math.random()*world.getHeight()) ) );
+                better.add( ent );
             }
+        }
+        for ( int i = 0; i < newEntities.length; i++ ) {
+            newEntities[i] = better.get( (int) (Math.random()*better.size()) ).mutate(3,0.0625);
+            newEntities[i].setPos( new Coordinate( (int) (Math.random()*world.getWidth()), (int) (Math.random()*world.getHeight()) ) );
         }
         stepNum = 0;
         generationNum++;
@@ -109,11 +105,11 @@ public class Game {
         Action action = Action.fromDoubleToDirection(values[0]);
         switch (action) {
             case harvest: {
-                System.out.println("Harvesting");
+               // System.out.println("Harvesting");
                 harvest(e);
             }
             case craft: {
-                System.out.println("Crafting");
+                //System.out.println("Crafting");
                 if (e.getItemCount(Item.wood) >= 2 && e.getItemCount(Item.stone) >= 1) {
                     e.addToInventory(Item.tool, 1);
                     e.addToInventory(Item.wood, -2);

@@ -95,7 +95,11 @@ public class Main extends PApplet {
         int i = 0;
         int len = entityColors.length;
         for ( Entity entity: entities ) {
-            fill( entityColors[i%len][0], entityColors[i%len][1], entityColors[i%len][2] );
+            if (entity.isAlive()) {
+                fill(entityColors[i % len][0], entityColors[i % len][1], entityColors[i % len][2]);
+            } else {
+                fill(0,0,0);
+            }
             Coordinate pos = entity.getPos();
             ellipse( (pos.getX()+0.5f)*pixelPerField + offX, (pos.getY()+0.5f)*pixelPerField+offY, pixelPerField/2, pixelPerField/2 );
             i++;
