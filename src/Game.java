@@ -18,7 +18,7 @@ public class Game {
     private int generationNum = 0;
 
     public Game() throws IOException {
-        int numberOfEntities = 8;
+        int numberOfEntities = Settings.numEntities;
 
         world = new World("maps/map1.txt");
         entities = new Entity[numberOfEntities];
@@ -28,7 +28,7 @@ public class Game {
                             (int) (Math.random() * world.getWidth()),
                             (int) (Math.random() * world.getHeight())
                     ),
-                    new int[]{Item.values().length + 9, 8, 2});
+                    new int[]{Item.values().length + Settings.numView, Settings.layers[0], Settings.layers[1]});
         }
     }
 
@@ -87,21 +87,7 @@ public class Game {
     }
 
     private void interpret(Entity e) {
-        double[] neighbors = new double[9];
-        for (int i = 0; i < 9; i++) {
-            Coordinate c = new Coordinate(e.getPos().getX() + i % 3 - 1, e.getPos().getY() + i / 3 - 1);
-            if (world.isInBoarders(c)) {
-                neighbors[i] = world.getField(c).getResource().fromResourceToDouble();
-            } else {
-                neighbors[i] = Resource.none.fromResourceToDouble();
-            }
-        /*
-        neighbors[i] = world.getField(
-                new Coordinate(e.getPos().getX() + i % 3 - 1,
-                        e.getPos().getY() + i / 3 - 1)
-                    ).getResource().fromResourceToDouble();
-                    */
-        }
+        double[] neighbors = world.getView(e.getPos());
         double[] values = e.step(neighbors);
         //System.out.println(Arrays.toString(values));
         Action action = Action.fromDoubleToDirection(values[0]);
