@@ -60,13 +60,13 @@ class Field {
     Map<Resource, Integer> harvest(boolean tool) {
         switch (resource) {
             case food:
-                value = tool ? 3 : 1;
+                value = tool ? 5 : 3;
             case water:
-                value = tool ? 3 : 1;
+                value = tool ? 5 : 3;
             case wood:
-                value = tool ? 3 : 1;
+                value = tool ? 5 : 3;
             case stone:
-                value = tool ? 3 : 1;
+                value = tool ? 5 : 3;
         }
         HashMap<Resource, Integer> harvested = new HashMap<>();
         harvested.put(resource, value);
