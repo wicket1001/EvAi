@@ -227,7 +227,7 @@ public class Entity {
     }
 
     public double getPoints() {
-        return getStepsAlive();// + getItemCount(Item.food) + getItemCount(Item.water);
+        return getStepsAlive() + getItemCount(Item.food) + getItemCount(Item.water) + getItemCount(Item.stone) + getItemCount(Item.wood);
     }
 
 }
