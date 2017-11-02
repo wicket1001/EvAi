@@ -142,11 +142,22 @@ public class Game {
 
     private void move(Entity e, double direction) {
         Coordinate modifier = CardinalDirection.fromDoubleToDirection(direction).toCoordinate();
-        if (world.isInBoarders(e.getPos().add(modifier))) {
+        Coordinate newPosition = e.getPos().add(modifier);
+        if (world.isInBorders(newPosition) && entitiesOnField(e.getPos()) == 1) {
             e.setPos(e.getPos().add(modifier));
         } else {
             idle(e);
         }
+    }
+
+    private int entitiesOnField(Coordinate c) {
+        int counter = 0;
+        for (Entity e: entities) {
+            if (e.getPos().equals(c)) {
+                counter ++;
+            }
+        }
+        return counter;
     }
 
     private void idle(Entity e) {

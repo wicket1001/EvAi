@@ -32,6 +32,11 @@ public class Coordinate {
         return this.y;
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        return obj instanceof Coordinate && ((Coordinate) obj).getX() == x && ((Coordinate) obj).getY() == y;
+    }
+
     /**
      * Returns the distance to Coordinate c
      * @param c The other Coordinate
