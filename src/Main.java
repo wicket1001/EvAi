@@ -162,20 +162,20 @@ public class Main extends PApplet {
                     Node parent = node.getParent(i);
                     float x = pos[mouseLayer-1][i][0];
                     float y = pos[mouseLayer-1][i][1];
-                    strokeWeight( (float) ( Math.abs( parent.getMultiplier( mouseIndex ) ) / 2 )*r );
+                    strokeWeight( (float) ( Math.abs( parent.getMultiplier( mouseIndex ) ) / 2 )*r / 2 );
                     float[] col = getColor( parent.getValue(mouseIndex)/2 );
                     stroke(col[0],col[1],col[2]);
-                    line( x+r/4, y, bx, by );
+                    line( x, y, bx, by );
                 }
             }
             if ( mouseLayer < nodes.length-1 ) {
                 for ( int i = 0; i < node.getConnections().length; i++ ) {
                     float x = pos[mouseLayer+1][i][0];
                     float y = pos[mouseLayer+1][i][1];
-                    strokeWeight( (float) ( Math.abs( node.getMultiplier( i ) ) / 2 )*r );
+                    strokeWeight( (float) ( Math.abs( node.getMultiplier( i ) ) / 2 )*r / 2 );
                     float[] col = getColor( node.getValue(i)/2 );
                     stroke(col[0],col[1],col[2]);
-                    line( x-r/4, y , bx, by );
+                    line( x, y , bx, by );
                 }
             }
             stroke(0,0,0);

@@ -69,14 +69,14 @@ public class Game {
         }
         average /= entities.length;
         Entity[] newEntities = new Entity[entities.length];
-        List<Entity> better = new ArrayList<Entity>();
+        List<Entity> better = new ArrayList<>();
         for ( Entity ent: entities ) {
             if ( ent.getStepsAlive() >= average ) {
                 better.add( ent );
             }
         }
         for ( int i = 0; i < newEntities.length; i++ ) {
-            newEntities[i] = better.get( (int) (Math.random()*better.size()) ).mutate(3,0.0625);
+            newEntities[i] = better.get( (int) (Math.random()*better.size()) ).mutate(3,0.125);
             newEntities[i].setPos( new Coordinate( (int) (Math.random()*world.getWidth()), (int) (Math.random()*world.getHeight()) ) );
         }
         stepNum = 0;
