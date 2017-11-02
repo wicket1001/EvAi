@@ -211,8 +211,16 @@ public class Entity {
         return nodes;
     }
 
-    public Entity mutate( double multiplier ) {
+    public Entity mutate( int numConnections, double multiplier ) {
         Entity ent = new Entity( this );
+        for ( int i = 0; i < numConnections; i++ ) {
+            int layer = (int) (Math.random() * ent.nodes.length-1);
+            int index = (int) (Math.random() * ent.nodes[layer].length);
+            Node node = ent.nodes[layer][index];
+            int conn = (int) (Math.random() * node.getConnections().length);
+            node.setConnection( conn, node.getConnection( conn ) + (Math.random()*2-1)*multiplier );
+        }
+        /*
         for ( Node[] layer: ent.nodes ) {
             for ( Node node: layer ) {
                 for ( int i = 0; i < node.getConnections().length; i++ ) {
@@ -220,6 +228,7 @@ public class Entity {
                 }
             }
         }
+        */
         return ent;
     }
 

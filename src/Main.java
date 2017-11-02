@@ -104,6 +104,7 @@ public class Main extends PApplet {
 
     private float[] getColor( double n ) {
         float g = (float) (n+1)/2;
+        /*
         float red, green, blue;
         if ( g > 0.5 ) {
             green = 255;
@@ -115,6 +116,8 @@ public class Main extends PApplet {
             blue = 0;
         }
         return new float[] { red, green, blue };
+        */
+        return new float[] { g*255, g*255, g*255 };
     }
 
     private void drawNetwork( Node[][] nodes ) {
