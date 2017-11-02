@@ -1,7 +1,7 @@
 public class Settings {
-    static int minNode = -1;
-    static int maxNode = 1;
-    static int range = maxNode - minNode;
+    static double minNode = -1.0;
+    static double maxNode = 1.0;
+    static double range = maxNode - minNode;
 
     static int doubleToIndex(double value, int size) {
         double step = Settings.range / size;

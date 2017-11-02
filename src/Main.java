@@ -49,15 +49,19 @@ public class Main extends PApplet {
     }
 
     public void keyPressed() {
-        if ( keyCode == ENTER ) {
-            game.generation();
-        } else if ( keyCode == ' ' ) {
+        double sum = 0.0;
+        int steps = 1;
+        if ( keyCode == ' ' ) {
             game.step();
+        } else if ( keyCode == ENTER ) {
+            sum += game.generation();
         } else if ( keyCode == '1' ) {
-            for ( int i = 0; i < 1000; i++ ) {
-                game.generation();
+            steps = 1000;
+            for ( int i = 0; i < steps; i++ ) {
+                sum += game.generation();
             }
         }
+        System.out.println("The average time survived: " + sum / steps);
     }
 
     private void drawWorld() {

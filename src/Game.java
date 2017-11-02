@@ -58,7 +58,7 @@ public class Game {
         }
     }
 
-    public void generation() {
+    public int generation() {
         while ( !everybodyDead() ) {
             step();
         }
@@ -79,9 +79,11 @@ public class Game {
             newEntities[i] = better.get( (int) (Math.random()*better.size()) ).mutate(3,0.125);
             newEntities[i].setPos( new Coordinate( (int) (Math.random()*world.getWidth()), (int) (Math.random()*world.getHeight()) ) );
         }
+        int temp = stepNum;
         stepNum = 0;
         generationNum++;
         entities = newEntities;
+        return temp;
     }
 
     private void interpret(Entity e) {
