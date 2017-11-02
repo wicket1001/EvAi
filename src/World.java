@@ -96,4 +96,17 @@ class World {
         return (coordinate.getX() >= 0 && coordinate.getX() < width) &&
                 (coordinate.getY() >= 0 && coordinate.getY() < height);
     }
+
+    public double[] getView(Coordinate coordinate) {
+        double[] neighbors = new double[Settings.numView];
+        for (int i = 0; i < Settings.numView; i++) {
+            Coordinate c = new Coordinate(coordinate.getX() + i % 3 - 1, coordinate.getY() + i / 3 - 1);
+            if (isInBoarders(c)) {
+                neighbors[i] = getField(c).getResource().fromResourceToDouble();
+            } else {
+                neighbors[i] = Resource.none.fromResourceToDouble();
+            }
+        }
+        return neighbors;
+    }
 }
