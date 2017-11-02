@@ -223,4 +223,8 @@ public class Entity {
         return ent;
     }
 
+    public double getPoints() {
+        return getStepsAlive();// + getItemCount(Item.food) + getItemCount(Item.water);
+    }
+
 }

@@ -1,5 +1,6 @@
 import java.io.IOException;
 import processing.core.PApplet;
+import processing.core.PImage;
 import sun.security.util.Resources_sv;
 
 public class Main extends PApplet {
@@ -10,6 +11,8 @@ public class Main extends PApplet {
     private float offY = 0;
     private float minWidth = 400;
     private float minHeight = 300;
+
+    PImage sheep;
 
     private float[][] entityColors = new float[][] {
             { 255, 0, 0 },
@@ -39,6 +42,7 @@ public class Main extends PApplet {
             System.out.println(e.getMessage());
             exit();
         }
+        sheep = loadImage("res/sheep.png");
     }
 
     public void draw() {
@@ -46,6 +50,10 @@ public class Main extends PApplet {
         background( 192, 192, 192 );
         drawWorld();
         drawNetwork( game.getEntities()[0].getNetwork() );
+        drawDebug();
+        if ( width < 800 ) {
+            surface.setSize( 800, height );
+        }
     }
 
     public void keyPressed() {
@@ -67,15 +75,15 @@ public class Main extends PApplet {
     private void drawWorld() {
         World world = game.getWorld();
         float ppfh = height / (world.getHeight()+1);
-        float ppfw = width*0.6666f / (world.getWidth()+1);
+        float ppfw = (width-400)*0.6666f / (world.getWidth()+1);
         if ( ppfh > ppfw ) {
             pixelPerField = ppfw;
-            offX = pixelPerField/2;
+            offX = pixelPerField/2+400;
             offY = ( height - pixelPerField * world.getHeight() ) / 2;
         } else {
             pixelPerField = ppfh;
             offY = pixelPerField/2;
-            offX = ( width*0.6666f - pixelPerField * world.getWidth() ) / 2;
+            offX = ( (width-400)*0.6666f - pixelPerField * world.getWidth() ) / 2 + 400;
         }
         for ( int y = 0; y < world.getHeight(); y++ ) {
             for ( int x = 0; x < world.getWidth(); x++ ) {
@@ -99,13 +107,14 @@ public class Main extends PApplet {
         int i = 0;
         int len = entityColors.length;
         for ( Entity entity: entities ) {
+            Coordinate pos = entity.getPos();
+            image(sheep,(pos.getX())*pixelPerField + offX, (pos.getY())*pixelPerField+offY,pixelPerField,pixelPerField);
             if (entity.isAlive()) {
                 fill(entityColors[i % len][0], entityColors[i % len][1], entityColors[i % len][2]);
             } else {
                 fill(0,0,0);
             }
-            Coordinate pos = entity.getPos();
-            ellipse( (pos.getX()+0.5f)*pixelPerField + offX, (pos.getY()+0.5f)*pixelPerField+offY, pixelPerField/2, pixelPerField/2 );
+            ellipse( (pos.getX()+0.75f)*pixelPerField + offX, (pos.getY()+0.5f)*pixelPerField+offY, pixelPerField/4, pixelPerField/4 );
             i++;
         }
     }
@@ -130,7 +139,7 @@ public class Main extends PApplet {
 
     private void drawNetwork( Node[][] nodes ) {
         float[][][] pos = new float[nodes.length][][];
-        float w = width * 0.3333f / nodes.length;
+        float w = ( width - 400 ) * 0.3333f / nodes.length;
         int max = 1;
         for ( Node[] n: nodes ) {
             if ( n.length > max ) {
@@ -147,7 +156,7 @@ public class Main extends PApplet {
             pos[layernum] = new float[layer.length][];
             float off = ( height - layer.length * h ) / 2;
             for ( int index = 0; index < layer.length; index++ ) {
-                float x = width*0.6666f + (layernum+0.5f)*w;
+                float x = (width-400)*0.6666f + (layernum+0.5f)*w + 400;
                 float y = (index+0.5f)*h+off;
                 pos[layernum][index] = new float[] { x, y };
                 if ( mouseX >= x - r/2 && mouseX <= x + r/2 && mouseY >= y - r/2 && mouseY <= y + r/2 ) {
@@ -195,6 +204,13 @@ public class Main extends PApplet {
                 ellipse( pos[layernum][index][0], pos[layernum][index][1], r, r );
             }
         }
+    }
+
+    private void drawDebug( /*VALUES*/ ) {
+        fill( 160, 160, 160 );
+        stroke( 160, 160, 160 );
+        rect( 0, 0, 400, height );
+        stroke(0,0,0);
     }
 
 }
