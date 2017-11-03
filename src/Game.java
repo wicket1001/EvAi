@@ -28,7 +28,7 @@ public class Game {
                             (int) (Math.random() * world.getWidth()),
                             (int) (Math.random() * world.getHeight())
                     ),
-                    new int[]{Item.values().length + Settings.numView, Settings.layers[0], Settings.layers[1]});
+                    Settings.layers);
         }
     }
 
