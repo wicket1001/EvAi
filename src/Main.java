@@ -1,4 +1,6 @@
 import java.io.IOException;
+import java.util.List;
+
 import processing.core.PApplet;
 import processing.core.PImage;
 import sun.security.util.Resources_sv;
@@ -52,7 +54,7 @@ public class Main extends PApplet {
         clear();
         background( 192, 192, 192 );
         drawWorld();
-        drawNetwork( game.getEntities()[(hoveredEntity == 0)? selectedEntity-1 : hoveredEntity-1].getNetwork() );
+        drawNetwork( game.getEntity((hoveredEntity == 0)? selectedEntity-1 : hoveredEntity-1).getNetwork() );
         drawDebug();
     }
 
@@ -69,6 +71,12 @@ public class Main extends PApplet {
                 sum += game.propagateGeneration();
             }
             System.out.println("The average time survived: " + sum / steps);
+        }
+    }
+
+    public void mouseClicked() {
+        if ( hoveredEntity != 0 ) {
+            selectedEntity = hoveredEntity;
         }
     }
 
@@ -103,20 +111,36 @@ public class Main extends PApplet {
                 }
                 float px = offX + x*pixelPerField;
                 float py = offY + y*pixelPerField;
-                for ( int i = 0; i < game.getEntities().length; i++ ) {
-                    Entity ent = game.getEntities()[i];
+                for ( int i = 0; i < game.getEntities().size(); i++ ) {
+                    Entity ent = game.getEntity(i);
                     if ( ent.getPos().getX() == x && ent.getPos().getY() == y && mouseX >= px && mouseX <= px + pixelPerField && mouseY >= py && mouseY <= py + pixelPerField) {
                         hoveredEntity = i+1;
                     }
                 }
                 rect( px, py, pixelPerField, pixelPerField );
+                if ( field.getIdleTime() > 0 ) {
+                    fill( 0,0,0, 0.5f );
+                    rect( px, py, pixelPerField, pixelPerField );
+                }
+                fill(0,0,0,0);
+                strokeWeight( 4 );
+                if ( game.getEntity( hoveredEntity ).getPos().equals( new Coordinate(x,y) ) ) {
+                    stroke( 0, 0, 255 );
+                    rect( px, py, pixelPerField, pixelPerField );
+                }
+                if ( game.getEntity( selectedEntity ).getPos().equals( new Coordinate(x,y) ) ) {
+                    stroke( 255, 0, 0 );
+                    rect( px, py, pixelPerField, pixelPerField );
+                }
+                stroke( 0, 0, 0 );
+                strokeWeight( 1 );
             }
         }
-        Entity[] entities = game.getEntities();
+        List<Entity> entities = game.getEntities();
         int i = 0;
         int len = entityColors.length;
         for ( Entity entity: entities ) {
-            if ( entity.isAlive() || entity.getStepsAlive() == game.getStepNum() || entity.getStepsAlive() == game.getStepNum() - 1 ) {
+            if ( entity.isAlive() || entity.getStepsAlive() == game.getStepNum() ) {
                 Coordinate pos = entity.getPos();
                 image(sheep, (pos.getX()) * pixelPerField + offX, (pos.getY()) * pixelPerField + offY, pixelPerField, pixelPerField);
                 if (entity.isAlive()) {
@@ -221,7 +245,7 @@ public class Main extends PApplet {
                 ellipse( pos[layernum][index][0], pos[layernum][index][1], r, r );
                 fill( 255,0,0);
                 textSize(r/3);
-                text( String.format("%+03d",(int) (node.getValue()*100)), pos[layernum][index][0]-r/3, pos[layernum][index][1]+r/5 );
+                text( String.format("%+03d",(int) (node.getValue()*100)), pos[layernum][index][0]-r/3, pos[layernum][index][1]+r/6 );
             }
         }
     }
@@ -231,7 +255,7 @@ public class Main extends PApplet {
         stroke( 160, 160, 160 );
         rect( 0, 0, 400, height );
         stroke(0,0,0);
-        Entity best = game.getEntities()[0];
+        Entity best = game.getEntity(0);
         int id = 0;
         int bid = 0;
         for ( Entity e: game.getEntities() ) {
@@ -243,7 +267,7 @@ public class Main extends PApplet {
         }
         id = bid;
         fill(0,0,0);
-        text("#"+id+": "+best.getPoints()+", "+best.getPos(), 10, 100);
+        text("Best: #"+id+", "+best.getPoints()+", "+best.getPos() + "\nSelected: #"+(selectedEntity-1)+", "+game.getEntity(selectedEntity-1).getPos()+" \nHovered: "+ ((hoveredEntity!=0)?"#" + (hoveredEntity-1) + ", " + game.getEntity(hoveredEntity-1).getPos(): ("None")), 10, 100);
     }
 
 }
