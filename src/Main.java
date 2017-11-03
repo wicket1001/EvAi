@@ -1,4 +1,6 @@
 import java.io.IOException;
+import java.util.LinkedList;
+
 import processing.core.PApplet;
 import processing.core.PImage;
 import sun.security.util.Resources_sv;
@@ -52,7 +54,7 @@ public class Main extends PApplet {
         clear();
         background( 192, 192, 192 );
         drawWorld();
-        drawNetwork( game.getEntities()[(hoveredEntity == 0)? selectedEntity-1 : hoveredEntity-1].getNetwork() );
+        drawNetwork( game.getEntities().get((hoveredEntity == 0) ? selectedEntity - 1 : hoveredEntity - 1).getNetwork() );
         drawDebug();
     }
 
@@ -103,8 +105,8 @@ public class Main extends PApplet {
                 }
                 float px = offX + x*pixelPerField;
                 float py = offY + y*pixelPerField;
-                for ( int i = 0; i < game.getEntities().length; i++ ) {
-                    Entity ent = game.getEntities()[i];
+                for (int i = 0; i < game.getEntities().size(); i++ ) {
+                    Entity ent = game.getEntities().get(i);
                     if ( ent.getPos().getX() == x && ent.getPos().getY() == y && mouseX >= px && mouseX <= px + pixelPerField && mouseY >= py && mouseY <= py + pixelPerField) {
                         hoveredEntity = i+1;
                     }
@@ -112,7 +114,7 @@ public class Main extends PApplet {
                 rect( px, py, pixelPerField, pixelPerField );
             }
         }
-        Entity[] entities = game.getEntities();
+        LinkedList<Entity> entities = game.getEntities();
         int i = 0;
         int len = entityColors.length;
         for ( Entity entity: entities ) {
@@ -231,7 +233,7 @@ public class Main extends PApplet {
         stroke( 160, 160, 160 );
         rect( 0, 0, 400, height );
         stroke(0,0,0);
-        Entity best = game.getEntities()[0];
+        Entity best = game.getEntities().get(0);
         int id = 0;
         int bid = 0;
         for ( Entity e: game.getEntities() ) {

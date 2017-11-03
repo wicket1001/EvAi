@@ -12,23 +12,21 @@ public class Game {
     /**
      * Every entity that is playing the Game.
      */
-    private Entity[] entities;
+    private List<Entity> entities;
 
     private int stepNum = 0;
     private int generationNum = 0;
 
     public Game() throws IOException {
-        int numberOfEntities = Settings.numEntities;
-
         world = new World("maps/map2.txt");
-        entities = new Entity[numberOfEntities];
-        for (int i = 0; i < entities.length; i++) {
-            entities[i] = new Entity(
+        entities = new LinkedList<>();
+        for (int i = 0; i < entities.size(); i++) {
+            entities.set(i, new Entity(
                     new Coordinate(
                             (int) (Math.random() * world.getWidth()),
                             (int) (Math.random() * world.getHeight())
                     ),
-                    Settings.layers);
+                    Settings.layers));
         }
     }
 
@@ -36,8 +34,12 @@ public class Game {
         return world;
     }
 
-    public Entity[] getEntities() {
+    public List<Entity> getEntities() {
         return entities;
+    }
+
+    public Entity getEntity(int index) {
+        return entities.get(index);
     }
 
     public int getStepNum() {
@@ -74,7 +76,7 @@ public class Game {
 
     private int createNewGeneration() {
         System.out.println("Generation #"+generationNum+" finished ("+stepNum+" Steps)");
-        Entity[] newEntities = new Entity[entities.length];
+        List<Entity> newEntities = new LinkedList<>();
         /*
         double average = 0;
         for ( Entity ent: entities ) {
@@ -89,18 +91,18 @@ public class Game {
         }
         */
         List<Entity> better = new LinkedList<>();
-        better.addAll( Arrays.asList( entities ) );
+        better.addAll( Arrays.asList((Entity) entities) );
         Collections.sort( better );
-        while ( better.size() > entities.length/4+1 ) {
-            better.remove( entities.length/4 );
+        while ( better.size() > entities.size() /4+1 ) {
+            better.remove( entities.size() /4 );
         }
-        for ( int i = 0; i < newEntities.length; i++ ) {
-            newEntities[i] = better.get( (int) (Math.random()*better.size()) ).mutate(3,Settings.multiplierModification);
+        for (int i = 0; i < newEntities.size(); i++ ) {
+            newEntities.set(i, better.get((int) (Math.random() * better.size())).mutate(3, Settings.multiplierModification));
             Coordinate co = null;
             while ( co == null || entitiesOnField( co ) != 0 ) {
                 co = new Coordinate((int) (Math.random() * world.getWidth()), (int) (Math.random() * world.getHeight()));
             }
-            newEntities[i].setPos( co );
+            newEntities.get(i).setPos( co );
         }
         int temp = stepNum;
         stepNum = 0;
