@@ -116,14 +116,16 @@ public class Main extends PApplet {
         int i = 0;
         int len = entityColors.length;
         for ( Entity entity: entities ) {
-            Coordinate pos = entity.getPos();
-            image(sheep,(pos.getX())*pixelPerField + offX, (pos.getY())*pixelPerField+offY,pixelPerField,pixelPerField);
-            if (entity.isAlive()) {
-                fill(entityColors[i % len][0], entityColors[i % len][1], entityColors[i % len][2]);
-            } else {
-                fill(0,0,0);
+            if ( entity.isAlive() || entity.getStepsAlive() == game.getStepNum() || entity.getStepsAlive() == game.getStepNum() - 1 ) {
+                Coordinate pos = entity.getPos();
+                image(sheep, (pos.getX()) * pixelPerField + offX, (pos.getY()) * pixelPerField + offY, pixelPerField, pixelPerField);
+                if (entity.isAlive()) {
+                    fill(entityColors[i % len][0], entityColors[i % len][1], entityColors[i % len][2]);
+                } else {
+                    fill(0, 0, 0);
+                }
+                ellipse((pos.getX() + 0.75f) * pixelPerField + offX, (pos.getY() + 0.5f) * pixelPerField + offY, pixelPerField / 4, pixelPerField / 4);
             }
-            ellipse( (pos.getX()+0.75f)*pixelPerField + offX, (pos.getY()+0.5f)*pixelPerField+offY, pixelPerField/4, pixelPerField/4 );
             i++;
         }
     }
@@ -229,6 +231,19 @@ public class Main extends PApplet {
         stroke( 160, 160, 160 );
         rect( 0, 0, 400, height );
         stroke(0,0,0);
+        Entity best = game.getEntities()[0];
+        int id = 0;
+        int bid = 0;
+        for ( Entity e: game.getEntities() ) {
+            if ( e.getPoints() > best.getPoints() ) {
+                best = e;
+                bid = id;
+            }
+            id++;
+        }
+        id = bid;
+        fill(0,0,0);
+        text("#"+id+": "+best.getPoints()+", "+best.getPos(), 10, 100);
     }
 
 }
