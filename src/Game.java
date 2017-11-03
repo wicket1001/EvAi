@@ -104,7 +104,7 @@ public class Game {
         while ( better.size() > entities.size() /4+1 ) {
             better.remove( entities.size() /4 );
         }
-        for (int i = 0; i < newEntities.size(); i++ ) {
+        for (int i = 0; i < Settings.numEntities; i++ ) {
             newEntities.add(better.get((int) (Math.random() * better.size())).mutate(3, Settings.multiplierModification));
             Coordinate co = null;
             while ( co == null || entitiesOnField( co ) != 0 ) {
