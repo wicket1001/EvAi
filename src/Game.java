@@ -1,5 +1,6 @@
 import java.io.IOException;
 import java.util.*;
+import java.util.function.Consumer;
 
 /**
  * The Game class which manages everything.
@@ -12,14 +13,13 @@ public class Game {
     /**
      * Every entity that is playing the Game.
      */
-    private List<Entity> entities;
+    private List<Entity> entities = new LinkedList<>();
 
     private int stepNum = 0;
-    private int generationNum = 0;
+    private int generationNum =0 ;
 
     public Game() throws IOException {
         world = new World("maps/map2.txt");
-        entities = new LinkedList<>();
         for (int i = 0; i < Settings.numEntities; i++) {
             entities.add(new Entity(
                     new Coordinate(
@@ -84,7 +84,6 @@ public class Game {
 
     private int createNewGeneration() {
         System.out.println("Generation #"+generationNum+" finished ("+stepNum+" Steps)");
-        List<Entity> newEntities = new LinkedList<>();
         /*
         double average = 0;
         for ( Entity ent: entities ) {
@@ -101,9 +100,14 @@ public class Game {
         List<Entity> better = new LinkedList<>();
         better.addAll(entities);
         Collections.sort( better );
-        while ( better.size() > entities.size() /4+1 ) {
+        better.forEach(entity -> System.out.print(entity.getPoints() + ", "));
+        while ( better.size() > entities.size() /4 ) {
             better.remove( entities.size() /4 );
         }
+        System.out.println();
+        better.forEach(entity -> System.out.print(entity.getPoints() + ", "));
+        System.out.println();
+        List<Entity> newEntities = new LinkedList<>();
         for (int i = 0; i < Settings.numEntities; i++ ) {
             newEntities.add(better.get((int) (Math.random() * better.size())).mutate(3, Settings.multiplierModification));
             Coordinate co = null;

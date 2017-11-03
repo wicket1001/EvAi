@@ -233,6 +233,6 @@ public class Entity implements Comparable<Entity> {
 
     @Override
     public int compareTo(Entity o) {
-        return Double.compare( getPoints(), o.getPoints() );
+        return Double.compare( o.getPoints(), getPoints() );
     }
 }
