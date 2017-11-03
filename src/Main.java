@@ -1,10 +1,7 @@
 import java.io.IOException;
-import java.util.List;
-import java.util.LinkedList;
 
 import processing.core.PApplet;
 import processing.core.PImage;
-import sun.security.util.Resources_sv;
 
 public class Main extends PApplet {
 
@@ -65,13 +62,11 @@ public class Main extends PApplet {
         if ( keyCode == ' ' ) {
             game.doStep();
         } else if ( keyCode == ENTER ) {
-            sum += game.propagateGeneration();
+            Runnable run = new ComputeGenerations( 1, game );
+            new Thread(run).start();
         } else if ( keyCode >= '1' && keyCode <= '5' ) {
-            steps = (int) Math.pow( 10, keyCode - '1' + 2 );
-            for ( int i = 0; i < steps; i++ ) {
-                sum += game.propagateGeneration();
-            }
-            System.out.println("The average time survived: " + sum / steps);
+            Runnable run = new ComputeGenerations( (int) Math.pow( 10, keyCode - '1' + 1 ), game );
+            new Thread(run).start();
         }
     }
 
@@ -270,7 +265,7 @@ public class Main extends PApplet {
         }
         id = bid;
         fill(0,0,0);
-        text("Best: #"+id+", "+best.getPoints()+", "+best.getPos() + "\nSelected: #"+(selectedEntity-1)+", "+game.getEntity(selectedEntity-1).getPos()+" \nHovered: "+ ((hoveredEntity!=0)?"#" + (hoveredEntity-1) + ", " + game.getEntity(hoveredEntity-1).getPos(): ("None")), 10, 100);
+        text("Time: "+game.getGenerationNum()+"/"+game.getStepNum()+"\nBest: #"+id+", "+best.getPoints()+", "+best.getPos() + "\nSelected: #"+(selectedEntity-1)+", "+game.getEntity(selectedEntity-1).getPos()+" \nHovered: "+ ((hoveredEntity!=0)?"#" + (hoveredEntity-1) + ", " + game.getEntity(hoveredEntity-1).getPos(): ("None")), 10, 100);
     }
 
 }

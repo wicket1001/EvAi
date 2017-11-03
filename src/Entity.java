@@ -228,7 +228,7 @@ public class Entity implements Comparable<Entity> {
     }
 
     public double getPoints() {
-        return getStepsAlive();// + getItemCount(Item.food) + getItemCount(Item.water) + getItemCount(Item.stone) + getItemCount(Item.wood);
+        return getStepsAlive() * 2 + getItemCount(Item.food) + getItemCount(Item.water);
     }
 
     @Override
