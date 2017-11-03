@@ -186,12 +186,13 @@ public class Entity implements Comparable<Entity> {
      * @return Ouput Node Values
      */
     public double[] step(double[] fields) {
-        for ( int i = 0; i < 9; i++ ) {
+        for ( int i = 0; i < Settings.numView; i++ ) {
             nodes[0][i].setValue( fields[i] );
         }
         for ( Item i: Item.values() ) {
-            nodes[0][9+i.ordinal()].setValue( (double) inventory.get(i) / 100 );
+            nodes[0][Settings.numView+i.ordinal()].setValue( (double) inventory.get(i) / 100 );
         }
+        nodes[0][Settings.numView+Item.values().length].setValue(getStepsAlive() / 100D - 1);
         for ( Node node: nodes[nodes.length-1] ) {
             node.calc();
         }
