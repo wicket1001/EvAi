@@ -183,11 +183,7 @@ public class Game {
     }
 
     private void idle(Entity e, boolean idle) {
-        if (idle) {
-            //System.out.println("idle");
-        } else {
-            //System.out.println("-> idle");
-        }
+        // System.out.println(idle ? "idle" : "-> idle");
         // TODO idle
     }
 
