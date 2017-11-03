@@ -12,16 +12,17 @@ public class Game {
     /**
      * Every entity that is playing the Game.
      */
-    private List<Entity> entities;
+    private List<Entity> aliveEntities;
+    private List<Entity> deadEntities;
 
     private int stepNum = 0;
     private int generationNum = 0;
 
     public Game() throws IOException {
         world = new World("maps/map2.txt");
-        entities = new LinkedList<>();
-        for (int i = 0; i < entities.size(); i++) {
-            entities.set(i, new Entity(
+        aliveEntities = new LinkedList<>();
+        for (int i = 0; i < aliveEntities.size(); i++) {
+            aliveEntities.set(i, new Entity(
                     new Coordinate(
                             (int) (Math.random() * world.getWidth()),
                             (int) (Math.random() * world.getHeight())
@@ -34,12 +35,19 @@ public class Game {
         return world;
     }
 
-    public List<Entity> getEntities() {
-        return entities;
+    public List<Entity> getEveryEntity() {
+        List<Entity> everyEntity = new LinkedList<>();
+        everyEntity.addAll(aliveEntities);
+        everyEntity.addAll(deadEntities);
+        return everyEntity;
+    }
+
+    public List<Entity> getEntitiesAlive() {
+        return aliveEntities;
     }
 
     public Entity getEntity(int index) {
-        return entities.get(index);
+        return aliveEntities.get(index);
     }
 
     public int getStepNum() {
@@ -61,7 +69,7 @@ public class Game {
 
     public int doStep() {
         if (!everybodyDead()) {
-            for (Entity e: entities) {
+            for (Entity e: aliveEntities) {
                 if (e.isAlive()) {
                     propagate(e);
                 }
@@ -79,22 +87,22 @@ public class Game {
         List<Entity> newEntities = new LinkedList<>();
         /*
         double average = 0;
-        for ( Entity ent: entities ) {
+        for ( Entity ent: aliveEntities ) {
             average += ent.getStepsAlive();
         }
-        average /= entities.length;
+        average /= aliveEntities.length;
         List<Entity> better = new ArrayList<>();
-        for ( Entity ent: entities ) {
+        for ( Entity ent: aliveEntities ) {
             if ( ent.getStepsAlive() >= average ) {
                 better.add( ent );
             }
         }
         */
         List<Entity> better = new LinkedList<>();
-        better.addAll( Arrays.asList((Entity) entities) );
+        better.addAll(aliveEntities);
         Collections.sort( better );
-        while ( better.size() > entities.size() /4+1 ) {
-            better.remove( entities.size() /4 );
+        while ( better.size() > aliveEntities.size() /4+1 ) {
+            better.remove( aliveEntities.size() /4 );
         }
         for (int i = 0; i < newEntities.size(); i++ ) {
             newEntities.set(i, better.get((int) (Math.random() * better.size())).mutate(3, Settings.multiplierModification));
@@ -107,13 +115,13 @@ public class Game {
         int temp = stepNum;
         stepNum = 0;
         generationNum++;
-        entities = newEntities;
+        aliveEntities = newEntities;
         return temp;
     }
 
     private boolean everybodyDead() {
         boolean everybodyDead = true;
-        for (Entity e: entities) {
+        for (Entity e: aliveEntities) {
             everybodyDead = everybodyDead && !e.isAlive();
         }
         return everybodyDead;
@@ -176,7 +184,7 @@ public class Game {
 
     private int entitiesOnField(Coordinate c) {
         int counter = 0;
-        for (Entity e: entities) {
+        for (Entity e: aliveEntities) {
             if (e.getPos().equals(c) && e.isAlive()) {
                 counter ++;
             }
