@@ -1,5 +1,6 @@
 import java.io.IOException;
 import java.util.List;
+import java.util.LinkedList;
 
 import processing.core.PApplet;
 import processing.core.PImage;
