@@ -109,12 +109,13 @@ public class Game {
             case harvest: harvest(e); break;
             case craft: craft(e); break;
             case move: move(e, propagated[1]); break;
-            case idle: idle(e); break;
+            case idle: idle(e, true); break;
         }
         decay(e);
     }
 
     private void harvest(Entity e) {
+        System.out.println("harvest");
         boolean tool = e.getItemCount(Item.tool) > 0;
         if (tool) {
             e.addToInventory(Item.tool, -1);
@@ -122,6 +123,7 @@ public class Game {
         Map<Resource, Integer> resourcesGathered = world.harvestField(e.getPos(), tool);
         HashMap<Item, Integer> itemsCreated = getItemsFromResources(resourcesGathered);
         for (Item item: itemsCreated.keySet()) {
+            System.out.println(item);
             e.addToInventory(item, itemsCreated.get(item));
         }
     }
@@ -135,22 +137,24 @@ public class Game {
     }
 
     private void craft(Entity e) {
+        System.out.println("craft");
         if (e.getItemCount(Item.wood) >= 2 && e.getItemCount(Item.stone) >= 1) {
             e.addToInventory(Item.tool, 1);
             e.addToInventory(Item.wood, -2);
             e.addToInventory(Item.stone, -1);
         } else {
-            idle(e);
+            idle(e, false);
         }
     }
 
     private void move(Entity e, double direction) {
+        System.out.println("move");
         Coordinate modifier = CardinalDirection.fromDoubleToDirection(direction).toCoordinate();
         Coordinate newPosition = e.getPos().add(modifier);
         if (world.isInBorders(newPosition) && entitiesOnField(newPosition) == 0) {
             e.setPos(e.getPos().add(modifier));
         } else {
-            idle(e);
+            idle(e, false);
         }
     }
 
@@ -164,7 +168,12 @@ public class Game {
         return counter;
     }
 
-    private void idle(Entity e) {
+    private void idle(Entity e, boolean idle) {
+        if (idle) {
+            System.out.println("idle");
+        } else {
+            System.out.println("-> idle");
+        }
         // TODO idle
     }
 
