@@ -1,3 +1,7 @@
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
+
 /**
  * Represents a Node and its connections to the child Nodes
  */
@@ -181,7 +185,18 @@ public class Node {
                 }
                 sum += node.getValue(this.index);
             }
-            setValue( sigmoid( sum /* / parents.length */ ) );
+            setValue( sigmoid( sum ) );
+            /*
+            List<Double> list = new LinkedList<>();
+            for ( Node node: parents ) {
+                if ( !node.isUpdated() ) {
+                    node.calc();
+                }
+                list.add( node.getValue( this.index ) );
+            }
+            Collections.sort( list );
+            setValue( list.get( list.size()/2 ) );
+            */
         }
     }
 

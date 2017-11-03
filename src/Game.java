@@ -56,7 +56,9 @@ public class Game {
     public int doStep() {
         if (!everybodyDead()) {
             for (Entity e: entities) {
-                propagate(e);
+                if (e.isAlive()) {
+                    propagate(e);
+                }
             }
             stepNum++;
             world.regenerate();
@@ -68,20 +70,28 @@ public class Game {
 
     private int createNewGeneration() {
         System.out.println("Generation #"+generationNum+" finished ("+stepNum+" Steps)");
+        Entity[] newEntities = new Entity[entities.length];
+        /*
         double average = 0;
         for ( Entity ent: entities ) {
             average += ent.getStepsAlive();
         }
         average /= entities.length;
-        Entity[] newEntities = new Entity[entities.length];
         List<Entity> better = new ArrayList<>();
         for ( Entity ent: entities ) {
             if ( ent.getStepsAlive() >= average ) {
                 better.add( ent );
             }
         }
+        */
+        List<Entity> better = new LinkedList<>();
+        better.addAll( Arrays.asList( entities ) );
+        Collections.sort( better );
+        while ( better.size() > entities.length/4+1 ) {
+            better.remove( entities.length/4 );
+        }
         for ( int i = 0; i < newEntities.length; i++ ) {
-            newEntities[i] = better.get( (int) (Math.random()*better.size()) ).mutate(3,0.125);
+            newEntities[i] = better.get( (int) (Math.random()*better.size()) ).mutate(3,Settings.multiplierModification);
             Coordinate co = null;
             while ( co == null || entitiesOnField( co ) != 0 ) {
                 co = new Coordinate((int) (Math.random() * world.getWidth()), (int) (Math.random() * world.getHeight()));
@@ -115,7 +125,7 @@ public class Game {
     }
 
     private void harvest(Entity e) {
-        System.out.println("harvest");
+        //System.out.println("harvest");
         boolean tool = e.getItemCount(Item.tool) > 0;
         if (tool) {
             e.addToInventory(Item.tool, -1);
@@ -123,7 +133,7 @@ public class Game {
         Map<Resource, Integer> resourcesGathered = world.harvestField(e.getPos(), tool);
         HashMap<Item, Integer> itemsCreated = getItemsFromResources(resourcesGathered);
         for (Item item: itemsCreated.keySet()) {
-            System.out.println(item);
+            //System.out.println(item);
             e.addToInventory(item, itemsCreated.get(item));
         }
     }
@@ -137,7 +147,7 @@ public class Game {
     }
 
     private void craft(Entity e) {
-        System.out.println("craft");
+        //System.out.println("craft");
         if (e.getItemCount(Item.wood) >= 2 && e.getItemCount(Item.stone) >= 1) {
             e.addToInventory(Item.tool, 1);
             e.addToInventory(Item.wood, -2);
@@ -148,7 +158,7 @@ public class Game {
     }
 
     private void move(Entity e, double direction) {
-        System.out.println("move");
+        //System.out.println("move");
         Coordinate modifier = CardinalDirection.fromDoubleToDirection(direction).toCoordinate();
         Coordinate newPosition = e.getPos().add(modifier);
         if (world.isInBorders(newPosition) && entitiesOnField(newPosition) == 0) {
@@ -170,9 +180,9 @@ public class Game {
 
     private void idle(Entity e, boolean idle) {
         if (idle) {
-            System.out.println("idle");
+            //System.out.println("idle");
         } else {
-            System.out.println("-> idle");
+            //System.out.println("-> idle");
         }
         // TODO idle
     }

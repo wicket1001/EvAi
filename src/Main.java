@@ -68,8 +68,8 @@ public class Main extends PApplet {
             for ( int i = 0; i < steps; i++ ) {
                 sum += game.propagateGeneration();
             }
+            System.out.println("The average time survived: " + sum / steps);
         }
-        System.out.println("The average time survived: " + sum / steps);
     }
 
     private void drawWorld() {

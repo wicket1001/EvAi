@@ -5,7 +5,7 @@ import java.util.Map;
 /**
  * Represents an Entity and its AI
  */
-public class Entity {
+public class Entity implements Comparable<Entity> {
 
     /**
      * The Position of the Entity in the World
@@ -230,4 +230,8 @@ public class Entity {
         return getStepsAlive() + getItemCount(Item.food) + getItemCount(Item.water) + getItemCount(Item.stone) + getItemCount(Item.wood);
     }
 
+    @Override
+    public int compareTo(Entity o) {
+        return Double.compare( getPoints(), o.getPoints() );
+    }
 }
