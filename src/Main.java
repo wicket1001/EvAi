@@ -66,8 +66,8 @@ public class Main extends PApplet {
             game.doStep();
         } else if ( keyCode == ENTER ) {
             sum += game.propagateGeneration();
-        } else if ( keyCode == '1' ) {
-            steps = 1000;
+        } else if ( keyCode >= '1' && keyCode <= '5' ) {
+            steps = (int) Math.pow( 10, keyCode - '1' + 2 );
             for ( int i = 0; i < steps; i++ ) {
                 sum += game.propagateGeneration();
             }
@@ -114,8 +114,10 @@ public class Main extends PApplet {
                 float py = offY + y*pixelPerField;
                 for ( int i = 0; i < game.getEntities().size(); i++ ) {
                     Entity ent = game.getEntity(i);
-                    if ( ent.getPos().getX() == x && ent.getPos().getY() == y && mouseX >= px && mouseX <= px + pixelPerField && mouseY >= py && mouseY <= py + pixelPerField) {
-                        hoveredEntity = i+1;
+                    if ( ent.isAlive() ) {
+                        if (ent.getPos().getX() == x && ent.getPos().getY() == y && mouseX >= px && mouseX <= px + pixelPerField && mouseY >= py && mouseY <= py + pixelPerField) {
+                            hoveredEntity = i + 1;
+                        }
                     }
                 }
                 rect( px, py, pixelPerField, pixelPerField );
@@ -123,24 +125,24 @@ public class Main extends PApplet {
                     fill( 0,0,0, 0.5f );
                     rect( px, py, pixelPerField, pixelPerField );
                 }
-                fill(0,0,0,0);
-                strokeWeight( 4 );
-                if ( game.getEntity( hoveredEntity ).getPos().equals( new Coordinate(x,y) ) ) {
-                    stroke( 0, 0, 255 );
-                    rect( px, py, pixelPerField, pixelPerField );
-                }
-                if ( game.getEntity( selectedEntity ).getPos().equals( new Coordinate(x,y) ) ) {
-                    stroke( 255, 0, 0 );
-                    rect( px, py, pixelPerField, pixelPerField );
-                }
-                stroke( 0, 0, 0 );
-                strokeWeight( 1 );
+
             }
         }
-        List<Entity> entities = game.getEntities();
+        fill(0,0,0,0);
+        strokeWeight( 4 );
+        if ( hoveredEntity!= 0  ) {
+            stroke( 0, 0, 255 );
+            rect( game.getEntity(hoveredEntity-1).getPos().getX()*pixelPerField+offX, game.getEntity(hoveredEntity-1).getPos().getY()*pixelPerField+offY, pixelPerField, pixelPerField );
+        }
+        if ( selectedEntity != 0 ) {
+            stroke( 255, 0, 0 );
+            rect( game.getEntity(selectedEntity-1).getPos().getX()*pixelPerField+offX, game.getEntity(selectedEntity-1).getPos().getY()*pixelPerField+offY, pixelPerField, pixelPerField );
+        }
+        stroke( 0, 0, 0 );
+        strokeWeight( 1 );
         int i = 0;
         int len = entityColors.length;
-        for ( Entity entity: entities ) {
+        for ( Entity entity: game.getEntities() ) {
             if ( entity.isAlive() || entity.getStepsAlive() == game.getStepNum() ) {
                 Coordinate pos = entity.getPos();
                 image(sheep, (pos.getX()) * pixelPerField + offX, (pos.getY()) * pixelPerField + offY, pixelPerField, pixelPerField);
