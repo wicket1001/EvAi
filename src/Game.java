@@ -175,7 +175,7 @@ public class Game {
     private int entitiesOnField(Coordinate c) {
         int counter = 0;
         for (Entity e: entities) {
-            if (e.getPos().equals(c)) {
+            if (e.getPos().equals(c) && e.isAlive()) {
                 counter ++;
             }
         }

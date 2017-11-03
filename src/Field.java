@@ -8,9 +8,7 @@ class Field {
     /**
      * The resource of the field.
      */
-
     private Resource resource;
-    private int value;
     /**
      * How long it has still to regenerate.
      */
@@ -38,7 +36,6 @@ class Field {
     public String toString() {
         return "Field{" +
                 "resource=" + resource +
-                ", value=" + value +
                 ", idle=" + idle +
                 '}';
     }
@@ -62,18 +59,46 @@ class Field {
      * @return The resource and the number harvested.
      */
     Map<Resource, Integer> harvest(boolean tool) {
+        int value = 0;
         switch (resource) {
-            case food:
-                value = tool ? 25 : 3;
-            case water:
-                value = tool ? 25 : 3;
-            case wood:
-                value = tool ? 25 : 3;
-            case stone:
-                value = tool ? 25 : 3;
+            case food: {
+                value = harvestFood(tool);
+                break;
+            }
+            case water: {
+                value = harvestWater(tool);
+                break;
+            }
+            case wood: {
+                value = harvestWood(tool);
+                break;
+            }
+            case stone: {
+                value = harvestStone(tool);
+                break;
+            }
         }
         HashMap<Resource, Integer> harvested = new HashMap<>();
         harvested.put(resource, value);
         return harvested;
+    }
+
+    private int harvestFood(boolean tool) {
+        idle = 2;
+        return tool ? 25 : 3;
+    }
+
+    private int harvestWater(boolean tool) {
+        return tool ? 25 : 3;
+    }
+
+    private int harvestWood(boolean tool) {
+        idle = 2;
+        return tool ? 25 : 3;
+    }
+
+    private int harvestStone(boolean tool) {
+        idle = 2;
+        return tool ? 25 : 3;
     }
 }
