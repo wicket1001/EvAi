@@ -19,7 +19,7 @@ public class Game {
     private int generationNum =0 ;
 
     public Game() throws IOException {
-        world = new World("maps/map2.txt");
+        world = new World("maps/map3.txt");
         for (int i = 0; i < Settings.numEntities; i++) {
             entities.add(new Entity(
                     new Coordinate(
@@ -101,16 +101,36 @@ public class Game {
             }
         }
         */
+
+        List<Entity> sorted = new LinkedList<>();
+        sorted.addAll(entities);
+        Collections.sort( sorted );
+        while ( sorted.size() > entities.size() /4 ) {
+            sorted.remove( entities.size() /4 );
+        }
+        List<Entity> newEntities = new LinkedList<>();
+        for (int i = 0; i < Settings.numEntities; i++ ) {
+            newEntities.add(sorted.get((int) (Math.random() * sorted.size())).mutate(3, Settings.multiplierModification));
+            Coordinate co = null;
+            while ( co == null || entitiesOnField( co ) != 0 ) {
+                co = new Coordinate((int) (Math.random() * world.getWidth()), (int) (Math.random() * world.getHeight()));
+            }
+            newEntities.get(i).setPos( co );
+        }
+        /* quartant
+        List<Entity> sorted = new LinkedList<>();
+        sorted.addAll(entities);
+        Collections.sort( sorted );
         List<Entity> better = new LinkedList<>();
         better.addAll(entities);
         Collections.sort( better );
-        //better.forEach(entity -> System.out.print(entity.getPoints() + ", "));
+        better.forEach(entity -> System.out.print(entity.getPoints() + ", "));
         while ( better.size() > entities.size() /4 ) {
             better.remove( entities.size() /4 );
         }
-        //System.out.println();
-        //better.forEach(entity -> System.out.print(entity.getPoints() + ", "));
-        //System.out.println();
+        System.out.println();
+        better.forEach(entity -> System.out.print(entity.getPoints() + ", "));
+        System.out.println();
         List<Entity> newEntities = new LinkedList<>();
         for (int i = 0; i < Settings.numEntities; i++ ) {
             newEntities.add(better.get((int) (Math.random() * better.size())).mutate(3, Settings.multiplierModification));
@@ -120,6 +140,7 @@ public class Game {
             }
             newEntities.get(i).setPos( co );
         }
+        */
         int temp = stepNum;
         stepNum = 0;
         generationNum++;
