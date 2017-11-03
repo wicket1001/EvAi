@@ -21,7 +21,7 @@ public class Game {
         world = new World("maps/map2.txt");
         entities = new LinkedList<>();
         for (int i = 0; i < entities.size(); i++) {
-            entities.set(i, new Entity(
+            entities.add(new Entity(
                     new Coordinate(
                             (int) (Math.random() * world.getWidth()),
                             (int) (Math.random() * world.getHeight())
@@ -49,7 +49,7 @@ public class Game {
     }
 
     public Entity getEntity(int index) {
-        return getEntities().get(index);
+        return entities.get(index);
     }
 
     public int getStepNum() {
@@ -71,10 +71,8 @@ public class Game {
 
     public int doStep() {
         if (!everybodyDead()) {
-            for (Entity e: entities) {
-                if (e.isAlive()) {
-                    propagate(e);
-                }
+            for (Entity e: getEntitiesAlive()) {
+                propagate(e);
             }
             stepNum++;
             world.regenerate();
@@ -107,7 +105,7 @@ public class Game {
             better.remove( entities.size() /4 );
         }
         for (int i = 0; i < newEntities.size(); i++ ) {
-            newEntities.set(i, better.get((int) (Math.random() * better.size())).mutate(3, Settings.multiplierModification));
+            newEntities.add(better.get((int) (Math.random() * better.size())).mutate(3, Settings.multiplierModification));
             Coordinate co = null;
             while ( co == null || entitiesOnField( co ) != 0 ) {
                 co = new Coordinate((int) (Math.random() * world.getWidth()), (int) (Math.random() * world.getHeight()));
@@ -186,8 +184,8 @@ public class Game {
 
     private int entitiesOnField(Coordinate c) {
         int counter = 0;
-        for (Entity e: entities) {
-            if (e.getPos().equals(c) && e.isAlive()) {
+        for (Entity e: getEntitiesAlive()) {
+            if (e.getPos().equals(c)) {
                 counter ++;
             }
         }
