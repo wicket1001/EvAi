@@ -20,7 +20,7 @@ public class Game {
     public Game() throws IOException {
         world = new World("maps/map2.txt");
         entities = new LinkedList<>();
-        for (int i = 0; i < entities.size(); i++) {
+        for (int i = 0; i < Settings.numEntities; i++) {
             entities.add(new Entity(
                     new Coordinate(
                             (int) (Math.random() * world.getWidth()),
