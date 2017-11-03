@@ -19,7 +19,7 @@ public class Game {
     private int generationNum =0 ;
 
     public Game() throws IOException {
-        world = new World("maps/map3.txt");
+        world = new World("maps/map2.txt");
         for (int i = 0; i < Settings.numEntities; i++) {
             entities.add(new Entity(
                     new Coordinate(
@@ -69,6 +69,15 @@ public class Game {
         int maxSteps = -1;
         while ( maxSteps == -1 ) {
             maxSteps = doStep();
+        }
+        Main.genNum++;
+        Main.genSum += maxSteps;
+        Main.lastSteps = maxSteps;
+        int last = maxSteps;
+        for ( int i = 0; i < Main.lastGens.length; i++ ) {
+            int var = Main.lastGens[i];
+            Main.lastGens[i] = last;
+            last = var;
         }
         return maxSteps;
     }

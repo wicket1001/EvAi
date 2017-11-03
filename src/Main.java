@@ -1,4 +1,9 @@
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingDeque;
 
 import processing.core.PApplet;
 import processing.core.PImage;
@@ -13,6 +18,15 @@ public class Main extends PApplet {
     private float minHeight = 300;
     private int hoveredEntity = 0;
     private int selectedEntity = 1;
+
+    public static int genNum = 0;
+    public static int genSum = 0;
+
+    public static int lastSteps = 0;
+    public static int[] lastGens = new int[1000];
+
+
+    Thread thread;
 
     PImage sheep;
 
@@ -54,6 +68,9 @@ public class Main extends PApplet {
         drawWorld();
         drawNetwork( game.getEntity((hoveredEntity == 0)? selectedEntity-1 : hoveredEntity-1).getNetwork() );
         drawDebug();
+        if ( thread != null && !thread.isAlive() ) {
+            thread = null;
+        }
     }
 
     public void keyPressed() {
@@ -61,12 +78,14 @@ public class Main extends PApplet {
         int steps = 1;
         if ( keyCode == ' ' ) {
             game.doStep();
-        } else if ( keyCode == ENTER ) {
+        } else if ( thread == null && keyCode == ENTER ) {
             Runnable run = new ComputeGenerations( 1, game );
-            new Thread(run).start();
-        } else if ( keyCode >= '1' && keyCode <= '5' ) {
+            thread = new Thread(run);
+            thread.start();
+        } else if ( thread == null && keyCode >= '1' && keyCode <= '5' ) {
             Runnable run = new ComputeGenerations( (int) Math.pow( 10, keyCode - '1' + 1 ), game );
-            new Thread(run).start();
+            thread = new Thread(run);
+            thread.start();
         }
     }
 
@@ -265,7 +284,13 @@ public class Main extends PApplet {
         }
         id = bid;
         fill(0,0,0);
-        text("Time: "+game.getGenerationNum()+"/"+game.getStepNum()+"\nBest: #"+id+", "+best.getPoints()+", "+best.getPos() + "\nSelected: #"+(selectedEntity-1)+", "+game.getEntity(selectedEntity-1).getPos()+" \nHovered: "+ ((hoveredEntity!=0)?"#" + (hoveredEntity-1) + ", " + game.getEntity(hoveredEntity-1).getPos(): ("None")), 10, 100);
+        double avg = (double) genSum / genNum;
+        double avg2 = 0;
+        for ( int i: lastGens ) {
+            avg2 += i;
+        }
+        avg2 /= lastGens.length;
+        text("Generation/Step: "+game.getGenerationNum()+"/"+game.getStepNum()+"\nAverage: "+String.format("%.3f",avg)+"\nAverage (Last "+lastGens.length+"): "+String.format("%.3f",avg2)+"\nLast: "+lastSteps+"\nBest: #"+id+", "+best.getPoints()+", "+best.getPos() + "\nSelected: #"+(selectedEntity-1)+", "+game.getEntity(selectedEntity-1).getPos()+" \nHovered: "+ ((hoveredEntity!=0)?"#" + (hoveredEntity-1) + ", " + game.getEntity(hoveredEntity-1).getPos(): ("None")), 10, 100);
     }
 
 }

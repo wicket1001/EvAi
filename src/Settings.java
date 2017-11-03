@@ -4,7 +4,7 @@ public class Settings {
     static double range = maxNode - minNode;
     static int numView = 9;
     static int[] layers = {Item.values().length + Settings.numView + 1, 6, 2 };
-    static int numEntities = 100;
+    static int numEntities = 64;
     static double multiplierModification = 0.125;
 
     static int doubleToIndex(double value, int size) {

@@ -5,19 +5,20 @@ public class ComputeGenerations implements Runnable {
 
     private int maxGenNum;
     private Game game;
+    private int genNum;
+    private double sum;
 
     ComputeGenerations(int maxGenNum, Game game ) {
         this.maxGenNum = maxGenNum;
         this.game = game;
+        this.genNum = 0;
+        this.sum = 0;
     }
 
     public void run() {
-        double avg = 0;
-        for ( int i = 0; i < maxGenNum; i++ ) {
-            avg += game.propagateGeneration();
+        for ( int genNum = 0; genNum < maxGenNum; genNum++ ) {
+            sum += game.propagateGeneration();
         }
-        avg /= maxGenNum;
-        System.out.println( "Steps: "+avg );
     }
 
 }
