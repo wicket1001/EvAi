@@ -30,6 +30,10 @@ class Field {
         return resource;
     }
 
+    public int getIdleTime() {
+        return idle;
+    }
+
     @Override
     public String toString() {
         return "Field{" +

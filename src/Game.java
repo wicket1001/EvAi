@@ -40,6 +40,10 @@ public class Game {
         return entities;
     }
 
+    public int getStepNum() {
+        return stepNum;
+    }
+
     @Override
     public String toString() {
         return "Game";

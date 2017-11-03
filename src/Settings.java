@@ -3,7 +3,7 @@ public class Settings {
     static double maxNode = 1.0;
     static double range = maxNode - minNode;
     static int numView = 9;
-    static int[] layers = {Item.values().length + Settings.numView + 1, 8, 6, 2 };
+    static int[] layers = {Item.values().length + Settings.numView + 1, 6, 2 };
     static int numEntities = 64;
     static double multiplierModification = 0.125;
 
