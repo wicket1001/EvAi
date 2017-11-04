@@ -21,12 +21,22 @@ public class Game {
     public Game() throws IOException {
         world = new World("maps/map2.txt");
         for (int i = 0; i < Settings.numEntities; i++) {
-            entities.add(new Entity(
-                    new Coordinate(
-                            (int) (Math.random() * world.getWidth()),
-                            (int) (Math.random() * world.getHeight())
-                    ),
-                    Settings.layers));
+            entities.add(generateRandomEntity());
+        }
+        arrangeEntityPositions(entities);
+    }
+
+    private Entity generateRandomEntity() {
+        return new Entity(null, Settings.layers);
+    }
+
+    private void arrangeEntityPositions(List<Entity> e) {
+        for (int i = 0; i < e.size(); i++ ) {
+            Coordinate co = null;
+            while ( co == null || entitiesOnField( co ) != 0 ) {
+                co = new Coordinate((int) (Math.random() * world.getWidth()), (int) (Math.random() * world.getHeight()));
+            }
+            e.get(i).setPos( co );
         }
     }
 
@@ -111,22 +121,39 @@ public class Game {
         }
         */
 
+        double dieFactor = 2.0;
+
         List<Entity> sorted = new LinkedList<>();
         sorted.addAll(entities);
         Collections.sort( sorted );
-        while ( sorted.size() > entities.size() /4 ) {
-            sorted.remove( entities.size() /4 );
-        }
+
         List<Entity> newEntities = new LinkedList<>();
-        for (int i = 0; i < Settings.numEntities; i++ ) {
-            newEntities.add(sorted.get((int) (Math.random() * sorted.size())).mutate(3, Settings.multiplierModification));
-            Coordinate co = null;
-            while ( co == null || entitiesOnField( co ) != 0 ) {
-                co = new Coordinate((int) (Math.random() * world.getWidth()), (int) (Math.random() * world.getHeight()));
+        int index = 0;
+        for (; index < sorted.size() && newEntities.size() < Settings.numEntities; index ++) {
+            double sum = 0;
+            for (int j = 0; j < Settings.durchgaenge; j++) {
+                sum += sorted.get(index).getPoints() * Math.random();
             }
-            newEntities.get(i).setPos( co );
+            sum /= Settings.durchgaenge;
+            if (sum > 1 / dieFactor) {
+                newEntities.add(sorted.get(index));
+                newEntities.add(sorted.get(index));
+            }
         }
-        /* quartant
+        if (index != 50) {
+            System.out.println("Varianz hat zugeschlagen");
+        }
+        for (Entity e: newEntities) {
+            e.mutate(Settings.connectionsToMutate, Settings.multiplierModification);
+        }
+        for (int i = 0; i < Settings.numEntities - newEntities.size(); i++) {
+            newEntities.add(generateRandomEntity());
+        }
+        arrangeEntityPositions(newEntities);
+        if (newEntities.size() < Settings.numEntities) {
+            System.out.println("Something went terribly wrong: " + newEntities.size());
+        }
+        /* quadrant
         List<Entity> sorted = new LinkedList<>();
         sorted.addAll(entities);
         Collections.sort( sorted );
@@ -154,6 +181,7 @@ public class Game {
         stepNum = 0;
         generationNum++;
         entities = newEntities;
+        entities.forEach(entity -> System.out.println(entity));
         return temp;
     }
 
@@ -223,7 +251,7 @@ public class Game {
     private int entitiesOnField(Coordinate c) {
         int counter = 0;
         for (Entity e: getEntitiesAlive()) {
-            if (e.getPos().equals(c)) {
+            if (e.getPos() != null && e.getPos().equals(c)) {
                 counter ++;
             }
         }
