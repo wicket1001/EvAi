@@ -10,6 +10,8 @@ import processing.core.PImage;
 
 public class Main extends PApplet {
 
+    private DisposeHandler dh;
+
     private Game game;
     private float pixelPerField = 20;
     private float offX = 0;
@@ -18,6 +20,8 @@ public class Main extends PApplet {
     private float minHeight = 300;
     private int hoveredEntity = 0;
     private int selectedEntity = 1;
+
+    public static boolean stopThread = false;
 
     public static int genNum = 0;
     public static int genSum = 0;
@@ -50,6 +54,7 @@ public class Main extends PApplet {
     }
 
     public void setup() {
+        dh = new DisposeHandler(this);
         surface.setResizable(true);
         surface.setTitle( "EvAI - Evolution AI" );
         frameRate(50);
@@ -60,6 +65,7 @@ public class Main extends PApplet {
             exit();
         }
         sheep = loadImage("res/sheep.png");
+
     }
 
     public void draw() {
@@ -76,15 +82,18 @@ public class Main extends PApplet {
     public void keyPressed() {
         double sum = 0.0;
         int steps = 1;
-        if ( keyCode == ' ' ) {
+        if ( ( thread == null || thread.isInterrupted() ) && keyCode == ENTER ) {
             game.doStep();
-        } else if ( thread == null && keyCode == ENTER ) {
-            Runnable run = new ComputeGenerations( 1, game );
+        } else if ( thread == null && keyCode >= '1' && keyCode <= '9' ) {
+            Runnable run = new ComputeGenerations( (int) Math.pow( 10, keyCode - '1' ), game );
             thread = new Thread(run);
             thread.start();
-        } else if ( thread == null && keyCode >= '1' && keyCode <= '5' ) {
-            Runnable run = new ComputeGenerations( (int) Math.pow( 10, keyCode - '1' + 1 ), game );
-            thread = new Thread(run);
+        } else if ( thread != null && !thread.isInterrupted() && keyCode == ' ' ) {
+            System.out.println("INT");
+            thread.interrupt();
+            System.out.println("HI");
+        } else if ( thread != null && thread.isInterrupted() && keyCode == ' ' ) {
+            System.out.println("RUN");
             thread.start();
         }
     }
@@ -291,6 +300,15 @@ public class Main extends PApplet {
         }
         avg2 /= lastGens.length;
         text("Generation/Step: "+game.getGenerationNum()+"/"+game.getStepNum()+"\nAverage: "+String.format("%.3f",avg)+"\nAverage (Last "+lastGens.length+"): "+String.format("%.3f",avg2)+"\nLast: "+lastSteps+"\nBest: #"+id+", "+best.getPoints()+", "+best.getPos() + "\nSelected: #"+(selectedEntity-1)+", "+game.getEntity(selectedEntity-1).getPos()+" \nHovered: "+ ((hoveredEntity!=0)?"#" + (hoveredEntity-1) + ", " + game.getEntity(hoveredEntity-1).getPos(): ("None")), 10, 100);
+    }
+
+    public class DisposeHandler {
+        DisposeHandler(PApplet pa) {
+            pa.registerMethod("dispose", this);
+        }
+        public void dispose() {
+            Main.stopThread = true;
+        }
     }
 
 }
