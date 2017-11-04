@@ -21,7 +21,7 @@ public class Main extends PApplet {
     private int hoveredEntity = 0;
     private int selectedEntity = 1;
 
-    public static boolean stopThread = false;
+    public static boolean pause = false;
 
     public static int genNum = 0;
     public static int genSum = 0;
@@ -82,19 +82,17 @@ public class Main extends PApplet {
     public void keyPressed() {
         double sum = 0.0;
         int steps = 1;
-        if ( ( thread == null || thread.isInterrupted() ) && keyCode == ENTER ) {
+        if ( ( thread == null || pause ) && keyCode == ENTER ) {
             game.doStep();
         } else if ( thread == null && keyCode >= '1' && keyCode <= '9' ) {
             Runnable run = new ComputeGenerations( (int) Math.pow( 10, keyCode - '1' ), game );
             thread = new Thread(run);
             thread.start();
-        } else if ( thread != null && !thread.isInterrupted() && keyCode == ' ' ) {
-            System.out.println("INT");
-            thread.interrupt();
-            System.out.println("HI");
-        } else if ( thread != null && thread.isInterrupted() && keyCode == ' ' ) {
-            System.out.println("RUN");
-            thread.start();
+        } else if ( thread != null && !pause && keyCode == ' ' ) {
+            pause = true;
+        } else if ( thread != null && pause && keyCode == ' ' ) {
+            System.out.println("PAUSENOT");
+            pause = false;
         }
     }
 
@@ -307,7 +305,8 @@ public class Main extends PApplet {
             pa.registerMethod("dispose", this);
         }
         public void dispose() {
-            Main.stopThread = true;
+            pause = false;
+            thread.interrupt();
         }
     }
 

@@ -18,8 +18,15 @@ public class ComputeGenerations implements Runnable {
     public void run() {
         for ( int genNum = 0; genNum < maxGenNum; genNum++ ) {
             sum += game.propagateGeneration();
-            if ( Main.stopThread ) {
-                break;
+            while ( Main.pause ) {
+                try {
+                    Thread.sleep(50);
+                } catch (Exception e) {
+                    return;
+                }
+            }
+            if ( Thread.interrupted() ) {
+                return;
             }
         }
     }
