@@ -91,8 +91,9 @@ public class Main extends PApplet {
         } else if ( thread != null && !pause && keyCode == ' ' ) {
             pause = true;
         } else if ( thread != null && pause && keyCode == ' ' ) {
-            System.out.println("PAUSENOT");
             pause = false;
+        } else if ( thread != null && keyCode == TAB ) {
+            thread.interrupt();
         }
     }
 
@@ -306,7 +307,9 @@ public class Main extends PApplet {
         }
         public void dispose() {
             pause = false;
-            thread.interrupt();
+            if ( thread != null ) {
+                thread.interrupt();
+            }
         }
     }
 

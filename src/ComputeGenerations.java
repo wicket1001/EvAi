@@ -16,7 +16,8 @@ public class ComputeGenerations implements Runnable {
     }
 
     public void run() {
-        for ( int genNum = 0; genNum < maxGenNum; genNum++ ) {
+        int max = Main.genNum + maxGenNum;
+        while ( Main.genNum < max ) {
             sum += game.propagateGeneration();
             while ( Main.pause ) {
                 try {
