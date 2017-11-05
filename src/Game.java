@@ -80,7 +80,6 @@ public class Game {
         while ( maxSteps == -1 ) {
             maxSteps = doStep();
         }
-        Main.genNum++;
         Main.genSum += maxSteps;
         Main.lastSteps = maxSteps;
         int last = maxSteps;
@@ -106,6 +105,7 @@ public class Game {
     }
 
     private int createNewGeneration() {
+        Main.genNum++;
         //System.out.println("Generation #"+generationNum+" finished ("+stepNum+" Steps)");
         /*
         double average = 0;
@@ -136,16 +136,16 @@ public class Game {
             }
             sum /= Settings.durchgaenge;
             if (sum > 1 / dieFactor) {
-                newEntities.add(sorted.get(index));
-                newEntities.add(sorted.get(index));
+                newEntities.add(sorted.get(index).mutate(3,0.125));
+                newEntities.add(sorted.get(index).mutate(3,0.125));
             }
         }
         if (index != 50) {
             System.out.println("Varianz hat zugeschlagen");
         }
-        for (Entity e: newEntities) {
+        /*for (Entity e: newEntities) {
             e.mutate(Settings.connectionsToMutate, Settings.multiplierModification);
-        }
+        }*/
         for (int i = 0; i < Settings.numEntities - newEntities.size(); i++) {
             newEntities.add(generateRandomEntity());
         }
@@ -181,7 +181,7 @@ public class Game {
         stepNum = 0;
         generationNum++;
         entities = newEntities;
-        entities.forEach(entity -> System.out.println(entity));
+        //entities.forEach(entity -> System.out.println(entity));
         return temp;
     }
 
