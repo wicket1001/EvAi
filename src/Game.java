@@ -136,8 +136,8 @@ public class Game {
             }
             sum /= Settings.durchgaenge;
             if (sum > 1 / dieFactor) {
-                newEntities.add(sorted.get(index).mutate(3,0.125));
-                newEntities.add(sorted.get(index).mutate(3,0.125));
+                newEntities.add(sorted.get(index).mutate(4,0.0625));
+                newEntities.add(sorted.get(index).mutate(4,0.0625));
             }
         }
         if (index != 50) {
