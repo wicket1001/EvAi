@@ -19,7 +19,7 @@ public class Settings {
         throw new IllegalArgumentException("Impossible Index: " + value + " in size: " + size);
     }
 
-    static int fromDoubleArrayToIndex(double[] array) {
+    static int maxIndex(double[] array) {
         int index = 0;
         double max = 0;
         for (int i = 0; i < array.length; i++) {

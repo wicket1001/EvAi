@@ -1,0 +1,5 @@
+Input can be several information at once e.g. field resource is one double, but the information of the field and the resource is given.
+Output cannot be several information at once e.g. multiple actions in one output node.
+You have to make a probability for every action and then the action is the one with the most probability.
+
+
