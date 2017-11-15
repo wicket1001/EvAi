@@ -26,8 +26,8 @@ public class Main extends PApplet {
     public static int genNum = 0;
     public static int genSum = 0;
 
-    public static int lastSteps = 0;
-    public static int[] lastGens = new int[1000];
+    public static double lastSteps = 0;
+    public static double[] lastGens = new double[1000];
 
 
     Thread thread;
@@ -294,7 +294,7 @@ public class Main extends PApplet {
         fill(0,0,0);
         double avg = (double) genSum / genNum;
         double avg2 = 0;
-        for ( int i: lastGens ) {
+        for ( double i: lastGens ) {
             avg2 += i;
         }
         avg2 /= lastGens.length;

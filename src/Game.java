@@ -75,23 +75,23 @@ public class Game {
         return "Game";
     }
 
-    public int propagateGeneration() {
-        int maxSteps = -1;
+    public double propagateGeneration() {
+        double maxSteps = -1;
         while ( maxSteps == -1 ) {
             maxSteps = doStep();
         }
         Main.genSum += maxSteps;
         Main.lastSteps = maxSteps;
-        int last = maxSteps;
+        double last = maxSteps;
         for ( int i = 0; i < Main.lastGens.length; i++ ) {
-            int var = Main.lastGens[i];
+            double var = Main.lastGens[i];
             Main.lastGens[i] = last;
             last = var;
         }
         return maxSteps;
     }
 
-    public int doStep() {
+    public double doStep() {
         if (!everybodyDead()) {
             for (Entity e: getEntitiesAlive()) {
                 propagate(e);
@@ -104,7 +104,7 @@ public class Game {
         }
     }
 
-    private int createNewGeneration() {
+    private double createNewGeneration() {
         Main.genNum++;
         //System.out.println("Generation #"+generationNum+" finished ("+stepNum+" Steps)");
         /*
@@ -177,12 +177,16 @@ public class Game {
             newEntities.get(i).setPos( co );
         }
         */
-        int temp = stepNum;
+        double avg = 0;
+        for ( Entity e: entities ) {
+            avg += e.getStepsAlive();
+        }
+        avg /= entities.size();
         stepNum = 0;
         generationNum++;
         entities = newEntities;
         //entities.forEach(entity -> System.out.println(entity));
-        return temp;
+        return avg;
     }
 
     private boolean everybodyDead() {
