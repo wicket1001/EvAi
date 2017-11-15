@@ -21,6 +21,8 @@ public class Main extends PApplet {
     private int hoveredEntity = 0;
     private int selectedEntity = 1;
 
+    public static List<Entity> lastGenEntitites = new LinkedList<>();
+
     public static boolean pause = false;
 
     public static int genNum = 0;
@@ -300,58 +302,108 @@ public class Main extends PApplet {
         avg2 /= lastGens[0].length;
         text("Generation/Step: "+game.getGenerationNum()+"/"+game.getStepNum()+"\nAverage: "+String.format("%.3f",avg)+"\nAverage (Last "+lastGens[0].length+"): "+String.format("%.3f",avg2)+"\nLast: "+lastSteps+"\nBest: #"+id+", "+best.getPoints()+", "+best.getPos() + "\nSelected: #"+(selectedEntity-1)+", "+game.getEntity(selectedEntity-1).getPos()+" \nHovered: "+ ((hoveredEntity!=0)?"#" + (hoveredEntity-1) + ", " + game.getEntity(hoveredEntity-1).getPos(): ("None")), 10, 100);
 
-        fill( 128, 128, 128 );
-        stroke( 64, 64, 64 );
-        rect( 25, height - 350 - 25, 350, 350 );
+        {
+            fill(128, 128, 128);
+            stroke(64, 64, 64);
+            rect(25, height - 350 - 25, 350, 350);
 
-        fill(0,0,0);
+            fill(0, 0, 0);
 
-        float max = 80;
-        for ( double m: lastGens[2] ) {
-            if ( m > max ) {
-                max = (float) m;
+            float max = 80;
+            for (double m : lastGens[2]) {
+                if (m > max) {
+                    max = (float) m;
+                }
             }
+            max += 10;
+            max = (float) Math.ceil(max / 10) * 10;
+            text(max + " Steps", 25, height - 350 - 25 - 5);
+
+            float[] avgLast = new float[3];
+
+            float w = 350;
+            float h = 350;
+            float dx = 25;
+            float dy = height - 375;
+
+            float wp = w / lastGens[0].length;
+
+            for (int i = lastGens.length - 1; i >= 0; i--) {
+                double[] all = lastGens[i];
+                switch (i) {
+                    case 0:
+                        fill(255, 0, 0);
+                        stroke(255, 0, 0);
+                        break;
+                    case 1:
+                        fill(255, 255, 0);
+                        stroke(255, 255, 0);
+                        break;
+                    case 2:
+                        fill(0, 128, 0);
+                        stroke(0, 128, 0);
+                        break;
+                }
+                for (int j = all.length - 1; j >= 0; j--) {
+                    avgLast[i] += all[j];
+                    float v = (float) all[j];
+                    float vh = v / max * h;
+                    rect(dx + w - wp * (j), dy + h - vh, wp, vh);
+                }
+                avgLast[i] /= lastGens[i].length;
+                avgLast[i] *= h / max;
+            }
+
+            stroke(0, 64, 0);
+            line(dx, dy + h - avgLast[2], dx + w, dy + h - avgLast[2]);
+            stroke(128, 128, 0);
+            line(dx, dy + h - avgLast[1], dx + w, dy + h - avgLast[1]);
+            stroke(128, 0, 0);
+            line(dx, dy + h - avgLast[0], dx + w, dy + h - avgLast[0]);
+
+            stroke(0, 0, 0);
+            fill(0, 0, 0, 0);
+            rect(25, height - 350 - 25, 350, 350);
         }
-        max += 10;
-        max = (float) Math.ceil( max/10 )*10;
-        text( max + " Steps", 25, height - 350 - 25 - 5 );
 
-        float[] avgLast = new float[3];
+        {
+            float w = 350;
+            float dx = 25;
+            float dy = height - 400 - 100 - 25;
+            float h = 100;
 
-        float w = 350;
-        float h = 350;
-        float dx = 25;
-        float dy = height - 375;
-
-        float wp = w / lastGens[0].length;
-
-        for (int i = lastGens.length-1; i >= 0; i--) {
-            double[] all = lastGens[i];
-            switch (i) {
-                case 0: fill( 255, 0, 0 ); stroke( 255, 0, 0 ); break;
-                case 1: fill( 255, 255, 0 ); stroke( 255, 255, 0 ); break;
-                case 2: fill( 0, 128, 0 ); stroke( 0, 128, 0 ); break;
+            float max = 0;
+            for ( Entity e: lastGenEntitites ) {
+                if ( e.getStepsAlive() > max ) {
+                    max = e.getStepsAlive();
+                }
             }
-            for (int j = all.length-1; j >= 0; j--) {
-                avgLast[i] += all[j];
-                float v = (float) all[j];
-                float vh = v/max * h;
-                rect( dx + w - wp*(j), dy + h - vh, wp, vh );
+            max = (float) Math.ceil( (max + 25)/100 )*100;
+
+            fill(128, 128, 128);
+            stroke(64, 64, 64);
+            rect(dx, dy, w, h);
+
+            fill(0, 0, 0);
+            text(max + " Steps", dx, dy - 5);
+
+            float vp = h / max;
+            float vw = w / lastGenEntitites.size();
+
+            fill(0,0,0);
+            stroke(0,0,0);
+
+            for (int i = 0; i < lastGenEntitites.size(); i++) {
+                Entity e = lastGenEntitites.get(i);
+                float v = vp * e.getStepsAlive();
+                rect( dx + i*vw, dy + h - v, vw, v );
             }
-            avgLast[i] /= lastGens[i].length;
-            avgLast[i] *= h / max;
+
         }
 
-        stroke( 0, 64, 0 );
-        line( dx, dy + h - avgLast[2], dx + w, dy + h - avgLast[2] );
-        stroke( 128, 128, 0 );
-        line( dx, dy + h - avgLast[1], dx + w, dy + h - avgLast[1] );
-        stroke( 128, 0, 0 );
-        line( dx, dy + h - avgLast[0], dx + w, dy + h - avgLast[0] );
 
-        stroke(0,0,0);
-        fill( 0,0,0,0 );
-        rect( 25, height - 350 - 25, 350, 350 );
+
+
 
     }
 
