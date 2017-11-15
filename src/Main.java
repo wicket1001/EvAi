@@ -306,13 +306,17 @@ public class Main extends PApplet {
 
         fill(0,0,0);
 
-        float max = 100;
+        float max = 80;
         for ( double m: lastGens[2] ) {
             if ( m > max ) {
-                max = (float) m + 20;
+                max = (float) m;
             }
         }
+        max += 10;
+        max = (float) Math.ceil( max/10 )*10;
         text( max + " Steps", 25, height - 350 - 25 - 5 );
+
+        float[] avgLast = new float[3];
 
         float w = 350;
         float h = 350;
@@ -329,13 +333,25 @@ public class Main extends PApplet {
                 case 2: fill( 0, 128, 0 ); stroke( 0, 128, 0 ); break;
             }
             for (int j = all.length-1; j >= 0; j--) {
+                avgLast[i] += all[j];
                 float v = (float) all[j];
                 float vh = v/max * h;
                 rect( dx + w - wp*(j), dy + h - vh, wp, vh );
             }
+            avgLast[i] /= lastGens[i].length;
+            avgLast[i] *= h / max;
         }
 
+        stroke( 0, 64, 0 );
+        line( dx, dy + h - avgLast[2], dx + w, dy + h - avgLast[2] );
+        stroke( 128, 128, 0 );
+        line( dx, dy + h - avgLast[1], dx + w, dy + h - avgLast[1] );
+        stroke( 128, 0, 0 );
+        line( dx, dy + h - avgLast[0], dx + w, dy + h - avgLast[0] );
+
         stroke(0,0,0);
+        fill( 0,0,0,0 );
+        rect( 25, height - 350 - 25, 350, 350 );
 
     }
 

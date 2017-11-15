@@ -156,8 +156,8 @@ public class Game {
             }
             sum /= Settings.durchgaenge;
             if (sum > dieFactor) {
-                newEntities.add(sorted.get(index).mutate(2,0.125));
-                newEntities.add(sorted.get(index).mutate(2,0.125));
+                newEntities.add(sorted.get(index).mutate(Settings.connectionsToMutate,Settings.multiplierModification));
+                newEntities.add(sorted.get(index).mutate(Settings.connectionsToMutate,Settings.multiplierModification));
             }
         }
         /*
