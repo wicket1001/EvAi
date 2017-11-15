@@ -121,31 +121,31 @@ public class Game {
         }
         */
 
-        double dieFactor = 2.0;
+        double dieFactor = 50 / 100D;
 
         List<Entity> sorted = new LinkedList<>();
         sorted.addAll(entities);
         Collections.sort( sorted );
+        double max = Collections.max(sorted).getPoints();
 
         List<Entity> newEntities = new LinkedList<>();
         int index = 0;
         for (; index < sorted.size() && newEntities.size() < Settings.numEntities; index ++) {
             double sum = 0;
             for (int j = 0; j < Settings.durchgaenge; j++) {
-                sum += sorted.get(index).getPoints() * Math.random();
+                sum += (sorted.get(index).getPoints() / max) * Math.random();
             }
             sum /= Settings.durchgaenge;
-            if (sum > 1 / dieFactor) {
+            if (sum > dieFactor) {
                 newEntities.add(sorted.get(index).mutate(2,0.125));
                 newEntities.add(sorted.get(index).mutate(2,0.125));
             }
         }
-        if (index != 50) {
+        /*
+        if (index >= Settings.numEntities / 2) {
             System.out.println("Varianz hat zugeschlagen");
         }
-        /*for (Entity e: newEntities) {
-            e.mutate(Settings.connectionsToMutate, Settings.multiplierModification);
-        }*/
+        */
         for (int i = 0; i < Settings.numEntities - newEntities.size(); i++) {
             newEntities.add(generateRandomEntity());
         }
