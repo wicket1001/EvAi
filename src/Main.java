@@ -27,7 +27,7 @@ public class Main extends PApplet {
     public static int genSum = 0;
 
     public static double lastSteps = 0;
-    public static double[] lastGens = new double[1000];
+    public static double[][] lastGens = new double[3][1000];
 
 
     Thread thread;
@@ -294,11 +294,49 @@ public class Main extends PApplet {
         fill(0,0,0);
         double avg = (double) genSum / genNum;
         double avg2 = 0;
-        for ( double i: lastGens ) {
+        for ( double i: lastGens[1] ) {
             avg2 += i;
         }
-        avg2 /= lastGens.length;
-        text("Generation/Step: "+game.getGenerationNum()+"/"+game.getStepNum()+"\nAverage: "+String.format("%.3f",avg)+"\nAverage (Last "+lastGens.length+"): "+String.format("%.3f",avg2)+"\nLast: "+lastSteps+"\nBest: #"+id+", "+best.getPoints()+", "+best.getPos() + "\nSelected: #"+(selectedEntity-1)+", "+game.getEntity(selectedEntity-1).getPos()+" \nHovered: "+ ((hoveredEntity!=0)?"#" + (hoveredEntity-1) + ", " + game.getEntity(hoveredEntity-1).getPos(): ("None")), 10, 100);
+        avg2 /= lastGens[0].length;
+        text("Generation/Step: "+game.getGenerationNum()+"/"+game.getStepNum()+"\nAverage: "+String.format("%.3f",avg)+"\nAverage (Last "+lastGens[0].length+"): "+String.format("%.3f",avg2)+"\nLast: "+lastSteps+"\nBest: #"+id+", "+best.getPoints()+", "+best.getPos() + "\nSelected: #"+(selectedEntity-1)+", "+game.getEntity(selectedEntity-1).getPos()+" \nHovered: "+ ((hoveredEntity!=0)?"#" + (hoveredEntity-1) + ", " + game.getEntity(hoveredEntity-1).getPos(): ("None")), 10, 100);
+
+        fill( 128, 128, 128 );
+        stroke( 64, 64, 64 );
+        rect( 25, height - 350 - 25, 350, 350 );
+
+        fill(0,0,0);
+
+        float max = 100;
+        for ( double m: lastGens[2] ) {
+            if ( m > max ) {
+                max = (float) m + 20;
+            }
+        }
+        text( max + " Steps", 25, height - 350 - 25 - 5 );
+
+        float w = 350;
+        float h = 350;
+        float dx = 25;
+        float dy = height - 375;
+
+        float wp = w / lastGens[0].length;
+
+        for (int i = lastGens.length-1; i >= 0; i--) {
+            double[] all = lastGens[i];
+            switch (i) {
+                case 0: fill( 255, 0, 0 ); stroke( 255, 0, 0 ); break;
+                case 1: fill( 255, 255, 0 ); stroke( 255, 255, 0 ); break;
+                case 2: fill( 0, 128, 0 ); stroke( 0, 128, 0 ); break;
+            }
+            for (int j = all.length-1; j >= 0; j--) {
+                float v = (float) all[j];
+                float vh = v/max * h;
+                rect( dx + w - wp*(j), dy + h - vh, wp, vh );
+            }
+        }
+
+        stroke(0,0,0);
+
     }
 
     public class DisposeHandler {

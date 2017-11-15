@@ -18,7 +18,7 @@ public class Game {
     private int generationNum =0 ;
 
     public Game() throws IOException {
-        world = new World("maps/map.png");
+        world = new World("maps/map2.txt");
         for (int i = 0; i < Settings.numEntities; i++) {
             entities.add(generateRandomEntity());
         }
@@ -75,19 +75,39 @@ public class Game {
     }
 
     public double propagateGeneration() {
-        double maxSteps = -1;
-        while ( maxSteps == -1 ) {
-            maxSteps = doStep();
+        double avgSteps = -1;
+        double last0 = 0;
+        double last2 = 0;
+        while ( avgSteps == -1 ) {
+            last0 = entities.get(0).getStepsAlive();
+            last2 = 0;
+            for ( Entity e: entities ) {
+                if ( e.getStepsAlive() > last2 ) {
+                    last2 = e.getStepsAlive();
+                }
+                if ( e.getStepsAlive() < last0 ) {
+                    last0 = e.getStepsAlive();
+                }
+            }
+            avgSteps = doStep();
         }
-        Main.genSum += maxSteps;
-        Main.lastSteps = maxSteps;
-        double last = maxSteps;
-        for ( int i = 0; i < Main.lastGens.length; i++ ) {
-            double var = Main.lastGens[i];
-            Main.lastGens[i] = last;
-            last = var;
+        Main.genSum += avgSteps;
+        Main.lastSteps = avgSteps;
+
+        double last1 = avgSteps;
+
+        for ( int i = 0; i < Main.lastGens[0].length; i++ ) {
+            double var0 = Main.lastGens[0][i];
+            double var1 = Main.lastGens[1][i];
+            double var2 = Main.lastGens[2][i];
+            Main.lastGens[0][i] = last0;
+            Main.lastGens[1][i] = last1;
+            Main.lastGens[2][i] = last2;
+            last0 = var0;
+            last1 = var1;
+            last2 = var2;
         }
-        return maxSteps;
+        return avgSteps;
     }
 
     public double doStep() {
