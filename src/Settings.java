@@ -3,7 +3,7 @@ public class Settings {
     static double maxNode = 1.0;
     static double range = maxNode - minNode;
     static int numView = 9;
-    static int[] layers = {Item.values().length + Settings.numView + 1, 6, 2 };
+    static int[] layers = {Item.values().length + Settings.numView + 1, 6, Action.values().length + CardinalDirection.values().length };
     static int numEntities = 100;
     static double multiplierModification = 0.125;
     static int durchgaenge = 10; // je mehr desto weniger Varianz
@@ -17,6 +17,18 @@ public class Settings {
             }
         }
         throw new IllegalArgumentException("Impossible Index: " + value + " in size: " + size);
+    }
+
+    static int fromDoubleArrayToIndex(double[] array) {
+        int index = 0;
+        double max = 0;
+        for (int i = 0; i < array.length; i++) {
+            if (array[i] > max) {
+                index = i;
+                max = array[i];
+            }
+        }
+        return index;
     }
 
     static double indexToDouble(int index, int size) {

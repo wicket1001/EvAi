@@ -14,4 +14,8 @@ public enum CardinalDirection {
     static CardinalDirection fromDoubleToDirection(double d) {
         return values()[Settings.doubleToIndex(d, values().length)];
     }
+
+    static CardinalDirection fromDoubleToDirection(double[] directions) {
+        return values()[Settings.fromDoubleArrayToIndex(directions)];
+    }
 }

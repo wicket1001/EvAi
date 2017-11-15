@@ -1,6 +1,5 @@
 import java.io.IOException;
 import java.util.*;
-import java.util.function.Consumer;
 
 /**
  * The Game class which manages everything.
@@ -19,7 +18,7 @@ public class Game {
     private int generationNum =0 ;
 
     public Game() throws IOException {
-        world = new World("maps/map2.txt");
+        world = new World("maps/map.png");
         for (int i = 0; i < Settings.numEntities; i++) {
             entities.add(generateRandomEntity());
         }
@@ -30,13 +29,13 @@ public class Game {
         return new Entity(null, Settings.layers);
     }
 
-    private void arrangeEntityPositions(List<Entity> e) {
-        for (int i = 0; i < e.size(); i++ ) {
+    private void arrangeEntityPositions(List<Entity> entities) {
+        for (Entity entity : entities) {
             Coordinate co = null;
-            while ( co == null || entitiesOnField( co ) != 0 ) {
+            while (co == null || entitiesOnField(co) != 0) {
                 co = new Coordinate((int) (Math.random() * world.getWidth()), (int) (Math.random() * world.getHeight()));
             }
-            e.get(i).setPos( co );
+            entity.setPos(co);
         }
     }
 
@@ -150,7 +149,7 @@ public class Game {
             newEntities.add(generateRandomEntity());
         }
         arrangeEntityPositions(newEntities);
-        if (newEntities.size() < Settings.numEntities) {
+        if (newEntities.size() != Settings.numEntities) {
             System.out.println("Something went terribly wrong: " + newEntities.size());
         }
         /* quadrant
@@ -199,10 +198,14 @@ public class Game {
 
     private void propagate(Entity e) {
         double[] propagated = e.step(world.getView(e.getPos()));
-        switch (Action.fromDoubleToAction(propagated[0])) {
+        int actionLength = Action.values().length;
+        int directionLength = CardinalDirection.values().length;
+        double[] actionsProbability = Arrays.copyOfRange(propagated, 0, actionLength);
+        double[] directionProbability = Arrays.copyOfRange(propagated, actionLength, actionLength + directionLength);
+        switch (Action.fromDoubleToAction(actionsProbability)) {
             case harvest: harvest(e); break;
             case craft: craft(e); break;
-            case move: move(e, propagated[1]); break;
+            case move: move(e, directionProbability); break;
             case idle: idle(e, true); break;
         }
         decay(e);
@@ -241,7 +244,7 @@ public class Game {
         }
     }
 
-    private void move(Entity e, double direction) {
+    private void move(Entity e, double[] direction) {
         //System.out.println("move");
         Coordinate modifier = CardinalDirection.fromDoubleToDirection(direction).toCoordinate();
         Coordinate newPosition = e.getPos().add(modifier);
