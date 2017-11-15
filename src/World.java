@@ -1,3 +1,6 @@
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -22,17 +25,39 @@ class World {
      * @throws IOException The IOException if there is something with the file.
      */
     World(String filename) throws IOException {
-        List<String> fileContent = fileContent = Files.readAllLines(Paths.get(filename));
-        for (String line: fileContent) {
-            width = Math.max(line.length(), width);
-        }
-        height = fileContent.size();
-        fields = new Field[height][width];
-        for (int i = 0; i < fileContent.size(); i++) {
-            char[] charArray = fileContent.get(i).toCharArray();
-            for (int j = 0; j < charArray.length; j++) {
-                fields[i][j] = new Field(Resource.toResource(charArray[j]));
+        String ext = filename.substring( filename.lastIndexOf('.')+1, filename.length() );
+        if ( ext.equals("txt") ) {
+            List<String> fileContent = Files.readAllLines(Paths.get(filename));
+            for (String line : fileContent) {
+                width = Math.max(line.length(), width);
             }
+            height = fileContent.size();
+            fields = new Field[height][width];
+            for (int i = 0; i < fileContent.size(); i++) {
+                char[] charArray = fileContent.get(i).toCharArray();
+                for (int j = 0; j < charArray.length; j++) {
+                    fields[i][j] = new Field(Resource.toResource(charArray[j]));
+                }
+            }
+        } else if ( ext.equals("png") ) {
+                BufferedImage img = ImageIO.read(new File(filename));
+                width = img.getWidth();
+                height = img.getHeight();
+                fields = new Field[height][width];
+                for ( int y = 0; y < height; y++ ) {
+                    for ( int x = 0; x < width; x++ ) {
+                        int color = img.getRGB( x, y ) & 0xFFFFFF;
+                        switch (color) {
+                            case 0x808080: fields[y][x] = new Field( Resource.stone ); break;
+                            case 0xFFFF00: fields[y][x] = new Field( Resource.food ); break;
+                            case 0x008000: fields[y][x] = new Field( Resource.wood ); break;
+                            case 0x0040FF: fields[y][x] = new Field( Resource.water ); break;
+                            default: throw new IllegalArgumentException("Invalid Pixel Color "+String.format("%06X",color)+" ("+x+"|"+y+")");
+                        }
+                    }
+                 }
+        } else {
+            throw new IllegalArgumentException("Invalid File Type");
         }
     }
 
