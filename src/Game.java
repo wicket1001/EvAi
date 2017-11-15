@@ -18,7 +18,7 @@ public class Game {
     private int generationNum =0 ;
 
     public Game() throws IOException {
-        world = new World("maps/map2.txt");
+        world = new World("maps/map1.png");
         for (int i = 0; i < Settings.numEntities; i++) {
             entities.add(generateRandomEntity());
         }

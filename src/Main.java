@@ -146,7 +146,7 @@ public class Main extends PApplet {
                 }
                 rect( px, py, pixelPerField, pixelPerField );
                 if ( field.getIdleTime() > 0 ) {
-                    fill( 0,0,0, 0.5f );
+                    fill( 0,0,0, 128 );
                     rect( px, py, pixelPerField, pixelPerField );
                 }
 
