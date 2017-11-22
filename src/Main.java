@@ -1,9 +1,6 @@
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.LinkedBlockingDeque;
 
 import processing.core.PApplet;
 import processing.core.PImage;
@@ -21,7 +18,7 @@ public class Main extends PApplet {
     private int hoveredEntity = 0;
     private int selectedEntity = 1;
 
-    public static List<Entity> lastGenEntitites = new LinkedList<>();
+    public static List<Entity> lastGenEntities = new LinkedList<>();
 
     public static boolean pause = false;
 
@@ -302,6 +299,8 @@ public class Main extends PApplet {
         avg2 /= lastGens[0].length;
         text("Generation/Step: "+game.getGenerationNum()+"/"+game.getStepNum()+"\nAverage: "+String.format("%.3f",avg)+"\nAverage (Last "+lastGens[0].length+"): "+String.format("%.3f",avg2)+"\nLast: "+lastSteps+"\nBest: #"+id+", "+best.getPoints()+", "+best.getPos() + "\nSelected: #"+(selectedEntity-1)+", "+game.getEntity(selectedEntity-1).getPos()+" \nHovered: "+ ((hoveredEntity!=0)?"#" + (hoveredEntity-1) + ", " + game.getEntity(hoveredEntity-1).getPos(): ("None")), 10, 100);
 
+        float maxi = 0;
+
         {
             fill(128, 128, 128);
             stroke(64, 64, 64);
@@ -364,6 +363,8 @@ public class Main extends PApplet {
             stroke(0, 0, 0);
             fill(0, 0, 0, 0);
             rect(25, height - 350 - 25, 350, 350);
+
+            maxi = max;
         }
 
         {
@@ -372,13 +373,7 @@ public class Main extends PApplet {
             float dy = height - 400 - 100 - 25;
             float h = 100;
 
-            float max = 0;
-            for ( Entity e: lastGenEntitites ) {
-                if ( e.getStepsAlive() > max ) {
-                    max = e.getStepsAlive();
-                }
-            }
-            max = (float) Math.ceil( (max + 25)/100 )*100;
+            float max = maxi;
 
             fill(128, 128, 128);
             stroke(64, 64, 64);
@@ -388,13 +383,13 @@ public class Main extends PApplet {
             text(max + " Steps", dx, dy - 5);
 
             float vp = h / max;
-            float vw = w / lastGenEntitites.size();
+            float vw = w / lastGenEntities.size();
 
             fill(0,0,0);
             stroke(0,0,0);
 
-            for (int i = 0; i < lastGenEntitites.size(); i++) {
-                Entity e = lastGenEntitites.get(i);
+            for (int i = 0; i < lastGenEntities.size(); i++) {
+                Entity e = lastGenEntities.get(i);
                 float v = vp * e.getStepsAlive();
                 rect( dx + i*vw, dy + h - v, vw, v );
             }

@@ -145,7 +145,7 @@ public class Game {
         List<Entity> sorted = new LinkedList<>();
         sorted.addAll(entities);
         Collections.sort( sorted );
-        Main.lastGenEntitites = sorted;
+        Main.lastGenEntities = sorted;
         double max = Collections.max(sorted).getPoints();
 
         List<Entity> newEntities = new LinkedList<>();
