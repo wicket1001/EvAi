@@ -194,7 +194,7 @@ public class Entity implements Comparable<Entity> {
         for ( Item i: Item.values() ) {
             nodes[0][Settings.numView+i.ordinal()].setValue( (double) inventory.get(i) / 100 );
         }
-        nodes[0][Settings.numView+Item.values().length].setValue(getStepsAlive() / 100D - 1);
+        nodes[0][Settings.numView+Item.values().length].setValue(1); //setValue(getStepsAlive() / 100D - 1);
         for ( Node node: nodes[nodes.length-1] ) {
             node.calc();
         }
