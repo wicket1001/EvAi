@@ -18,7 +18,6 @@ class World {
     private Field[][] fields;
     private int width;
     private int height;
-    private ArrayList<Coordinate> occupiedCoordinates = new ArrayList<>();
 
     /**
      * Creates a World from the contents of a file.
@@ -81,13 +80,6 @@ class World {
         return fields[coordinate.getY()][coordinate.getX()];
     }
 
-    public void setOccupiedCoordinates(List<Entity> entities) {
-        occupiedCoordinates.clear();
-        for (Entity e: entities) {
-            occupiedCoordinates.add(e.getPos());
-        }
-    }
-
     @Override
     public String toString() {
         StringBuilder s = new StringBuilder("{\n");
@@ -131,22 +123,25 @@ class World {
                 (coordinate.getY() >= 0 && coordinate.getY() < height);
     }
 
-    boolean isEmptyField(Coordinate coordinate) {
+    private boolean isEmptyField(List<Coordinate> occupiedCoordinates, Coordinate coordinate) {
         return !occupiedCoordinates.contains(coordinate);
     }
 
-    public double[] getView(Coordinate coordinate) {
+    public double[] getView(List<Entity> entities, Coordinate coordinate) {
+        ArrayList<Coordinate> occupiedCoordinates = new ArrayList<>();
+        for (Entity e: entities) {
+            occupiedCoordinates.add(e.getPos());
+        }
         occupiedCoordinates.remove(coordinate);
         double[] neighbors = new double[Settings.numView];
         for (int i = 0; i < Settings.numView; i++) {
             Coordinate c = new Coordinate(coordinate.getX() + i % 3 - 1, coordinate.getY() + i / 3 - 1);
-            if (isInBorders(c) && isEmptyField(c) && !getField(c).isIdle()) {
+            if (isInBorders(c) && isEmptyField(occupiedCoordinates, c) && !getField(c).isIdle()) {
                 neighbors[i] = getField(c).getResource().fromResourceToDouble();
             } else {
                 neighbors[i] = Resource.none.fromResourceToDouble();
             }
         }
-        occupiedCoordinates.add(coordinate);
         return neighbors;
     }
 }
