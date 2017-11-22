@@ -18,7 +18,7 @@ public class Game {
     private int generationNum =0 ;
 
     public Game() throws IOException {
-        world = new World("maps/map.png");
+        world = new World(Settings.map);
         for (int i = 0; i < Settings.numEntities; i++) {
             entities.add(generateRandomEntity());
         }
@@ -124,22 +124,6 @@ public class Game {
     }
 
     private double createNewGeneration() {
-        Main.genNum++;
-        //System.out.println("Generation #"+generationNum+" finished ("+stepNum+" Steps)");
-        /*
-        double average = 0;
-        for ( Entity ent: entities ) {
-            average += ent.getStepsAlive();
-        }
-        average /= entities.length;
-        List<Entity> better = new ArrayList<>();
-        for ( Entity ent: entities ) {
-            if ( ent.getStepsAlive() >= average ) {
-                better.add( ent );
-            }
-        }
-        */
-
         double dieFactor = 50 / 100D;
 
         List<Entity> sorted = new LinkedList<>();
@@ -162,11 +146,6 @@ public class Game {
                 }
             }
         }
-        /*
-        if (index >= Settings.numEntities / 2) {
-            System.out.println("Varianz hat zugeschlagen");
-        }
-        */
         for (int i = 0; i < Settings.numEntities - newEntities.size(); i++) {
             newEntities.add(generateRandomEntity());
         }
@@ -174,30 +153,6 @@ public class Game {
         if (newEntities.size() != Settings.numEntities) {
             System.out.println("Something went terribly wrong: " + newEntities.size());
         }
-        /* quadrant
-        List<Entity> sorted = new LinkedList<>();
-        sorted.addAll(entities);
-        Collections.sort( sorted );
-        List<Entity> better = new LinkedList<>();
-        better.addAll(entities);
-        Collections.sort( better );
-        better.forEach(entity -> System.out.print(entity.getPoints() + ", "));
-        while ( better.size() > entities.size() /4 ) {
-            better.remove( entities.size() /4 );
-        }
-        System.out.println();
-        better.forEach(entity -> System.out.print(entity.getPoints() + ", "));
-        System.out.println();
-        List<Entity> newEntities = new LinkedList<>();
-        for (int i = 0; i < Settings.numEntities; i++ ) {
-            newEntities.add(better.get((int) (Math.random() * better.size())).mutate(3, Settings.multiplierModification));
-            Coordinate co = null;
-            while ( co == null || entitiesOnField( co ) != 0 ) {
-                co = new Coordinate((int) (Math.random() * world.getWidth()), (int) (Math.random() * world.getHeight()));
-            }
-            newEntities.get(i).setPos( co );
-        }
-        */
         double avg = 0;
         for ( Entity e: entities ) {
             avg += e.getStepsAlive();
@@ -206,7 +161,6 @@ public class Game {
         stepNum = 0;
         generationNum++;
         entities = newEntities;
-        //entities.forEach(entity -> System.out.println(entity));
         return avg;
     }
 
