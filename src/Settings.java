@@ -32,6 +32,6 @@ public class Settings {
     }
 
     static double indexToDouble(int index, int size) {
-        return range / size * index + minNode;
+        return range / (size - 1) * index + minNode;
     }
 }

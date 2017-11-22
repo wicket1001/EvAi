@@ -52,6 +52,10 @@ class Field {
         return idle == 0;
     }
 
+    boolean isIdle() {
+        return idle != 0;
+    }
+
     /**
      * Harvests the Field one time.
      *
