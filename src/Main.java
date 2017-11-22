@@ -1,4 +1,8 @@
+import java.io.BufferedWriter;
 import java.io.IOException;
+import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -79,8 +83,6 @@ public class Main extends PApplet {
     }
 
     public void keyPressed() {
-        double sum = 0.0;
-        int steps = 1;
         if ( ( thread == null || pause ) && keyCode == ENTER ) {
             game.doStep();
         } else if ( thread == null && keyCode >= '1' && keyCode <= '9' ) {
@@ -93,6 +95,9 @@ public class Main extends PApplet {
             pause = false;
         } else if ( thread != null && keyCode == TAB ) {
             thread.interrupt();
+        } else if ( key == 's' || key == 'S' ) {
+            System.out.println("test");
+            saveNetworks( "archive/001.generation" );
         }
     }
 
@@ -297,7 +302,7 @@ public class Main extends PApplet {
             avg2 += i;
         }
         avg2 /= lastGens[0].length;
-        text("Generation/Step: "+game.getGenerationNum()+"/"+game.getStepNum()+"\nAverage: "+String.format("%.3f",avg)+"\nAverage (Last "+lastGens[0].length+"): "+String.format("%.3f",avg2)+"\nLast: "+lastSteps+"\nBest: #"+id+", "+best.getPoints()+", "+best.getPos() + "\nSelected: #"+(selectedEntity-1)+", "+game.getEntity(selectedEntity-1).getPos()+" \nHovered: "+ ((hoveredEntity!=0)?"#" + (hoveredEntity-1) + ", " + game.getEntity(hoveredEntity-1).getPos(): ("None")), 10, 100);
+        text("Generation/Step: "+game.getGenerationNum()+"/"+game.getStepNum()+"\nAverage: "+String.format("%.3f",avg)+"\nAverage (Last "+lastGens[0].length+"): "+String.format("%.3f",avg2)+"\nLast: "+lastSteps+"\nBest: #"+id+", "+best.getPoints()+", "+best.getPos() + "\nSelected: #"+(selectedEntity-1)+", "+game.getEntity(selectedEntity-1).getPos()+"\nAncestor: "+game.getEntity(selectedEntity-1).getAncestor()+" \nHovered: "+ ((hoveredEntity!=0)?"#" + (hoveredEntity-1) + ", " + game.getEntity(hoveredEntity-1).getPos(): ("None")), 10, 100);
 
         float maxi = 0;
 
@@ -399,6 +404,35 @@ public class Main extends PApplet {
 
 
 
+
+    }
+
+    private void saveNetworks( String name ) {
+        try(
+            BufferedWriter out = Files.newBufferedWriter( Paths.get( name ), Charset.forName("UTF-8") );
+        ) {
+            for ( int l: Settings.layers ) {
+                out.write(l + ";");
+            }
+            out.newLine();
+            for ( Entity entity: game.getEntities() ) {
+                Node[][] network = entity.getNetwork();
+                for ( Node[] layer: network ) {
+                    for ( Node node: layer ) {
+                        for ( double conn: node.getConnections() ) {
+                            out.write(conn+",");
+                        }
+                    }
+                }
+                out.newLine();
+            }
+            out.flush();
+        } catch( IOException e ) {
+            System.out.println( e.getMessage() );
+        }
+    }
+
+    private void loadNetworks( String name ) {
 
     }
 
