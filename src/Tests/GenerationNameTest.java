@@ -4,8 +4,24 @@ import java.util.Map;
 import java.util.TreeMap;
 
 public class GenerationNameTest {
+    enum Elements {
+        work, idle, none;
+    }
+
     public static void main(String[] args) {
-        calculate();
+        // calculate();
+    }
+
+    static void testEnumSwitch() {
+        Elements e = Elements.idle;
+        switch (e) {
+            case idle:
+                System.out.println("Hello");
+                break;
+            case work:
+                System.out.println("Hey");
+                break;
+        }
     }
 
     // Wenn man es einfach durchnummerriert, dann ist es (die summe der (2er Potenzen mal 10))

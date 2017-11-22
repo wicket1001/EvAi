@@ -20,6 +20,21 @@ public enum Resource {
         }
     }
 
+    char toChar() {
+        switch (this) {
+            case food: return 'n';
+            case water: return 'w';
+            case wood: return 'h';
+            case stone: return 's';
+            case none: return 'n';
+            default: throw new IllegalArgumentException("Illegal Field type: " + this);
+        }
+    }
+
+    static char toChar(Resource resource) {
+        return resource.toChar();
+    }
+
     /**
      * Get the double of a Resource.
      *
