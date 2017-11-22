@@ -88,7 +88,7 @@ class Field {
     }
 
     private int harvestFood(boolean tool) {
-        idle = 2;
+        idle = 7;
         return tool ? 100 : 10;
     }
 
@@ -97,12 +97,12 @@ class Field {
     }
 
     private int harvestWood(boolean tool) {
-        idle = 2;
+        idle = 7;
         return tool ? 100 : 10;
     }
 
     private int harvestStone(boolean tool) {
-        idle = 2;
+        idle = 7;
         return tool ? 100 : 10;
     }
 }
