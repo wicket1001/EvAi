@@ -219,8 +219,7 @@ public class Game {
     }
 
     private void propagate(Entity e) {
-        world.setOccupiedCoordinates(getEntitiesAlive());
-        double[] propagated = e.step(world.getView(e.getPos()));
+        double[] propagated = e.step(world.getView(getEntitiesAlive(), e.getPos()));
         int actionLength = Action.values().length;
         int directionLength = CardinalDirection.values().length;
         double[] actionsProbability = Arrays.copyOfRange(propagated, 0, actionLength);
