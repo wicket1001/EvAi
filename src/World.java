@@ -122,11 +122,15 @@ class World {
                 (coordinate.getY() >= 0 && coordinate.getY() < height);
     }
 
+    boolean isEmptyField(Coordinate coordinate) {
+        return true;
+    }
+
     public double[] getView(Coordinate coordinate) {
         double[] neighbors = new double[Settings.numView];
         for (int i = 0; i < Settings.numView; i++) {
             Coordinate c = new Coordinate(coordinate.getX() + i % 3 - 1, coordinate.getY() + i / 3 - 1);
-            if (isInBorders(c)) {
+            if (isInBorders(c) && isEmptyField(c)) {
                 neighbors[i] = getField(c).getResource().fromResourceToDouble();
             } else {
                 neighbors[i] = Resource.none.fromResourceToDouble();
