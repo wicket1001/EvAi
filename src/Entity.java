@@ -1,4 +1,3 @@
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -26,6 +25,9 @@ public class Entity implements Comparable<Entity> {
      * A 2D Node-Array to save the Nodes of the Neural Network
      */
     private Node[][] nodes;
+
+    private int ancestor;
+    private int genome;
 
     private int stepsAlive = 0;
 
@@ -229,6 +231,15 @@ public class Entity implements Comparable<Entity> {
 
     public double getPoints() {
         return getStepsAlive() * 2 + getItemCount(Item.food) + getItemCount(Item.water);
+    }
+
+    public String getAncestor() {
+        return ancestor + "." + genome;
+    }
+
+    public void setAncestor( int ancestorId, int genome ) {
+        this.ancestor = ancestorId;
+        this.genome = genome;
     }
 
     @Override
