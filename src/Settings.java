@@ -8,6 +8,7 @@ public class Settings {
     static double multiplierModification = 0.125;
     static int durchgaenge = 10; // je mehr desto weniger Varianz
     static int connectionsToMutate = 2;
+    static int numbDescendant = 2;
 
     static int doubleToIndex(double value, int size) {
         double step = Settings.range / size;
