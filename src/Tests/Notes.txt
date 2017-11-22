@@ -1,19 +1,19 @@
 Main
-     Game
-         World
-             Field
+    Game
+        World
+            Field
                 Resource
 
 
-         Entity
-             Node
+        Entity
+            Node
+            Item
 
-         Coordinate
+        Coordinate
 
-         Action
-         CardinalDirection
-         Items
+        Action
+        CardinalDirection
 
-     ComputeGenerations
+    ComputeGenerations
 
 Settings

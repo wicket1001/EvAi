@@ -132,10 +132,11 @@ class World {
     }
 
     boolean isEmptyField(Coordinate coordinate) {
-        return occupiedCoordinates.contains(coordinate);
+        return !occupiedCoordinates.contains(coordinate);
     }
 
     public double[] getView(Coordinate coordinate) {
+        occupiedCoordinates.remove(coordinate);
         double[] neighbors = new double[Settings.numView];
         for (int i = 0; i < Settings.numView; i++) {
             Coordinate c = new Coordinate(coordinate.getX() + i % 3 - 1, coordinate.getY() + i / 3 - 1);
@@ -145,6 +146,7 @@ class World {
                 neighbors[i] = Resource.none.fromResourceToDouble();
             }
         }
+        occupiedCoordinates.add(coordinate);
         return neighbors;
     }
 }
