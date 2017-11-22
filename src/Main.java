@@ -411,16 +411,37 @@ public class Main extends PApplet {
         try(
             BufferedWriter out = Files.newBufferedWriter( Paths.get( name ), Charset.forName("UTF-8") );
         ) {
-            for ( int l: Settings.layers ) {
-                out.write(l + ";");
+            out.write("Generations: "+genNum);
+            out.newLine();
+
+            out.write("Layers: ");
+            for ( int i = 0; i < Settings.layers.length; i++ ) {
+                out.write(Settings.layers[i]+"");
+                if ( i != Settings.layers.length-1 ) {
+                    out.write(", ");
+                }
             }
             out.newLine();
+
+            out.write("WorldDimensions: "+game.getWorld().getWidth()+"x"+game.getWorld().getHeight());
+            out.newLine();
+            out.write("WorldData: ");
+            for ( int y = 0; y < game.getWorld().getHeight(); y++ ) {
+                for ( int x = 0; x < game.getWorld().getWidth(); x++ ) {
+                    Field field = game.getWorld().getField( new Coordinate( x, y ) );
+                    Resource r = field.getResource();
+                    out.write( r.toChar() );
+                }
+            }
+            out.newLine();
+            out.newLine();
+
             for ( Entity entity: game.getEntities() ) {
                 Node[][] network = entity.getNetwork();
                 for ( Node[] layer: network ) {
                     for ( Node node: layer ) {
                         for ( double conn: node.getConnections() ) {
-                            out.write(conn+",");
+                            out.write(String.format("%+21.18f, ",conn));
                         }
                     }
                 }
