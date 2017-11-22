@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -17,6 +18,7 @@ class World {
     private Field[][] fields;
     private int width;
     private int height;
+    private ArrayList<Coordinate> occupiedCoordinates = new ArrayList<>();
 
     /**
      * Creates a World from the contents of a file.
@@ -79,6 +81,13 @@ class World {
         return fields[coordinate.getY()][coordinate.getX()];
     }
 
+    public void setOccupiedCoordinates(List<Entity> entities) {
+        occupiedCoordinates.clear();
+        for (Entity e: entities) {
+            occupiedCoordinates.add(e.getPos());
+        }
+    }
+
     @Override
     public String toString() {
         StringBuilder s = new StringBuilder("{\n");
@@ -123,7 +132,7 @@ class World {
     }
 
     boolean isEmptyField(Coordinate coordinate) {
-        return true;
+        return occupiedCoordinates.contains(coordinate);
     }
 
     public double[] getView(Coordinate coordinate) {

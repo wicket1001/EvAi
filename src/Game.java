@@ -219,6 +219,7 @@ public class Game {
     }
 
     private void propagate(Entity e) {
+        world.setOccupiedCoordinates(getEntitiesAlive());
         double[] propagated = e.step(world.getView(e.getPos()));
         int actionLength = Action.values().length;
         int directionLength = CardinalDirection.values().length;
