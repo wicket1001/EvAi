@@ -130,7 +130,7 @@ class World {
         double[] neighbors = new double[Settings.numView];
         for (int i = 0; i < Settings.numView; i++) {
             Coordinate c = new Coordinate(coordinate.getX() + i % 3 - 1, coordinate.getY() + i / 3 - 1);
-            if (isInBorders(c) && isEmptyField(c)) {
+            if (isInBorders(c) && isEmptyField(c) && getField(c).getIdleTime() > 0) {
                 neighbors[i] = getField(c).getResource().fromResourceToDouble();
             } else {
                 neighbors[i] = Resource.none.fromResourceToDouble();
