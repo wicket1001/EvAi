@@ -22,6 +22,8 @@ public class Main extends PApplet {
     private int hoveredEntity = 0;
     private int selectedEntity = 1;
 
+    public static boolean halfDead = false;
+
     public static List<Entity> lastGenEntities = new LinkedList<>();
 
     public static boolean pause = false;
@@ -100,6 +102,8 @@ public class Main extends PApplet {
             saveNetworks( "archive/001.generation" );
         } else if ( key == 'k' || key == 'K' ) {
             game.killAll();
+        } else if ( key == 'a' || key == 'A' ) { // ASAP
+            halfDead = !halfDead;
         }
     }
 

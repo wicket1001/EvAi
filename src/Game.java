@@ -117,15 +117,15 @@ public class Game {
     }
 
     public double doStep() {
-        if (!everybodyDead()) {
+        if ( everybodyDead() || ( Main.halfDead && getNumberOfDead() > Settings.numEntities/2 ) ) {
+            return createNewGeneration();
+        } else {
             for (Entity e: getEntitiesAlive()) {
                 propagate(e);
             }
             stepNum++;
             world.regenerate();
             return -1; // Still alive
-        } else {
-            return createNewGeneration();
         }
     }
 
@@ -147,7 +147,7 @@ public class Game {
             }
             sum /= Settings.durchgaenge;
             if (sum > dieFactor) {
-                for (int i = 0; i < Settings.numbDescendant; i ++) {
+                for (int i = 0; i < Settings.numDescendant; i ++) {
                     newEntities.add(sorted.get(index).mutate(Settings.connectionsToMutate, Settings.multiplierModification)); // , i
                 }
             }
@@ -171,11 +171,16 @@ public class Game {
     }
 
     private boolean everybodyDead() {
-        boolean everybodyDead = true;
         for (Entity e: entities) {
-            everybodyDead = everybodyDead && !e.isAlive();
+            if ( e.isAlive() ) {
+                return false;
+            }
         }
-        return everybodyDead;
+        return true;
+    }
+
+    public int getNumberOfDead() {
+        return Settings.numEntities - getEntitiesAlive().size();
     }
 
     private void propagate(Entity e) {
