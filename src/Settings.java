@@ -8,8 +8,9 @@ public class Settings {
     static double multiplierModification = 0.125;
     static int durchgaenge = 10; // je mehr desto weniger Varianz
     static int connectionsToMutate = 2;
-    static int numDescendant = 2;
-    static String map = "maps/map.png";
+    static int numbDescendant = 2;
+    static String map = "maps/make.random"; // map.png  make.random
+    static int[] defaultLayout = new int[]{ 64, 64 };
 
     static int doubleToIndex(double value, int size) {
         double step = Settings.range / size;

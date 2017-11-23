@@ -41,22 +41,31 @@ class World {
                 }
             }
         } else if ( ext.equals("png") ) {
-                BufferedImage img = ImageIO.read(new File(filename));
-                width = img.getWidth();
-                height = img.getHeight();
-                fields = new Field[height][width];
-                for ( int y = 0; y < height; y++ ) {
-                    for ( int x = 0; x < width; x++ ) {
-                        int color = img.getRGB( x, y ) & 0xFFFFFF;
-                        switch (color) {
-                            case 0x808080: fields[y][x] = new Field( Resource.stone ); break;
-                            case 0xFFFF00: fields[y][x] = new Field( Resource.food ); break;
-                            case 0x008000: fields[y][x] = new Field( Resource.wood ); break;
-                            case 0x0040FF: fields[y][x] = new Field( Resource.water ); break;
-                            default: throw new IllegalArgumentException("Invalid Pixel Color "+String.format("%06X",color)+" ("+x+"|"+y+")");
-                        }
+            BufferedImage img = ImageIO.read(new File(filename));
+            width = img.getWidth();
+            height = img.getHeight();
+            fields = new Field[height][width];
+            for ( int y = 0; y < height; y++ ) {
+                for ( int x = 0; x < width; x++ ) {
+                    int color = img.getRGB( x, y ) & 0xFFFFFF;
+                    switch (color) {
+                        case 0x808080: fields[y][x] = new Field( Resource.stone ); break;
+                        case 0xFFFF00: fields[y][x] = new Field( Resource.food ); break;
+                        case 0x008000: fields[y][x] = new Field( Resource.wood ); break;
+                        case 0x0040FF: fields[y][x] = new Field( Resource.water ); break;
+                        default: throw new IllegalArgumentException("Invalid Pixel Color "+String.format("%06X",color)+" ("+x+"|"+y+")");
                     }
-                 }
+                }
+             }
+        } else if ( ext.equals("random") ) {
+            width = Settings.defaultLayout[0];
+            height = Settings.defaultLayout[1];
+            fields = new Field[height][width];
+            for (int i = 0; i < height; i++) {
+                for (int j = 0; j < width; j++) {
+                    fields[i][j] = new Field(Resource.values()[(int)((Resource.values().length - 1) * Math.random())]); // TODO entpfusch
+                }
+            }
         } else {
             throw new IllegalArgumentException("Invalid File Type");
         }

@@ -147,7 +147,7 @@ public class Game {
             }
             sum /= Settings.durchgaenge;
             if (sum > dieFactor) {
-                for (int i = 0; i < Settings.numDescendant; i ++) {
+                for (int i = 0; i < Settings.numbDescendant; i ++) {
                     newEntities.add(sorted.get(index).mutate(Settings.connectionsToMutate, Settings.multiplierModification)); // , i
                 }
             }
