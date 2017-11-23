@@ -98,6 +98,8 @@ public class Main extends PApplet {
         } else if ( key == 's' || key == 'S' ) {
             System.out.println("test");
             saveNetworks( "archive/001.generation" );
+        } else if ( key == 'k' || key == 'K' ) {
+            game.killAll();
         }
     }
 

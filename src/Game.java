@@ -110,6 +110,12 @@ public class Game {
         return avgSteps;
     }
 
+    public void killAll() {
+        for (Entity e: getEntitiesAlive()) {
+            e.kill();
+        }
+    }
+
     public double doStep() {
         if (!everybodyDead()) {
             for (Entity e: getEntitiesAlive()) {

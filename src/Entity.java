@@ -146,6 +146,10 @@ public class Entity implements Comparable<Entity> {
         return !alive;
     }
 
+    public void kill() {
+        alive = false;
+    }
+
     public int getStepsAlive() {
         return stepsAlive;
     }
