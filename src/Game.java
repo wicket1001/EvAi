@@ -91,6 +91,7 @@ public class Game {
             }
             avgSteps = doStep();
         }
+        Main.genNum = generationNum;
         Main.genSum += avgSteps;
         Main.lastSteps = avgSteps;
 
