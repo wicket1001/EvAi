@@ -22,7 +22,7 @@ public class Main extends PApplet {
     private int hoveredEntity = 0;
     private int selectedEntity = 1;
 
-    public static boolean halfDead = false;
+    public static boolean halfDead = true;
 
     public static List<Entity> lastGenEntities = new LinkedList<>();
 

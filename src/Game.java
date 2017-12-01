@@ -118,7 +118,7 @@ public class Game {
     }
 
     public double doStep() {
-        if ( everybodyDead() || ( Main.halfDead && getNumberOfDead() > Settings.numEntities/2 ) ) {
+        if ( everybodyDead() || ( Main.halfDead && getNumberOfDead() > Settings.numEntities/2 ) || ( getStepNum() >= Settings.maxStepsPerGen ) ) {
             return createNewGeneration();
         } else {
             for (Entity e: getEntitiesAlive()) {

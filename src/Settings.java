@@ -11,6 +11,7 @@ public class Settings {
     static int numbDescendant = 2;
     static String map = "maps/make.random"; // map.png  make.random
     static int[] defaultLayout = new int[]{ 64, 64 };
+    static int maxStepsPerGen = 1000;
 
     static int doubleToIndex(double value, int size) {
         double step = Settings.range / size;
