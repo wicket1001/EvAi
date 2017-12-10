@@ -27,7 +27,8 @@ public class Main extends PApplet {
     public static boolean halfDead = true;
 
     public static List<Entity> lastGenEntities = new LinkedList<>();
-    public static List<HashMap<int[], Integer>> ancestors = new LinkedList<HashMap<int[], Integer>>();
+    //public static List<HashMap<int[], Integer>> ancestors = new LinkedList<HashMap<int[], Integer>>();
+    public static int[][] ancestors = new int[1000][Settings.numEntities];
 
     public static boolean pause = false;
 
@@ -422,19 +423,18 @@ public class Main extends PApplet {
             fill(0, 0, 0);
 
             int max = Settings.numEntities;
-            int gennum = 0;
-            for (Map<int[], Integer> gen: ancestors) {
+            for (int gennum = 0; gennum < ancestors.length; gennum++) {
+                int[] gen = ancestors[gennum];
                 int step = 0;
-                for (Map.Entry<int[], Integer> entry: gen.entrySet()) {
+                for (int tribe = 0; tribe < gen.length; tribe++) {
                     float start = (float) step / max;
-                    step += entry.getValue();
+                    step += gen[tribe];
                     float stop = (float) step / max;
-                    int[] color = entry.getKey();
+                    int[] color = Game.tribeColors.get(tribe);
                     stroke(color[0], color[1], color[2]);
-                    float pos = gennum/ancestors.size()*w+dx;
+                    float pos = (max-gennum)/ancestors.length*w+dx;
                     line(pos, start*h+dy, pos, stop*h+dy);
                 }
-                gennum++;
             }
 
             stroke(0, 0, 0);
