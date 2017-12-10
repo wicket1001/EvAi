@@ -108,6 +108,20 @@ public class Game {
             last1 = var1;
             last2 = var2;
         }
+
+        HashMap<int[], Integer> actGen = new HashMap<int[], Integer>();
+
+        for (Entity e: entities) {
+            int[] color = e.getColor();
+            actGen.putIfAbsent(color, 0);
+            actGen.put(color, actGen.get(color) + 1);
+        }
+
+        Main.ancestors.add( actGen );
+        if (Main.ancestors.size() > 1000) {
+            Main.ancestors.remove(0);
+        }
+
         return avgSteps;
     }
 

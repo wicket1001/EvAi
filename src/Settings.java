@@ -9,7 +9,7 @@ public class Settings {
     static int durchgaenge = 10; // je mehr desto weniger Varianz
     static int connectionsToMutate = 2;
     static int numbDescendant = 2;
-    static String map = "maps/make.random"; // map.png  make.random
+    static String map = "maps/map.png"; // map.png  make.random
     static int[] defaultLayout = new int[]{ 64, 64 };
     static int maxStepsPerGen = 1000;
 

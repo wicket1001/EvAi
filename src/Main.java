@@ -3,8 +3,10 @@ import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import processing.core.PApplet;
 import processing.core.PImage;
@@ -25,6 +27,7 @@ public class Main extends PApplet {
     public static boolean halfDead = true;
 
     public static List<Entity> lastGenEntities = new LinkedList<>();
+    public static List<HashMap<int[], Integer>> ancestors = new LinkedList<HashMap<int[], Integer>>();
 
     public static boolean pause = false;
 
@@ -70,7 +73,6 @@ public class Main extends PApplet {
             exit();
         }
         sheep = loadImage("res/sheep.png");
-
     }
 
     public void draw() {
@@ -408,7 +410,36 @@ public class Main extends PApplet {
         }
 
         {
+            int h = 150;
+            int w = 350;
+            int dx = 25;
+            int dy = height - 400 - 100 - 25 - 200;
 
+            fill(128, 128, 128);
+            stroke(64, 64, 64);
+            rect(dx, dy, w, h);
+
+            fill(0, 0, 0);
+
+            int max = Settings.numEntities;
+            int gennum = 0;
+            for (Map<int[], Integer> gen: ancestors) {
+                int step = 0;
+                for (Map.Entry<int[], Integer> entry: gen.entrySet()) {
+                    float start = (float) step / max;
+                    step += entry.getValue();
+                    float stop = (float) step / max;
+                    int[] color = entry.getKey();
+                    stroke(color[0], color[1], color[2]);
+                    float pos = gennum/ancestors.size()*w+dx;
+                    line(pos, start*h+dy, pos, stop*h+dy);
+                }
+                gennum++;
+            }
+
+            stroke(0, 0, 0);
+            fill(0, 0, 0, 0);
+            rect(dx, dy, w, h);
         }
 
     }
