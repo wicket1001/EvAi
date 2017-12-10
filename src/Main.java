@@ -430,7 +430,7 @@ public class Main extends PApplet {
                     float start = (float) step / max;
                     step += gen[tribe];
                     float stop = (float) step / max;
-                    int[] color = Game.tribeColors.get(tribe);
+                    int[] color = game.tribeColors.get(tribe);
                     stroke(color[0], color[1], color[2]);
                     float pos = (max-gennum)/ancestors.length*w+dx;
                     line(pos, start*h+dy, pos, stop*h+dy);

@@ -1,3 +1,5 @@
+import jdk.nashorn.internal.runtime.regexp.joni.constants.EncloseType;
+
 import java.io.IOException;
 import java.util.*;
 
@@ -111,17 +113,18 @@ public class Game {
             last2 = var2;
         }
 
-        HashMap<int[], Integer> actGen = new HashMap<int[], Integer>();
-
+        int[] numMembers = new int[entities.size()];
         for (Entity e: entities) {
-            int[] color = e.getTribeColor();
-            actGen.putIfAbsent(color, 0);
-            actGen.put(color, actGen.get(color) + 1);
+            numMembers[e.getTribeId()]++;
         }
 
-        Main.ancestors.add( actGen );
-        if (Main.ancestors.size() > 1000) {
-            Main.ancestors.remove(0);
+        for (int i = 0; i < Main.ancestors.length; i++) {
+            int mem0 = numMembers[i];
+            for (int j = 0; j < entities.size(); j++) {
+                int mem = Main.ancestors[i][j];
+                Main.ancestors[i][j] = mem0;
+                mem0 = mem;
+            }
         }
 
         return avgSteps;
