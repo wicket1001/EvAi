@@ -3,13 +3,13 @@
 ✔ Schafe müssen andere Schafe sehen
 ✔ Schafe müssen Idle Felder erkennen
 ⚫ Die natürliche Selektion muss verbessert werden
-⚫ Generations Identifier, der sozusagen sagt 1.1.2.1
-⚫ Graphisch ersichtlich von welcher Generation Entity man abstammt
+✔ Generations Identifier, der sozusagen sagt 1.1.2.1
+✔ Graphisch ersichtlich von welcher Generation Entity man abstammt
 ⚫ Die einzelnen Entities graphisch nach Punkten sortiert, um von ihnen informationen zu bekommen
 ⚪ Something went terribly wrong: 99
 ✔ To enhance the calculation it kills everybody after half is dead, because the best has no advantage of the 49th.
 ✔ A key to press to toggle that enhancement.
 ⚫ Still alive in GUI.
-⚫ Eine übersicht von welcher Generation sie abstammen.
+✔ Eine übersicht von welcher Generation sie abstammen.
 
 
