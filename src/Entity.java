@@ -31,13 +31,15 @@ public class Entity implements Comparable<Entity> {
 
     private int stepsAlive = 0;
 
+    private int tribeId;
+    private int[] tribeColor;
 
     /**
      * Constructor for a Entity
      * @param pos The Position of the Entity in the World
      * @param nodeNums The Number of Nodes per Layer
      */
-    public Entity(Coordinate pos, int[] nodeNums) {
+    public Entity(Coordinate pos, int[] nodeNums, int tribeId) {
         this.pos = pos;
         inventory = new HashMap<>();
         for ( Item item: Item.values() ) {
@@ -63,6 +65,24 @@ public class Entity implements Comparable<Entity> {
                 }
                 nodes[layer][i] = new Node( num, i, parents, nextNum );
             }
+        }
+        this.tribeId = tribeId;
+        double h = (int)(Math.random() * 360);
+        double hi = (int)(h / 60);
+        double f = h / 60 - hi;
+        double q = 1 - f;
+        if (hi == 0) {
+            this.tribeColor = new int[]{0, (int)(f * 255), 0};
+        } else if (hi == 1) {
+            this.tribeColor = new int[]{(int)(q * 255), 0, 0};
+        } else if (hi == 2) {
+            this.tribeColor = new int[]{0, 0, (int)(f * 255)};
+        } else if (hi == 3) {
+            this.tribeColor = new int[]{0, (int)(q * 255), 0};
+        } else if (hi == 4) {
+            this.tribeColor = new int[]{(int)(f * 255), 0, 0};
+        } else if (hi == 5) {
+            this.tribeColor = new int[]{0, 0, (int)(q * 255)};
         }
     }
 
@@ -96,6 +116,8 @@ public class Entity implements Comparable<Entity> {
                 }
             }
         }
+        this.tribeId = pattern.tribeId;
+        this.tribeColor = pattern.tribeColor;
     }
 
     /**
@@ -112,6 +134,14 @@ public class Entity implements Comparable<Entity> {
      */
     public void setPos( Coordinate pos ) {
         this.pos = pos;
+    }
+
+    public int getTribeId() {
+        return tribeId;
+    }
+
+    public int[] getTribeColor() {
+        return tribeColor;
     }
 
     /**

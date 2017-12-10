@@ -15,7 +15,9 @@ public class Game {
     private List<Entity> entities = new LinkedList<>();
 
     private int stepNum = 0;
-    private int generationNum =0 ;
+    private int generationNum = 0;
+
+    private int tribeId = 0;
 
     public Game() throws IOException {
         world = new World(Settings.map);
@@ -26,7 +28,7 @@ public class Game {
     }
 
     private Entity generateRandomEntity() {
-        return new Entity(null, Settings.layers);
+        return new Entity(null, Settings.layers, tribeId++);
     }
 
     private void arrangeEntityPositions(List<Entity> entities) {
