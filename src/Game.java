@@ -124,11 +124,10 @@ public class Game {
         }
 
         for (int i = 0; i < Main.ancestors.length; i++) {
-            int mem0 = numMembers[i];
             for (int j = 0; j < entities.size(); j++) {
                 int mem = Main.ancestors[i][j];
-                Main.ancestors[i][j] = mem0;
-                mem0 = mem;
+                Main.ancestors[i][j] = numMembers[j];
+                numMembers[j] = mem;
             }
         }
 
