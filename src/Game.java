@@ -112,7 +112,7 @@ public class Game {
         HashMap<int[], Integer> actGen = new HashMap<int[], Integer>();
 
         for (Entity e: entities) {
-            int[] color = e.getColor();
+            int[] color = e.getTribeColor();
             actGen.putIfAbsent(color, 0);
             actGen.put(color, actGen.get(color) + 1);
         }
