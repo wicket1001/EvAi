@@ -19,16 +19,21 @@ public class Game {
 
     private int tribeId = 0;
 
+    public Map<Integer, int[]> tribeColors = new TreeMap<>();
+
     public Game() throws IOException {
         world = new World(Settings.map);
         for (int i = 0; i < Settings.numEntities; i++) {
             entities.add(generateRandomEntity());
         }
         arrangeEntityPositions(entities);
+
     }
 
     private Entity generateRandomEntity() {
-        return new Entity(null, Settings.layers, tribeId++);
+        Entity newEntity = new Entity(null, Settings.layers, tribeId++);
+        tribeColors.put(newEntity.getTribeId(), newEntity.getTribeColor());
+        return newEntity;
     }
 
     private void arrangeEntityPositions(List<Entity> entities) {

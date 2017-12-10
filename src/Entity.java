@@ -68,21 +68,28 @@ public class Entity implements Comparable<Entity> {
         }
         this.tribeId = tribeId;
         double h = (int)(Math.random() * 360);
-        double hi = (int)(h / 60);
-        double f = h / 60 - hi;
-        double q = 1 - f;
-        if (hi == 0) {
-            this.tribeColor = new int[]{0, (int)(f * 255), 0};
-        } else if (hi == 1) {
-            this.tribeColor = new int[]{(int)(q * 255), 0, 0};
-        } else if (hi == 2) {
-            this.tribeColor = new int[]{0, 0, (int)(f * 255)};
-        } else if (hi == 3) {
-            this.tribeColor = new int[]{0, (int)(q * 255), 0};
-        } else if (hi == 4) {
-            this.tribeColor = new int[]{(int)(f * 255), 0, 0};
-        } else if (hi == 5) {
-            this.tribeColor = new int[]{0, 0, (int)(q * 255)};
+        int hi = (int)(h / 60);
+        int f = (int)((h / 60 - hi) * 255);
+        int q = 255 - f;
+        switch (hi) {
+            case 0:
+                this.tribeColor = new int[]{0, f, 0};
+                break;
+            case 1:
+                this.tribeColor = new int[]{q, 0, 0};
+                break;
+            case 2:
+                this.tribeColor = new int[]{0, 0, f};
+                break;
+            case 3:
+                this.tribeColor = new int[]{0, q, 0};
+                break;
+            case 4:
+                this.tribeColor = new int[]{f, 0, 0};
+                break;
+            case 5:
+                this.tribeColor = new int[]{0, 0, q};
+                break;
         }
     }
 
